@@ -1,0 +1,3 @@
+[submodule "lib/renderer"]
+	path = lib/renderer
+	url = https://github.com/ooodummy/renderer.git
