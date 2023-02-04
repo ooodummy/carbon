@@ -33,7 +33,7 @@ void carbon::flex_container::measure_lengths() {
 	// Collect total values and mark inflexible items as such
 	for (auto& child : children_) {
 		child->base_size_ = get_base_size(child.get(), content_size.main);
-		child->hypothetical_size_ = std::clamp(child->base_size_, get_main(child->content_min_), child->max_width_);
+		child->hypothetical_size_ = clip(child->base_size_, get_main(child->content_min_), child->max_width_);
 
 		hypothetical_total_ += child->hypothetical_size_;
 		unfrozen_grow_total_ += child->flex_.grow;

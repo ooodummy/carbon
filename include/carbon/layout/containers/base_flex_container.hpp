@@ -14,18 +14,16 @@ namespace carbon {
 		void draw() override;
 
 		template<typename T, typename... Args>
-		T* add_child(Args&&... args) {
-			children_.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
-			auto item = children_.back().get();
+		std::shared_ptr<T> add_child(Args&&... args) {
+			auto item = std::make_shared<T>(std::forward<Args>(args)...);
 			item->parent = this;
-			return reinterpret_cast<T*>(item);
-
-			//return reinterpret_cast<T*>(add_child(std::unique_ptr<T>(new T(std::forward<Args>(args)...))));
+			children_.emplace_back(item);
+			return item;
 		}
 
-		carbon::flex_item* add_child(std::unique_ptr<flex_item> item);
+		std::shared_ptr<carbon::flex_item> add_child(std::shared_ptr<flex_item> item);
 
-		std::vector<std::unique_ptr<flex_item>>& get_children();
+		std::vector<std::shared_ptr<flex_item>>& get_children();
 
 		const flex_flow& get_flow() const;
 
@@ -53,7 +51,7 @@ namespace carbon {
 
 		flex_flow flow_;
 
-		std::vector<std::unique_ptr<flex_item>> children_;
+		std::vector<std::shared_ptr<flex_item>> children_;
 	};
 }// namespace carbon
 

@@ -39,6 +39,14 @@ namespace carbon {
 			}
 		}
 
+		bool operator==(const axes& o) const {
+			return main == o.main && cross == o.cross;
+		}
+
+		bool operator!=(const axes& o) const {
+			return !(*this == o);
+		}
+
 		T main;
 		T cross;
 

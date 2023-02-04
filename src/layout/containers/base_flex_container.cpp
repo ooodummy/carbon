@@ -41,13 +41,13 @@ void carbon::base_flex_container::draw() {
 	}
 }
 
-carbon::flex_item* carbon::base_flex_container::add_child(std::unique_ptr<flex_item> item) {
+std::shared_ptr<carbon::flex_item> carbon::base_flex_container::add_child(std::shared_ptr<flex_item> item) {
 	item->parent = this;
 	children_.push_back(std::move(item));
-	return children_.back().get();
+	return children_.back();
 }
 
-std::vector<std::unique_ptr<carbon::flex_item>>& carbon::base_flex_container::get_children() {
+std::vector<std::shared_ptr<carbon::flex_item>>& carbon::base_flex_container::get_children() {
 	return children_;
 }
 

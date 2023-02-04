@@ -9,6 +9,8 @@ namespace carbon {
 		renderer::color_rgba primary;
 		renderer::color_rgba title_bar;
 		renderer::color_rgba border;
+
+		glm::vec2 label_padding;
 	};
 
 	void init_default_theme();

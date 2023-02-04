@@ -139,3 +139,7 @@ void carbon::flex_item::set_basis(float value, flex_unit unit) {
 void carbon::flex_item::set_basis(bool minimum) {
 	flex_.basis.minimum = minimum;
 }
+
+float carbon::flex_item::clip(float n, float lower, float upper) {
+	return std::max(lower, std::min(n, upper));
+}

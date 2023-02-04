@@ -7,4 +7,6 @@ void carbon::init_default_theme() {
 	theme.primary = { 233, 109, 109 };
 	theme.title_bar = { 36, 34, 37 };
 	theme.border = { 61, 59, 61 };
+
+	theme.label_padding = { 8.0f, 12.0f };
 }

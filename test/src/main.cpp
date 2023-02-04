@@ -87,35 +87,32 @@ void draw_test_flex(renderer::buffer* buf) {
 	flex_container->draw();
 }
 
+#include <algorithm>
+
 void draw_test_ui(renderer::buffer* buf) {
 	static auto menu = std::make_unique<carbon::window>();
 	static bool init = false;
-	static carbon::label<std::string>* label = nullptr;
+	static std::shared_ptr<carbon::label<std::string>> label = nullptr;
 
 	if (!init) {
 		auto groupbox = menu->content->add_child<carbon::groupbox<std::string>>("Test");
 		label = groupbox->body->add_child<carbon::label<std::string>>("Label", carbon::segoe_font);
 		groupbox->body->add_child<carbon::label<std::string>>("Hi there", carbon::segoe_font);
 
-		/*auto groupbox = std::make_unique<carbon::groupbox<std::string>>("Aimbot");
-		label = groupbox->body->add_child<carbon::label<std::string>>("Aimbot enabled", carbon::segoe_font);
-		groupbox->body->add_child<carbon::label<std::string>>("Visibility check", carbon::segoe_font);
-		menu->content->add_child(std::move(groupbox));*/
-
-		auto groupbox2 = std::make_unique<carbon::groupbox<std::string>>("Groupbox");
-		groupbox2->body->add_child<carbon::label<std::string>>("Whoa", carbon::segoe_font);
-		groupbox2->body->add_child<carbon::label<std::string>>("Framework", carbon::segoe_font);
-		menu->content->add_child(std::move(groupbox2));
+		auto groupbox2 = menu->content->add_child<carbon::groupbox<std::string>>("Aimbot");
+		groupbox2->body->add_child<carbon::label<std::string>>("Aimbot enabled", carbon::segoe_font);
+		groupbox2->body->add_child<carbon::label<std::string>>("Visibility check", carbon::segoe_font);
+		groupbox2->body->add_child<carbon::button<std::string>>("Test button");
 
 		menu->set_pos({300.0f, 300.0f});
 		menu->set_size({580.0f, 500.0f});
 		init = true;
 	}
 
-	/*static int i = 0;
+	static int i = 0;
 	i++;
 	std::string test = std::to_string(i);
-	label->set_label(test);*/
+	label->set_label(test);
 
 	menu->set_size(carbon::get_mouse_pos() - menu->get_pos());
 

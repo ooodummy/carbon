@@ -53,8 +53,6 @@ namespace carbon {
 			//buf->draw_rect(content->get_bounds(), COLOR_YELLOW);
 		}
 
-		bool dragging_ = false;
-		glm::vec2 last_mouse_pos_;
 		void handle_input() override {
 			if (!dragging_ && is_mouse_over(title_bar_->get_bounds()) && is_key_pressed(VK_LBUTTON)) {
 				last_mouse_pos_ = get_mouse_pos() - get_pos();
@@ -69,13 +67,16 @@ namespace carbon {
 			}
 		}
 
-		flex_container* content;
+		std::shared_ptr<flex_container> content;
 
 	private:
-		flex_container* title_bar_;
-		flex_container* sub_tab_bar_;
-		flex_container* container_;
-		flex_container* tab_bar_;
+		std::shared_ptr<flex_container> title_bar_;
+		std::shared_ptr<flex_container> sub_tab_bar_;
+		std::shared_ptr<flex_container> container_;
+		std::shared_ptr<flex_container> tab_bar_;
+
+		bool dragging_ = false;
+		glm::vec2 last_mouse_pos_;
 	};
 }// namespace carbon
 

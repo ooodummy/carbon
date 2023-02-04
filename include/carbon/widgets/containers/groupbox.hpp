@@ -1,7 +1,7 @@
 #ifndef CARBON_WIDGETS_CONTAINERS_GROUP_BOX_HPP
 #define CARBON_WIDGETS_CONTAINERS_GROUP_BOX_HPP
 
-#include "carbon/widgets/input/label.hpp"
+#include "carbon/widgets/controls/label.hpp"
 
 namespace carbon {
 	template <typename T>
@@ -34,10 +34,10 @@ namespace carbon {
 			buf->draw_rect_filled(title_->get_bounds(), theme.title_bar);
 		}
 
-		flex_container* body;
+		std::shared_ptr<flex_container> body;
 
 	private:
-		flex_container* title_;
+		std::shared_ptr<flex_container> title_;
 
 		T label_;
 	};

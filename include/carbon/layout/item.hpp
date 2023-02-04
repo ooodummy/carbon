@@ -53,6 +53,8 @@ namespace carbon {
 		void mark_dirty_and_propagate() override;
 
 	protected:
+		static float clip(float n, float lower, float upper);
+
 		virtual void measure_contents();
 		virtual void decorate();
 
