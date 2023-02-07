@@ -125,16 +125,6 @@ void draw_input_data(renderer::buffer* buf) {
 	static auto overlay_container = std::make_unique<carbon::flex_container>();
 	static bool init = false;
 
-	static carbon::label<std::string>* label = nullptr;
-
-	if (!init) {
-		init = true;
-
-		// Create labels
-	}
-
-	// Update labels
-
 	static renderer::timer fps_timer;
 	static int pds = 0;
 	static int fps = 0;
@@ -177,8 +167,8 @@ void draw_thread() {
 
 		carbon::begin();
 
-		//draw_test_flex(carbon::buf);
-		draw_test_ui(carbon::buf);
+		draw_test_flex(carbon::buf);
+		//draw_test_ui(carbon::buf);
 		draw_input_data(carbon::buf);
 
 		carbon::end();
