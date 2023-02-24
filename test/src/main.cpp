@@ -1,5 +1,4 @@
 #include <carbon/carbon.hpp>
-#include <renderer/core.hpp>
 
 #include <dwmapi.h>
 #include <thread>
@@ -17,17 +16,43 @@ int populate_count = 0;
 int draw_count = 0;
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    switch (msg) {
-        case WM_CLOSE:
+	static bool in_size_move = false;
+
+	switch (msg) {
+		case WM_PAINT:
+			if (in_size_move)
+				carbon::dx11->render();
+			else {
+				PAINTSTRUCT ps;
+				std::ignore = BeginPaint(hWnd, &ps);
+				EndPaint(hWnd, &ps);
+			}
+		case WM_DISPLAYCHANGE:
+			carbon::dx11->on_display_change();
+			break;
+		case WM_CLOSE:
 			close_requested = true;
-            return 0;
-        case WM_SIZE:
-            carbon::application->set_size({LOWORD(lParam), HIWORD(lParam)});
-            update_size = true;
-            break;
-        default:
-            break;
-    }
+			return 0;
+		case WM_SIZE:
+			if (!in_size_move)
+				carbon::dx11->on_window_size_change({LOWORD(lParam), HIWORD(lParam)});
+			break;
+		case WM_MOVE:
+			carbon::dx11->on_window_moved();
+			break;
+		case WM_ENTERSIZEMOVE:
+			in_size_move = true;
+			break;
+		case WM_EXITSIZEMOVE:
+			in_size_move = false;
+			carbon::dx11->on_window_size_change(carbon::application->get_size());
+			break;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+		default:
+			break;
+	}
 
 	if (carbon::impl_win32_winproc_handler(hWnd, msg, wParam, lParam))
 		return 1;
@@ -39,19 +64,81 @@ void draw_test_flex(renderer::buffer* buf) {
 	static bool init = false;
 	static auto flex_container = std::make_unique<carbon::flex_container>();
 
+	// Compare to https://github.com/layoutBox/FlexLayout
 	if (!init) {
 		flex_container->set_pos({50.0f, 50.0f});
-		//flex_container->set_justify_content(carbon::justify_center);
-		/*const auto item1 = flex_container->add_child<carbon::flex_item>();
-		item1->set_basis(25.0f, carbon::unit_pixel);
-		const auto item2 = flex_container->add_child<carbon::flex_item>();
-		item2->set_basis(50.0f, carbon::unit_pixel);
-		const auto item3 = flex_container->add_child<carbon::flex_item>();
-		item3->set_basis(50.0f, carbon::unit_pixel);*/
-		//const auto item4 = flex_container->add_child<carbon::flex_item>();
-		//item4->set_basis(125.0f, carbon::unit_pixel);
+		flex_container->set_flow(carbon::column);
 
-		const auto container1 = flex_container->add_child<carbon::flex_container>();
+		flex_container->set_justify_content(carbon::justify_center);
+		flex_container->set_padding(30.0f);
+
+		// This does not produce the desired output
+		auto test1 = flex_container->add_child<carbon::flex_item>();
+		test1->set_basis(75.0f, carbon::unit_pixel);
+		auto test2 = flex_container->add_child<carbon::flex_item>();
+		test2->set_basis(75.0f, carbon::unit_pixel);
+		test2->set_margin({30.0f, 0.0f, 0.0f, 0.0f});
+		auto test3 = flex_container->add_child<carbon::flex_item>();
+		test3->set_basis(75.0f, carbon::unit_pixel);
+		test3->set_margin({30.0f, 0.0f, 0.0f, 0.0f});
+
+		// Justify content
+		/*const auto justify_start = flex_container->add_child<carbon::flex_container>();
+		justify_start->set_flex(1.0f);
+		justify_start->set_justify_content(carbon::justify_start);
+		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+
+		const auto justify_end = flex_container->add_child<carbon::flex_container>();
+		justify_end->set_flex(1.0f);
+		justify_end->set_justify_content(carbon::justify_end);
+		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+
+		const auto justify_center = flex_container->add_child<carbon::flex_container>();
+		justify_center->set_flex(1.0f);
+		justify_center->set_justify_content(carbon::justify_center);
+		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+
+		const auto justify_space_between = flex_container->add_child<carbon::flex_container>();
+		justify_space_between->set_flex(1.0f);
+		justify_space_between->set_justify_content(carbon::justify_space_between);
+		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+
+		const auto justify_space_around = flex_container->add_child<carbon::flex_container>();
+		justify_space_around->set_flex(1.0f);
+		justify_space_around->set_justify_content(carbon::justify_space_around);
+		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+
+		const auto justify_space_evenly = flex_container->add_child<carbon::flex_container>();
+		justify_space_evenly->set_flex(1.0f);
+		justify_space_evenly->set_justify_content(carbon::justify_space_evenly);
+		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
+		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);*/
+
+		// Test
+		/*const auto container1 = flex_container->add_child<carbon::flex_container>();
 		container1->set_flex(1.0f);
 		container1->set_flow(carbon::column);
 		container1->set_max_width(300.0f);
@@ -77,7 +164,7 @@ void draw_test_flex(renderer::buffer* buf) {
 		container12->set_max_width(100.0f);
 		auto container2 = container1->add_child<carbon::flex_container>();
 		container2->set_flex(1.0f);
-		container2->set_min_width(150.0f);
+		container2->set_min_width(150.0f);*/
 
 		init = true;
 	}
@@ -180,76 +267,83 @@ void draw_thread() {
 
 // TODO: Mutex for textures
 int main() {
-    carbon::application = std::make_unique<renderer::win32_window>();
-	carbon::application->set_title("Carbon");
-	carbon::application->set_size({1920, 1080});
+#if _DEBUG
+	if (GetConsoleWindow() == nullptr) {
+		if (!AllocConsole()) {
+			MessageBoxA(nullptr, fmt::format("Unable to allocate console.\nError: {}", GetLastError()).c_str(),
+						"Error",
+						MB_ICONERROR);
+			return 1;
+		}
 
-    // Center window position
-    {
-        RECT client;
-        if (GetClientRect(GetDesktopWindow(), &client)) {
-            const auto size = carbon::application->get_size();
-			carbon::application->set_pos({client.right / 2 - size.x / 2, client.bottom / 2 - size.y / 2});
-        }
-    }
+		ShowWindow(GetConsoleWindow(), SW_SHOW);
 
-	carbon::application->set_proc(WndProc);
+		FILE* dummy;
+		freopen_s(&dummy, "CONIN$", "r", stdin);
+		freopen_s(&dummy, "CONOUT$", "w", stderr);
+		freopen_s(&dummy, "CONOUT$", "w", stdout);
+	}
+#endif
 
-    if (!carbon::application->create()) {
-        MessageBoxA(nullptr, "Failed to create window.", "Error", MB_ICONERROR | MB_OK);
-        return 1;
-    }
+	carbon::application = std::make_shared<renderer::win32_window>("D3D11 Renderer", glm::i32vec2{1920, 1080}, WndProc);
 
-    carbon::dx11 = std::make_unique<renderer::d3d11_renderer>(carbon::application.get());
+	if (!carbon::application->create()) {
+		MessageBoxA(nullptr, "Failed to create application window.", "Error", MB_ICONERROR | MB_OK);
+		return 1;
+	}
 
-    if (!carbon::dx11->init()) {
-        MessageBoxA(nullptr, "Failed to initialize renderer.", "Error", MB_ICONERROR | MB_OK);
-        return 1;
-    }
+	// Testing Win32 window attributes
+	/*{
+		auto attribute = DWMWCP_DONOTROUND;
+		DwmSetWindowAttribute(application->get_hwnd(), DWMWA_WINDOW_CORNER_PREFERENCE, &attribute, sizeof(attribute));
+	}*/
 
-	carbon::dx11->set_vsync(false);
-	carbon::dx11->set_clear_color({88, 88, 88});//({88, 122, 202});
+	carbon::dx11 = std::make_unique<renderer::d3d11_renderer>(carbon::application);
+	carbon::dx11->set_clear_color({88, 88, 88});
 
-    carbon::segoe_font = carbon::dx11->register_font("Segoe UI Emoji", 10, FW_THIN, true);
+	if (!carbon::dx11->initialize()) {
+		MessageBoxA(nullptr, "Failed to initialize D3D11 renderer.", "Error", MB_ICONERROR | MB_OK);
+		return 1;
+	}
 
-	carbon::init();
+	carbon::initialize();
 
-    std::thread draw(draw_thread);
+	std::thread draw(draw_thread);
 
 	carbon::application->set_visibility(true);
 
 	MSG msg{};
-    while (!close_requested && msg.message != WM_QUIT) {
-        while (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE)) {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
+	while (!close_requested && msg.message != WM_QUIT) {
+		while (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 
 		if (msg.message == WM_NULL && !IsWindow(carbon::application->get_hwnd())) {
 			close_requested = true;
 			break;
 		}
 
-		// TODO: Fix issues with resize
-        if (update_size) {
-			carbon::dx11->resize();
-			carbon::dx11->reset();
-
-            update_size = false;
-        }
-
-		carbon::dx11->draw();
-		carbon::benchmark.draw_calls = carbon::dx11->total_batches;
-		draw_count++;
+		carbon::dx11->render();
+		carbon::performance.tick();
 
 		updated_draw.notify();
-        updated_buf.wait();
-    }
+		updated_buf.wait();
+	}
 
-    draw.join();
+	draw.join();
 
 	carbon::dx11->release();
+	carbon::dx11.reset();
+
 	carbon::application->destroy();
 
-    return 0;
+#if _DEBUG
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+
+	if (!FreeConsole())
+		MessageBoxA(nullptr, "Unable to free console.", "Error", MB_ICONERROR);
+#endif
+
+	return 0;
 }

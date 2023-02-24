@@ -15,7 +15,7 @@ namespace carbon {
 	// Was planning on using this for the layout system, but I'm not sure if I want to use it anymore.
 	extern panel window_panel;
 
-	void init();
+	void initialize();
 	void begin();
 	void end();
 }// namespace carbon
