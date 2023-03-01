@@ -258,8 +258,7 @@ void carbon::flex_container::setup_justify_content() {
 			justify_content_spacing_ = free_space_ / static_cast<float>(children_.size() + 1);
 			offset = justify_content_spacing_;
 			break;
-		// case justify_stretch:
-		//	break;
+		case justify_stretch:
 		case justify_start:
 		default:
 			return;
@@ -282,8 +281,7 @@ void carbon::flex_container::increment_justify_content(float item_size) {
 		case justify_space_evenly:
 			increment = item_size + justify_content_spacing_;
 			break;
-		// case justify_stretch:
-		//	break;
+		case justify_stretch:
 		default:
 			return;
 	}
