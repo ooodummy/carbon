@@ -1,20 +1,16 @@
 #ifndef CARBON_CARBON_HPP
 #define CARBON_CARBON_HPP
 
-#include "carbon/widgets/controls/label.hpp"
-#include "widgets/containers/groupbox.hpp"
-#include "widgets/containers/panel.hpp"
-#include "widgets/containers/tab_bar.hpp"
-#include "widgets/containers/window.hpp"
-#include "widgets/controls/button.hpp"
-#include "widgets/controls/label.hpp"
+#include "widgets/label.hpp"
+#include "widgets/window.hpp"
+#include "widgets/widget.hpp"
+#include "globals.hpp"
+#include "input.hpp"
+#include "theme.hpp"
 
 // https://pugixml.org/
 
 namespace carbon {
-	// Was planning on using this for the layout system, but I'm not sure if I want to use it anymore.
-	extern panel window_panel;
-
 	void initialize();
 	void begin();
 	void end();

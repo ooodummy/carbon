@@ -9,6 +9,4 @@ namespace carbon {
 	renderer::performance_counter performance;
 
 	style_sheet theme;
-
-	benchmark_data benchmark;
 }// namespace carbon
