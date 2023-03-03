@@ -2,6 +2,7 @@
 #define CARBON_WIDGETS_WIDGET_HPP
 
 #include "carbon/globals.hpp"
+#include "carbon/input.hpp"
 
 #include <memory>
 
@@ -17,9 +18,15 @@ namespace carbon {
 
 		~widget();
 
+		// Only should be used by top parents
 		virtual void draw();
 		virtual void input();
 
+	protected:
+		virtual void handle_draw();
+		virtual void handle_input();
+
+	public:
 		void set_parent(widget* parent);
 		widget* get_top_parent() const;
 		widget* get_parent() const;
@@ -142,7 +149,7 @@ namespace carbon {
 		glm::vec4 get_relative_layout();
 
 	private:
-		widget* parent_;
+		widget* parent_ = nullptr;
 		std::vector<std::shared_ptr<widget>> children_;
 
 		YGNodeRef layout_;

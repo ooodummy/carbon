@@ -10,7 +10,13 @@ namespace carbon {
 		renderer::color_rgba title_bar;
 		renderer::color_rgba border;
 
+		glm::vec2 page_padding;
+		glm::vec2 groupbox_padding;
+		glm::vec2 groupbox_title_margin;
+		glm::vec2 groupbox_item_gap;
+
 		glm::vec2 label_padding;
+		glm::vec2 button_padding;
 	};
 
 	void init_default_theme();

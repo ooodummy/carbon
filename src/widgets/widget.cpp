@@ -9,12 +9,24 @@ carbon::widget::~widget() {
 	if (!YGNodeGetParent(layout_))
 		YGNodeFreeRecursive(layout_);
 }
-void carbon::widget::draw() {}
-void carbon::widget::input() {}
+void carbon::widget::draw() {
+	handle_draw();
+
+	for (auto& child : children_)
+		child->draw();
+}
+void carbon::widget::input() {
+	handle_input();
+
+	for (auto& child : children_)
+		child->input();
+}
+void carbon::widget::handle_draw() {}
+void carbon::widget::handle_input() {}
 void carbon::widget::set_parent(widget* parent) {
 	parent_ = parent;
 }
-std::shared_ptr<carbon::widget> carbon::widget::get_top_parent() const {
+carbon::widget* carbon::widget::get_top_parent() const {
 	if (!parent_)
 		return nullptr;
 
@@ -23,7 +35,7 @@ std::shared_ptr<carbon::widget> carbon::widget::get_top_parent() const {
 			return item;
 	}
 }
-std::shared_ptr<carbon::widget> carbon::widget::get_parent() const {
+carbon::widget* carbon::widget::get_parent() const {
 	return parent_;
 }
 void carbon::widget::remove_child(const std::shared_ptr<widget>& child) {

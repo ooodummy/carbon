@@ -65,14 +65,21 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 void draw_test_flex(renderer::buffer* buf) {
 	static bool init = false;
-	static std::shared_ptr<carbon::widget> root;
+	static std::shared_ptr<carbon::window> window;
+
+	/*static std::shared_ptr<carbon::widget> root;
 	static std::shared_ptr<carbon::widget> image;
 	static std::shared_ptr<carbon::widget> text;
-	static std::shared_ptr<carbon::label<std::string>> label;
+	static std::shared_ptr<carbon::label<std::string>> label;*/
 
 	// Compare to https://github.com/layoutBox/FlexLayout
 	if (!init) {
-		YGConfigRef config = YGConfigNew();
+		window = std::make_shared<carbon::window>();
+
+		auto test = window->page_->add_child<carbon::groupbox>();
+		test->add_child<carbon::button>();
+
+		/*YGConfigRef config = YGConfigNew();
 		root = std::make_shared<carbon::widget>(config);
 		root->set_flex_direction(YGFlexDirectionRow);
 		root->set_padding(YGEdgeAll, 20.0f);
@@ -88,13 +95,16 @@ void draw_test_flex(renderer::buffer* buf) {
 		text->set_height(25.0f);
 		text->set_align_self(YGAlignCenter);
 		text->set_flex_grow(1.0f);
+		text->set_flex_direction(YGFlexDirectionRow);
+		text->set_padding(YGEdgeAll, 10.0f);
 
 		label = text->add_child<carbon::label<std::string>>("Hello, world!");
+		label->set_align_self(YGAlignCenter);*/
 
 		init = true;
 	}
 
-	const auto mouse_pos = carbon::get_mouse_pos();
+	/*const auto mouse_pos = carbon::get_mouse_pos();
 	root->calculate_layout(mouse_pos);
 
 	const auto root_layout = root->get_layout();
@@ -108,7 +118,11 @@ void draw_test_flex(renderer::buffer* buf) {
 	buf->draw_rect(root_layout, COLOR_WHITE);
 	buf->draw_rect(image_layout, COLOR_RED);
 	buf->draw_rect(text_layout, COLOR_BLUE);
-	label->draw();
+	label->draw();*/
+
+	window->input();
+	window->calculate_layout(carbon::application->get_size());
+	window->draw();
 }
 
 void draw_input_data(renderer::buffer* buf) {
@@ -132,7 +146,12 @@ void draw_thread() {
 
 		carbon::begin();
 
-		draw_test_flex(carbon::buf);
+		carbon::buf->draw_rect({200.0f, 200.0f, 50.0f, 50.0f}, COLOR_RED, 4.0f);
+		carbon::buf->draw_rect_filled({200.0f, 260.0f, 50.0f, 50.0f}, COLOR_GREEN);
+		carbon::buf->draw_rect_rounded({200.0f, 320.0f, 50.0f, 50.0f}, 15.0f, COLOR_GREEN, 1.0f, renderer::edge_all, 4);
+		carbon::buf->draw_rect_rounded_filled({200.0f, 380.0f, 50.0f, 50.0f}, 10.0f, COLOR_BLUE, renderer::edge_all);
+
+		//draw_test_flex(carbon::buf);
 		draw_input_data(carbon::buf);
 
 		carbon::end();

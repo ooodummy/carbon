@@ -7,7 +7,9 @@ namespace carbon {
 	template <typename T>
 	class label : public widget {
 	public:
-		label(T text) : widget() {
+		label() : widget() {}
+
+		explicit label(T text) : widget() {
 			set_text(text);
 		}
 
@@ -19,7 +21,7 @@ namespace carbon {
 			set_height(text_size.y);
 		}
 
-		void draw() override {
+		void handle_draw() override {
 			const auto layout = get_relative_layout();
 
 			buf->draw_text({layout.x, layout.y}, text_, segoe_font, COLOR_WHITE, renderer::text_align_left, renderer::text_align_top);
