@@ -22,6 +22,8 @@ namespace carbon {
 		virtual void draw();
 		virtual void input();
 
+		virtual bool is_hovered() const;
+
 	protected:
 		virtual void handle_draw();
 		virtual void handle_input();
@@ -39,6 +41,14 @@ namespace carbon {
 			children_.emplace_back(item);
 			return item;
 		}
+
+		std::vector<std::shared_ptr<widget>> get_children() const;
+
+		void set_visible(bool visible);
+		bool is_visible() const;
+
+		void set_active(bool active);
+		void set_active_callbacks(bool active);
 
 		void remove_child(const std::shared_ptr<widget>& child);
 
@@ -137,7 +147,7 @@ namespace carbon {
 		widget* set_aspect_ratio(float aspect_ratio);
 		float get_aspect_ratio();
 
-		glm::vec4 get_layout();
+		glm::vec4 get_layout() const;
 		YGDirection get_layout_direction();
 
 		bool had_overflow();
@@ -146,7 +156,11 @@ namespace carbon {
 		glm::vec4 get_layout_border();
 		glm::vec4 get_layout_padding();
 
-		glm::vec4 get_relative_layout();
+		glm::vec4 get_relative_layout() const;
+
+	protected:
+		bool visible_ = true;
+		bool active_ = true;
 
 	private:
 		widget* parent_ = nullptr;

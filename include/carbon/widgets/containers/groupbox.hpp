@@ -1,19 +1,22 @@
-#ifndef CARBON_WIDGETS_GROUPBOX_HPP
-#define CARBON_WIDGETS_GROUPBOX_HPP
+#ifndef CARBON_WIDGETS_CONTAINERS_GROUPBOX_HPP
+#define CARBON_WIDGETS_CONTAINERS_GROUPBOX_HPP
 
-#include "label.hpp"
-#include "separator.hpp"
+#include "carbon/widgets/controls/label.hpp"
+#include "carbon/widgets/controls/separator.hpp"
 
 namespace carbon {
 	class groupbox : public widget {
 	public:
-		groupbox() : widget() {
+		groupbox(const std::wstring& name) : widget() {
 			set_flex_direction(YGFlexDirectionColumn);
 			set_flex_grow(1.0f);
 			set_padding(YGEdgeHorizontal, theme.groupbox_padding.x);
 			set_padding(YGEdgeVertical, theme.groupbox_padding.y);
 
-			label_ = add_child<label<std::string>>("Groupbox");
+			set_min_width(150.0f);
+			set_max_width(250.0f);
+
+			label_ = add_child<label<std::wstring>>(name);
 			label_->set_margin(YGEdgeHorizontal, theme.groupbox_title_margin.x);
 			label_->set_margin(YGEdgeVertical, theme.groupbox_title_margin.y);
 
@@ -34,7 +37,7 @@ namespace carbon {
 		}
 
 	private:
-		std::shared_ptr<label<std::string>> label_;
+		std::shared_ptr<label<std::wstring>> label_;
 	};
 }
 

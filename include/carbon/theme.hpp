@@ -29,6 +29,10 @@ namespace carbon {
 
 		float checkbox_rounding;
 		float checkbox_size;
+
+		glm::vec2 slider_size;
+
+		glm::vec2 textbox_padding;
 	};
 
 	void init_default_theme();
