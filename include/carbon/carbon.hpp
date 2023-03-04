@@ -11,6 +11,8 @@
 #include "theme.hpp"
 #include "widgets/widget.hpp"
 
+// TODO: Custom windows for radar/indicators
+
 // https://pugixml.org/
 
 namespace carbon {

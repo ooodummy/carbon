@@ -42,6 +42,8 @@ namespace carbon {
 			//buf->draw_rect_filled(layout, theme.body);
 
 			const auto title_layout = title_bar_->get_relative_layout();
+
+			// TODO: Draw gradient for title bar shadow
 			buf->draw_rect_rounded_filled(title_layout, theme.window_rounding, theme.title_bar, renderer::edge_top);
 
 			buf->draw_text({title_layout.x + 10.0f, title_layout.y + title_layout.w / 2.0f}, title_, segoe_font,

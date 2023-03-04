@@ -16,6 +16,7 @@ namespace carbon {
 		glm::vec2 page_gap;
 
 		float groupbox_rounding;
+		float groupbox_title_size;
 		glm::vec2 groupbox_padding;
 		glm::vec2 groupbox_title_margin;
 		glm::vec2 groupbox_item_gap;

@@ -14,6 +14,7 @@ void carbon::init_default_theme() {
 	theme.page_gap = { 10.0f, 10.0f };
 
 	theme.groupbox_rounding = 4.0f;
+	theme.groupbox_title_size = 20.0f;
 	theme.groupbox_padding = { 8.0f, 8.0f };
 	theme.groupbox_item_gap = { 7.0f, 5.0f };
 	theme.groupbox_title_margin = { 0.0f, 0.0f };
