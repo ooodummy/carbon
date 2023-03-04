@@ -27,7 +27,7 @@ namespace carbon {
 			const auto layout = get_relative_layout();
 
 			buf->draw_rect_filled(layout, theme.body);
-			buf->draw_rect_rounded(layout, 4.0f, theme.border, 1.0f);
+			buf->draw_rect_rounded(layout, theme.groupbox_rounding, theme.border, 1.0f);
 			//buf->draw_rect(layout, theme.border);
 			//auto test = label_->get_layout_margin().y;
 			//buf->draw_line({layout.x, layout.y + test}, {layout.x + layout.z, layout.y + test}, theme.primary);

@@ -4,6 +4,7 @@
 #include "widgets/label.hpp"
 #include "widgets/window.hpp"
 #include "widgets/widget.hpp"
+#include "widgets/checkbox.hpp"
 #include "globals.hpp"
 #include "input.hpp"
 #include "theme.hpp"

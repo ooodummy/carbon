@@ -17,7 +17,7 @@ namespace carbon {
 		void handle_draw() override {
 			const auto layout = get_relative_layout();
 
-			buf->draw_rect_filled(layout, theme.border);
+			buf->draw_rect_rounded_filled(layout, theme.window_rounding, theme.border, renderer::edge_bottom_left);
 		}
 	};
 }

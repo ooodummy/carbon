@@ -39,14 +39,14 @@ namespace carbon {
 		void handle_draw() override {
 			const auto layout = get_relative_layout();
 
-			buf->draw_rect_rounded(layout + glm::vec4(- 1.0f, -1.0f, 2.0f, 2.0f), 5.0f, theme.primary, 1.0f);
-			buf->draw_rect_rounded_filled(layout, 4.0f, theme.body);
+			buf->draw_rect_rounded(layout + glm::vec4(- 1.0f, -1.0f, 2.0f, 2.0f), theme.window_rounding, theme.primary, 1.0f);
+			buf->draw_rect_rounded_filled(layout, theme.window_rounding, theme.body);
 
 			//buf->draw_rect(layout + glm::vec4(- 1.0f, -1.0f, 2.0f, 2.0f), theme.primary);
 			//buf->draw_rect_filled(layout, theme.body);
 
 			const auto title_layout = title_bar_->get_relative_layout();
-			buf->draw_rect_filled(title_layout, theme.title_bar);
+			buf->draw_rect_rounded_filled(title_layout, theme.window_rounding, theme.title_bar, renderer::edge_top);
 		}
 
 		void handle_input() override {

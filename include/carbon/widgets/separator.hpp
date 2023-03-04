@@ -8,6 +8,8 @@ namespace carbon {
 	public:
 		separator() : widget() {
 			set_flex_basis(1.0f);
+			set_margin(YGEdgeTop, theme.separator_spacing);
+			set_margin(YGEdgeBottom, theme.separator_spacing);
 		}
 
 		void handle_draw() override {

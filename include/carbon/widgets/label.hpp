@@ -25,7 +25,7 @@ namespace carbon {
 			const auto layout = get_relative_layout();
 
 			buf->draw_text({layout.x, layout.y}, text_, segoe_font, COLOR_WHITE, renderer::text_align_left, renderer::text_align_top);
-			buf->draw_rect(layout, COLOR_WHITE);
+			//buf->draw_rect(layout, COLOR_WHITE);
 		}
 
 	private:

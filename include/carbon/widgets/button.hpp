@@ -20,8 +20,8 @@ namespace carbon {
 		void handle_draw() override {
 			const auto layout = get_relative_layout();
 
-			buf->draw_rect_filled(layout, theme.border);
-			buf->draw_rect(layout, theme.primary);
+			buf->draw_rect_rounded_filled(layout, theme.button_rounding, theme.border);
+			buf->draw_rect_rounded(layout, theme.button_rounding, theme.primary);
 		}
 
 		void handle_input() override {
