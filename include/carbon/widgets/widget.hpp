@@ -4,9 +4,8 @@
 #include "carbon/globals.hpp"
 #include "carbon/input.hpp"
 
-#include <memory>
-
 #include <glm/glm.hpp>
+#include <memory>
 #include <yoga/Yoga.h>
 
 namespace carbon {
@@ -168,6 +167,6 @@ namespace carbon {
 
 		YGNodeRef layout_;
 	};
-}
+}// namespace carbon
 
 #endif

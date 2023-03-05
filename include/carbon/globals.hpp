@@ -2,9 +2,8 @@
 #define CARBON_GLOBAL_HPP
 
 #define NOMINMAX
-#include "renderer/renderer.hpp"
 #include "renderer/buffer.hpp"
-
+#include "renderer/renderer.hpp"
 #include "theme.hpp"
 
 namespace carbon {

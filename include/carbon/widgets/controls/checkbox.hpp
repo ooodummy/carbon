@@ -33,11 +33,11 @@ namespace carbon {
 				buf->draw_line({ button.x + button.z * 0.45f, button.y + button.w * 0.8f },
 							   { button.x + button.z * 0.8f, button.y + button.w * 0.2f }, theme.primary, 2.0f);
 
-				//buf->draw_rect_rounded_filled({button.x + 2.0f, button.y + 2.0f, button.z - 4.0f, button.w - 4.0f},
+				// buf->draw_rect_rounded_filled({button.x + 2.0f, button.y + 2.0f, button.z - 4.0f, button.w - 4.0f},
 				//							  std::max(theme.checkbox_rounding - 1.0f, 0.0f), theme.primary);
 			}
 
-			buf->draw_text({layout.x + theme.checkbox_size + theme.label_padding.x, layout.y}, label_, segoe_font,
+			buf->draw_text({ layout.x + theme.checkbox_size + theme.label_padding.x, layout.y }, label_, segoe_font,
 						   COLOR_WHITE, renderer::text_align_left, renderer::text_align_top);
 		}
 
@@ -54,6 +54,6 @@ namespace carbon {
 
 		std::wstring label_;
 	};
-}
+}// namespace carbon
 
 #endif

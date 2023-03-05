@@ -1,15 +1,13 @@
-#include <carbon/carbon.hpp>
-
 #include "config.hpp"
 
+#include <carbon/carbon.hpp>
 #include <dwmapi.h>
-#include <thread>
-
-#include <glm/gtx/rotate_vector.hpp>
 #include <fmt/core.h>
-#include <yoga/Yoga.h>
-#include <renderer/renderer.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <renderer/buffer.hpp>
+#include <renderer/renderer.hpp>
+#include <thread>
+#include <yoga/Yoga.h>
 
 renderer::sync_manager updated_draw;
 renderer::sync_manager updated_buf;
@@ -40,7 +38,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 			return 0;
 		case WM_SIZE:
 			if (!in_size_move)
-				carbon::dx11->on_window_size_change({LOWORD(lParam), HIWORD(lParam)});
+				carbon::dx11->on_window_size_change({ LOWORD(lParam), HIWORD(lParam) });
 			break;
 		case WM_MOVE:
 			carbon::dx11->on_window_moved();
@@ -62,7 +60,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	if (carbon::impl_win32_winproc_handler(hWnd, msg, wParam, lParam))
 		return 1;
 
-    return DefWindowProcA(hWnd, msg, wParam, lParam);
+	return DefWindowProcA(hWnd, msg, wParam, lParam);
 }
 
 void draw_test_ui(renderer::buffer* buf) {
@@ -73,60 +71,65 @@ void draw_test_ui(renderer::buffer* buf) {
 	auto elapsed_ms = rainbow_timer.get_elapsed_duration().count();
 	if (elapsed_ms > 5000)
 		rainbow_timer.reset();
-	renderer::color_rgba rainbow = renderer::color_hsva(0.0f).ease(renderer::color_hsva(359.99f), static_cast<float>(elapsed_ms) / 5000.0f);
-	carbon::theme.primary = rainbow;*/
+	renderer::color_rgba rainbow = renderer::color_hsva(0.0f).ease(renderer::color_hsva(359.99f),
+	static_cast<float>(elapsed_ms) / 5000.0f); carbon::theme.primary = rainbow;*/
 
 	if (!init) {
 		window = std::make_shared<carbon::window>(L"KiwiCheats.net - Escape from Tarkov");
 
-		auto aim_page = window->add_page(L"Aim"); {
-			auto aimbot_group = aim_page->add_child<carbon::groupbox>(L"Aimbot"); {
+		auto aim_page = window->add_page(L"Aim");
+		{
+			auto aimbot_group = aim_page->add_child<carbon::groupbox>(L"Aimbot");
+			{
 				aimbot_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.aimbot));
 				// TODO: Hotkey
-				aimbot_group->add_child<carbon::slider<int>>(L"Field of view", &config::get<int>(cfg.aimbot_fov),
-															 0, 500, L"{}px");
+				aimbot_group->add_child<carbon::slider<int>>(L"Field of view", &config::get<int>(cfg.aimbot_fov), 0,
+															 500, L"{}px");
 				aimbot_group->add_child<carbon::checkbox>(L"Show FOV", &config::get<bool>(cfg.aimbot_show_fov));
-				aimbot_group->add_child<carbon::slider<int>>(L"Max Distance", &config::get<int>(cfg.aimbot_max_distance),
-															 0, 1000, L"{}m");
+				aimbot_group->add_child<carbon::slider<int>>(
+				L"Max Distance", &config::get<int>(cfg.aimbot_max_distance), 0, 1000, L"{}m");
 				aimbot_group->add_child<carbon::checkbox>(L"Silent", &config::get<bool>(cfg.aimbot_silent));
-				aimbot_group->add_child<carbon::checkbox>(L"Show aim point", &config::get<bool>(cfg.aimbot_show_aim_point));
+				aimbot_group->add_child<carbon::checkbox>(L"Show aim point",
+														  &config::get<bool>(cfg.aimbot_show_aim_point));
 				// TODO: Color picker
 				// TODO: Widget conditions
 				aimbot_group->add_child<carbon::checkbox>(L"Only visible", &config::get<bool>(cfg.aimbot_only_visible));
 				aimbot_group->add_child<carbon::checkbox>(L"Ignore team", &config::get<bool>(cfg.aimbot_ignore_team));
-				aimbot_group->add_child<carbon::checkbox>(L"Show target information", &config::get<bool>(cfg.aimbot_show_target_info));
+				aimbot_group->add_child<carbon::checkbox>(L"Show target information",
+														  &config::get<bool>(cfg.aimbot_show_target_info));
 			}
-			auto recoil_group = aim_page->add_child<carbon::groupbox>(L"Recoil control"); {
+			auto recoil_group = aim_page->add_child<carbon::groupbox>(L"Recoil control");
+			{
 				recoil_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.aim_no_recoil));
-				recoil_group->add_child<carbon::slider<int>>(L"Strength", &config::get<int>(cfg.aim_recoil_control),
-															 0, 100, L"{}%");
+				recoil_group->add_child<carbon::slider<int>>(L"Strength", &config::get<int>(cfg.aim_recoil_control), 0,
+															 100, L"{}%");
 				recoil_group->add_child<carbon::checkbox>(L"No spread", &config::get<bool>(cfg.aim_no_spread));
 				recoil_group->add_child<carbon::checkbox>(L"No sway", &config::get<bool>(cfg.aim_no_sway));
 
-				recoil_group->add_child<carbon::button>(L"Click me", [] {
-					MessageBoxA(nullptr, "Hello world!", "KiwiCheats.net", MB_OK);
-				});
+				recoil_group->add_child<carbon::button>(
+				L"Click me", [] { MessageBoxA(nullptr, "Hello world!", "KiwiCheats.net", MB_OK); });
 			}
 		}
 
-		auto visuals_page = window->add_page(L"Visuals"); {
-			auto player_group = visuals_page->add_child<carbon::groupbox>(L"Player"); {
+		auto visuals_page = window->add_page(L"Visuals");
+		{
+			auto player_group = visuals_page->add_child<carbon::groupbox>(L"Player");
+			{
 				player_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.player_visuals));
 				// TODO: Dropdown
 				player_group->add_child<carbon::checkbox>(L"Name", &config::get<bool>(cfg.player_visuals_name));
 				player_group->add_child<carbon::checkbox>(L"Health", &config::get<bool>(cfg.player_visuals_health));
 				player_group->add_child<carbon::checkbox>(L"Ammo", &config::get<bool>(cfg.player_visuals_ammo));
 
-				//static std::string text = "Alejandro";
-				//esp_group->add_child<carbon::textbox>(L"Username", L"...", 40, &text);
+				// static std::string text = "Alejandro";
+				// esp_group->add_child<carbon::textbox>(L"Username", L"...", 40, &text);
 			}
 			auto item_group = visuals_page->add_child<carbon::groupbox>(L"Item");
 			auto world_group = visuals_page->add_child<carbon::groupbox>(L"World");
 		}
 
-		auto misc_page = window->add_page(L"Misc"); {
-			auto exploits_group = misc_page->add_child<carbon::groupbox>(L"Exploits");
-		}
+		auto misc_page = window->add_page(L"Misc");
+		{ auto exploits_group = misc_page->add_child<carbon::groupbox>(L"Exploits"); }
 		auto config_page = window->add_page(L"Config");
 
 		init = true;
@@ -139,19 +142,18 @@ void draw_test_ui(renderer::buffer* buf) {
 
 void draw_input_data(renderer::buffer* buf) {
 	buf->push_font(carbon::segoe_font);
-
 	const auto mouse = carbon::get_mouse_pos();
-	buf->draw_text<std::string>({25.0f, 25.0f}, fmt::format("FPS: {}", carbon::performance.get_fps()));
-	buf->draw_text<std::string>({25.0f, 40.0f}, fmt::format("Mouse position: ({}, {})", mouse.x, mouse.y));
-	buf->draw_text<std::string>({25.0f, 55.0f}, fmt::format("Mouse state: {} {}", carbon::is_key_pressed(VK_LBUTTON),
-															 carbon::is_key_down(VK_LBUTTON)));
+	buf->draw_text<std::string>({ 25.0f, 25.0f }, fmt::format("FPS: {}", carbon::performance.get_fps()));
+	buf->draw_text<std::string>({ 25.0f, 40.0f }, fmt::format("Mouse position: ({}, {})", mouse.x, mouse.y));
+	buf->draw_text<std::string>({ 25.0f, 55.0f }, fmt::format("Mouse state: {} {}", carbon::is_key_pressed(VK_LBUTTON),
+															  carbon::is_key_down(VK_LBUTTON)));
 	buf->pop_font();
 }
 
 void draw_thread() {
-    const auto id = carbon::dx11->register_buffer();
+	const auto id = carbon::dx11->register_buffer();
 
-    while (!close_requested) {
+	while (!close_requested) {
 		updated_draw.wait();
 
 		carbon::buf = carbon::dx11->get_working_buffer(id);
@@ -169,8 +171,8 @@ void draw_thread() {
 		carbon::end();
 
 		carbon::dx11->swap_buffers(id);
-        updated_buf.notify();
-    }
+		updated_buf.notify();
+	}
 }
 
 // TODO: Mutex for textures
@@ -178,8 +180,7 @@ int main() {
 #if _DEBUG
 	if (GetConsoleWindow() == nullptr) {
 		if (!AllocConsole()) {
-			MessageBoxA(nullptr, fmt::format("Unable to allocate console.\nError: {}", GetLastError()).c_str(),
-						"Error",
+			MessageBoxA(nullptr, fmt::format("Unable to allocate console.\nError: {}", GetLastError()).c_str(), "Error",
 						MB_ICONERROR);
 			return 1;
 		}
@@ -196,7 +197,8 @@ int main() {
 	if (!config::load(L"default"))
 		config::save(L"default");
 
-	carbon::application = std::make_shared<renderer::win32_window>("D3D11 Renderer", glm::i32vec2{1920, 1080}, WndProc);
+	carbon::application =
+	std::make_shared<renderer::win32_window>("D3D11 Renderer", glm::i32vec2{ 1920, 1080 }, WndProc);
 
 	if (!carbon::application->create()) {
 		MessageBoxA(nullptr, "Failed to create application window.", "Error", MB_ICONERROR | MB_OK);
@@ -210,7 +212,7 @@ int main() {
 	}*/
 
 	carbon::dx11 = std::make_unique<renderer::d3d11_renderer>(carbon::application);
-	carbon::dx11->set_clear_color({88, 88, 88});
+	carbon::dx11->set_clear_color({ 88, 88, 88 });
 
 	if (!carbon::dx11->initialize()) {
 		MessageBoxA(nullptr, "Failed to initialize D3D11 renderer.", "Error", MB_ICONERROR | MB_OK);

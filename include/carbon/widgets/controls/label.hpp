@@ -4,7 +4,7 @@
 #include "carbon/widgets/widget.hpp"
 
 namespace carbon {
-	template <typename T>
+	template<typename T>
 	class label : public widget {
 	public:
 		label() : widget() {}
@@ -26,12 +26,13 @@ namespace carbon {
 
 			const auto text_size = dx11->get_text_size(text_, segoe_font);
 
-			buf->draw_text({layout.x, layout.y}, text_, segoe_font, COLOR_WHITE, renderer::text_align_left, renderer::text_align_top);
+			buf->draw_text({ layout.x, layout.y }, text_, segoe_font, COLOR_WHITE, renderer::text_align_left,
+						   renderer::text_align_top);
 		}
 
 	private:
 		T text_;
 	};
-}
+}// namespace carbon
 
 #endif

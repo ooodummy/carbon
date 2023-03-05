@@ -6,14 +6,22 @@
 #include <fmt/xchar.h>
 
 namespace carbon {
-	template <typename T>
+	template<typename T>
 	class slider : public widget {
 	public:
-		slider(const std::wstring& label, T* value, const T min, const T max, std::optional<std::wstring> format = std::nullopt) :
-			widget(), label_(label), value_(value), min_(min), max_(max) {
-			const auto text_size = dx11->get_text_size(label, segoe_font);
-
+		slider(const std::wstring& label,
+			   T* value,
+			   const T min,
+			   const T max,
+			   std::optional<std::wstring> format = std::nullopt) :
+			widget(),
+			label_(label),
+			value_(value),
+			min_(min),
+			max_(max) {
 			set_flex_direction(YGFlexDirectionRow);
+
+			const auto text_size = dx11->get_text_size(label, segoe_font);
 			set_min_width(text_size.x);
 			set_height(text_size.y + theme.label_padding.y + theme.slider_size.y);
 		}
@@ -26,7 +34,7 @@ namespace carbon {
 			const auto layout = get_relative_layout();
 
 			// Label
-			buf->draw_text<std::wstring>({layout.x, layout.y}, label_, segoe_font, COLOR_WHITE,
+			buf->draw_text<std::wstring>({ layout.x, layout.y }, label_, segoe_font, COLOR_WHITE,
 										 renderer::text_align_left, renderer::text_align_top);
 
 			std::wstring value;
@@ -39,7 +47,7 @@ namespace carbon {
 				value = fmt::format(*format_, value);
 
 			// Value
-			buf->draw_text<std::wstring>({layout.x + layout.z, layout.y}, value, segoe_font, COLOR_WHITE,
+			buf->draw_text<std::wstring>({ layout.x + layout.z, layout.y }, value, segoe_font, COLOR_WHITE,
 										 renderer::text_align_right, renderer::text_align_top);
 
 			// Bar
@@ -78,8 +86,8 @@ namespace carbon {
 				const auto mouse = get_mouse_pos();
 
 				const float x = std::clamp((mouse.x - layout.x) / layout.z, 0.0f, 1.0f);
-				*value_ = static_cast<T>((static_cast<float>(max_) - static_cast<float>(min_)) * x + static_cast<float>
-						  (min_));
+				*value_ =
+				static_cast<T>((static_cast<float>(max_) - static_cast<float>(min_)) * x + static_cast<float>(min_));
 			}
 		}
 
@@ -95,6 +103,6 @@ namespace carbon {
 
 		bool dragging_ = false;
 	};
-}
+}// namespace carbon
 
 #endif

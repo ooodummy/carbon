@@ -6,7 +6,9 @@ namespace carbon {
 	public:
 		page(const std::wstring& name) : widget(), label_(name) {
 			set_flex_direction(YGFlexDirectionRow);
+			set_flex_wrap(YGWrapWrap);
 			set_flex_grow(1.0f);
+
 			set_padding(YGEdgeHorizontal, theme.page_padding.x);
 			set_padding(YGEdgeVertical, theme.page_padding.y);
 
@@ -15,8 +17,6 @@ namespace carbon {
 
 			set_width_percent(1.0f);
 			set_height_percent(1.0f);
-
-			set_flex_wrap(YGWrapWrap);
 		}
 
 		std::wstring get_label() {
@@ -26,6 +26,6 @@ namespace carbon {
 	private:
 		std::wstring label_;
 	};
-}
+}// namespace carbon
 
 #endif

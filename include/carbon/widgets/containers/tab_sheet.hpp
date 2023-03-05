@@ -13,8 +13,8 @@ namespace carbon {
 			set_flex_grow(1.0f);
 
 			bar_ = add_child<widget>();
-			bar_->set_width(112.0f);
 			bar_->set_flex_direction(YGFlexDirectionColumn);
+			bar_->set_width(112.0f);
 		}
 
 		void handle_draw() override {
@@ -28,12 +28,15 @@ namespace carbon {
 				const auto child = reinterpret_cast<page*>(children[i].get());
 				const glm::vec4 button(bar.x, bar.y + (i - 1) * size, bar.z, size);
 
-				buf->draw_text({button.x + button.z / 2.0f, button.y + button.w / 2.0f}, child->get_label(), segoe_font,
-							   COLOR_WHITE, renderer::text_align_center, renderer::text_align_center);
+				buf->draw_text({ button.x + button.z / 2.0f, button.y + button.w / 2.0f }, child->get_label(),
+							   segoe_font, COLOR_WHITE, renderer::text_align_center, renderer::text_align_center);
 			}
 		}
 
 		void handle_input() override {
+			if (!active_)
+				return;
+
 			const auto bar = bar_->get_relative_layout();
 			const auto size = bar.w / (static_cast<float>(get_children().size()) - 1.0f);
 
@@ -59,6 +62,6 @@ namespace carbon {
 		std::shared_ptr<widget> bar_;
 		size_t selected_ = 0;
 	};
-}
+}// namespace carbon
 
 #endif

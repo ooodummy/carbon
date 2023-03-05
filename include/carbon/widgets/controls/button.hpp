@@ -4,11 +4,13 @@
 namespace carbon {
 	class button : public widget {
 	public:
-		button(const std::wstring& name, const std::function<void()>& callback) : widget(), label_(name),
+		button(const std::wstring& name, const std::function<void()>& callback) :
+			widget(),
+			label_(name),
 			callback_(callback) {
+			set_flex_direction(YGFlexDirectionRow);
 			set_padding(YGEdgeHorizontal, theme.button_padding.x);
 			set_padding(YGEdgeVertical, theme.button_padding.y);
-			set_flex_direction(YGFlexDirectionRow);
 
 			const auto text_size = dx11->get_text_size(name, segoe_font);
 			set_width(text_size.x + theme.button_padding.x * 2.0f);
@@ -25,7 +27,7 @@ namespace carbon {
 			buf->draw_rect_rounded_filled(layout, theme.button_rounding, theme.border);
 			buf->draw_rect_rounded(layout, theme.button_rounding, theme.primary);
 
-			buf->draw_text({layout.x + layout.z / 2.0f, layout.y + layout.w / 2.0f}, label_, segoe_font, COLOR_WHITE,
+			buf->draw_text({ layout.x + layout.z / 2.0f, layout.y + layout.w / 2.0f }, label_, segoe_font, COLOR_WHITE,
 						   renderer::text_align_center, renderer::text_align_center);
 		}
 
@@ -46,6 +48,6 @@ namespace carbon {
 
 		std::function<void()> callback_;
 	};
-}
+}// namespace carbon
 
 #endif

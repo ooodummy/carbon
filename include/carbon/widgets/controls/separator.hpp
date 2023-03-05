@@ -8,6 +8,7 @@ namespace carbon {
 	public:
 		separator() : widget() {
 			set_flex_basis(1.0f);
+
 			set_margin(YGEdgeTop, theme.separator_spacing);
 			set_margin(YGEdgeBottom, theme.separator_spacing);
 		}
@@ -15,9 +16,9 @@ namespace carbon {
 		void handle_draw() override {
 			const auto layout = get_relative_layout();
 
-			buf->draw_line({layout.x, layout.y}, {layout.x + layout.z, layout.y}, theme.border);
+			buf->draw_line({ layout.x, layout.y }, { layout.x + layout.z, layout.y }, theme.border);
 		}
 	};
-}
+}// namespace carbon
 
 #endif
