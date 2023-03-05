@@ -18,12 +18,12 @@ namespace util {
 		return hash;
 	}
 
-	template <typename T, size_t N>
+	template<typename T, size_t N>
 	std::vector<T> create_filled_vector(const T& fill) {
 		auto vec = std::vector<T>(N);
 		std::fill(vec.begin(), vec.begin() + N, fill);
 		return vec;
 	}
-}
+}// namespace util
 
 #endif

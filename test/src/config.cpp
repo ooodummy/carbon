@@ -1,10 +1,9 @@
 #include "config.hpp"
 
-#include <fstream>
-#include <iomanip>
-
 #include <Shlobj.h>
 #include <Windows.h>
+#include <fstream>
+#include <iomanip>
 
 #define CONFIG_FOLDER L"KiwiCheats"
 
@@ -91,19 +90,23 @@ namespace config {
 			auto current = get_item(index);
 
 			switch (item["type"].get<uint32_t>()) {
-				case util::cx_hash("bool"): {
+				case util::cx_hash("bool"):
+					{
 						current.set(item["value"].get<bool>());
 						break;
 					}
-				case util::cx_hash("int"): {
+				case util::cx_hash("int"):
+					{
 						current.set(item["value"].get<int>());
 						break;
 					}
-				case util::cx_hash("float"): {
+				case util::cx_hash("float"):
+					{
 						current.set(item["value"].get<float>());
 						break;
 					}
-				case util::cx_hash("std::vector<bool>"): {
+				case util::cx_hash("std::vector<bool>"):
+					{
 						auto vec = nlohmann::json::parse(item["value"].get<std::string>());
 						auto& item_vec = current.get<std::vector<bool>>();
 						for (size_t i = 0; i < vec.size(); ++i) {
@@ -112,7 +115,8 @@ namespace config {
 						}
 						break;
 					}
-				case util::cx_hash("std::vector<int>"): {
+				case util::cx_hash("std::vector<int>"):
+					{
 						auto vec = nlohmann::json::parse(item["value"].get<std::string>());
 						auto& item_vec = current.get<std::vector<int>>();
 						for (size_t i = 0; i < vec.size(); ++i) {
@@ -121,7 +125,8 @@ namespace config {
 						}
 						break;
 					}
-				case util::cx_hash("std::vector<float>"): {
+				case util::cx_hash("std::vector<float>"):
+					{
 						auto vec = nlohmann::json::parse(item["value"].get<std::string>());
 						auto& item_vec = current.get<std::vector<float>>();
 						for (size_t i = 0; i < vec.size(); ++i) {
@@ -130,9 +135,11 @@ namespace config {
 						}
 						break;
 					}
-				case util::cx_hash("ImVec4"): {
+				case util::cx_hash("ImVec4"):
+					{
 						auto vec = nlohmann::json::parse(item["value"].get<std::string>());
-						current.set<ImVec4>(ImVec4(vec[0].get<float>(), vec[1].get<float>(), vec[2].get<float>(), vec[3].get<float>()));
+						current.set<ImVec4>(
+						ImVec4(vec[0].get<float>(), vec[1].get<float>(), vec[2].get<float>(), vec[3].get<float>()));
 						break;
 					}
 			}
@@ -155,19 +162,23 @@ namespace config {
 			current["type"] = item.type;
 
 			switch (item.type) {
-				case util::cx_hash("bool"): {
+				case util::cx_hash("bool"):
+					{
 						current["value"] = item.get<bool>();
 						break;
 					}
-				case util::cx_hash("int"): {
+				case util::cx_hash("int"):
+					{
 						current["value"] = item.get<int>();
 						break;
 					}
-				case util::cx_hash("float"): {
+				case util::cx_hash("float"):
+					{
 						current["value"] = item.get<float>();
 						break;
 					}
-				case util::cx_hash("std::vector<bool>"): {
+				case util::cx_hash("std::vector<bool>"):
+					{
 						auto vec = item.get<std::vector<bool>>();
 						nlohmann::json sub;
 						for (auto v : vec)
@@ -175,7 +186,8 @@ namespace config {
 						current["value"] = sub.dump();
 						break;
 					}
-				case util::cx_hash("std::vector<int>"): {
+				case util::cx_hash("std::vector<int>"):
+					{
 						auto vec = item.get<std::vector<int>>();
 						nlohmann::json sub;
 						for (auto v : vec)
@@ -183,7 +195,8 @@ namespace config {
 						current["value"] = sub.dump();
 						break;
 					}
-				case util::cx_hash("std::vector<float>"): {
+				case util::cx_hash("std::vector<float>"):
+					{
 						auto vec = item.get<std::vector<float>>();
 						nlohmann::json sub;
 						for (auto v : vec)
@@ -191,7 +204,8 @@ namespace config {
 						current["value"] = sub.dump();
 						break;
 					}
-				case util::cx_hash("ImVec4"): {
+				case util::cx_hash("ImVec4"):
+					{
 						auto vec = item.get<ImVec4>();
 						nlohmann::json sub;
 						sub.push_back(vec.x);

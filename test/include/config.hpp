@@ -3,14 +3,16 @@
 
 #include "util.hpp"
 
+#include <imgui.h>
 #include <iostream>
 #include <map>
-
-#include <imgui.h>
 #include <nlohmann/json.hpp>
 
-#define ADD_CFG_ITEM(type, name, def) const uint32_t name = config::add_item<type>(util::cx_hash(#name), util::cx_hash(#type), def);
-#define ADD_CFG_ITEM_VEC(type, datatype, size, name, def) const uint32_t name = config::add_item<std::vector<datatype>>(util::cx_hash(#name), util::cx_hash(#type), util::create_filled_vector<datatype, size>(def));
+#define ADD_CFG_ITEM(type, name, def) \
+ const uint32_t name = config::add_item<type>(util::cx_hash(#name), util::cx_hash(#type), def);
+#define ADD_CFG_ITEM_VEC(type, datatype, size, name, def)                                                  \
+ const uint32_t name = config::add_item<std::vector<datatype>>(util::cx_hash(#name), util::cx_hash(#type), \
+															   util::create_filled_vector<datatype, size>(def));
 
 namespace config {
 	struct item {
@@ -19,12 +21,12 @@ namespace config {
 
 		~item() = default;
 
-		template <typename T>
+		template<typename T>
 		void set(T value) {
 			var.emplace<T>(value);
 		}
 
-		template <typename T>
+		template<typename T>
 		T& get() {
 			return *reinterpret_cast<T*>(std::any_cast<T>(&var));
 		}
@@ -36,13 +38,13 @@ namespace config {
 
 	std::vector<item>& get_items();
 
-	template <typename T>
+	template<typename T>
 	uint32_t add_item(const uint32_t name, const uint32_t type, const T def) {
 		get_items().emplace_back(name, type, std::make_any<T>(def));
 		return get_items().size() - 1u;
 	}
 
-	template <typename T>
+	template<typename T>
 	T& get(const uint32_t index) {
 		return get_items()[index].get<T>();
 	}
@@ -55,7 +57,7 @@ namespace config {
 	bool load(const std::wstring& name);
 	bool save(const std::wstring& name);
 	bool erase(const std::wstring& name);
-} // namespace config
+}// namespace config
 
 struct cfg_t {
 	enum aimbot_target_selection_type : int {
@@ -141,7 +143,6 @@ struct cfg_t {
 	// Item visuals
 
 	// World visuals
-
 };
 
 extern cfg_t cfg;
