@@ -32,4 +32,6 @@ void carbon::init_default_theme() {
 	theme.slider_size = { 125.0f, 5.0f };
 
 	theme.textbox_padding = { 4.0f, 4.0f };
+
+	theme.dropdown_padding = { 4.0f, 4.0f };
 }

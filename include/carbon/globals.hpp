@@ -9,10 +9,13 @@
 namespace carbon {
 	extern std::shared_ptr<renderer::win32_window> application;
 	extern std::unique_ptr<renderer::d3d11_renderer> dx11;
-	extern size_t segoe_font;
+	extern size_t segoe_ui;
+	extern size_t fa_regular;
 
 	extern renderer::buffer* buf;
-	extern renderer::performance_counter performance;
+
+	// Used for FPS information and animations using delta time
+	extern renderer::performance_counter timer;
 
 	extern style_sheet theme;
 }// namespace carbon

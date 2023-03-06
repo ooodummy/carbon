@@ -1,6 +1,6 @@
 #include "carbon/widgets/containers/page.hpp"
 
-carbon::page::page(const std::wstring& name) : widget(), label_(name) {
+carbon::page::page(const std::u32string& name) : widget(), label_(name) {
 	set_flex_direction(YGFlexDirectionRow);
 	set_flex_wrap(YGWrapWrap);
 	set_flex_grow(1.0f);
@@ -20,6 +20,6 @@ void carbon::page::handle_draw() {
 	//  add scrolling for pages if the groupboxes break out vertically
 }
 
-std::wstring carbon::page::get_label() {
+std::u32string carbon::page::get_label() {
 	return label_;
 }

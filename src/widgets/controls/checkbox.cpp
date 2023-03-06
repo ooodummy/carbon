@@ -3,7 +3,7 @@
 carbon::checkbox::checkbox(const std::wstring& name, bool* value) : widget(), value_(value), label_(name) {
 	set_flex_direction(YGFlexDirectionRow);
 
-	const auto text_size = dx11->get_text_size(name, segoe_font);
+	const auto text_size = dx11->get_text_size(name, segoe_ui);
 	set_width(text_size.x + theme.checkbox_size + theme.label_padding.x);
 	set_height(std::max(text_size.y, theme.checkbox_size));
 }
@@ -17,6 +17,7 @@ void carbon::checkbox::handle_draw() {
 	const glm::vec4 button = { layout.x, layout.y, theme.checkbox_size, theme.checkbox_size };
 
 	buf->draw_rect_rounded_filled(button, theme.checkbox_rounding, theme.body);
+	buf->draw_rect_rounded_filled(button, theme.checkbox_rounding, theme.primary.alpha(animation_time_ * 255.0f));
 	buf->draw_rect_rounded(button, theme.checkbox_rounding, theme.border);
 
 	if (*value_) {
@@ -30,7 +31,7 @@ void carbon::checkbox::handle_draw() {
 		//							  std::max(theme.checkbox_rounding - 1.0f, 0.0f), theme.primary);
 	}
 
-	buf->draw_text({ layout.x + theme.checkbox_size + theme.label_padding.x, layout.y }, label_, segoe_font,
+	buf->draw_text({ layout.x + theme.checkbox_size + theme.label_padding.x, layout.y }, label_, segoe_ui,
 	               COLOR_WHITE, renderer::text_align_left, renderer::text_align_top);
 }
 
@@ -38,6 +39,14 @@ void carbon::checkbox::handle_input() {
 	if (!active_)
 		return;
 
-	if (is_hovered() && is_key_pressed(VK_LBUTTON))
+	const auto hovered = is_hovered();
+
+	if (hovered)
+		animation_time_ = animation_time_ + timer.get_dt() / 0.5f;
+	else
+		animation_time_ = animation_time_ - timer.get_dt() / 0.5f;
+	animation_time_ = std::clamp(animation_time_, 0.0f, 0.2f);
+
+	if (hovered && is_key_pressed(VK_LBUTTON))
 		*value_ = !*value_;
 }

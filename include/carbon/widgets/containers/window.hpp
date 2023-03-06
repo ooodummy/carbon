@@ -15,7 +15,7 @@ namespace carbon {
 		void handle_draw() override;
 		void handle_input() override;
 
-		std::shared_ptr<page> add_page(const std::wstring& name);
+		std::shared_ptr<page> add_page(const std::u32string& name);
 
 	private:
 		std::shared_ptr<widget> title_bar_;

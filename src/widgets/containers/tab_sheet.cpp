@@ -2,6 +2,7 @@
 
 carbon::tab_sheet::tab_sheet() : widget() {
 	set_flex_direction(YGFlexDirectionRow);
+	//set_justify_content(YGJustifySpaceEvenly);
 	set_flex_grow(1.0f);
 
 	bar_ = add_child<widget>();
@@ -21,7 +22,8 @@ void carbon::tab_sheet::handle_draw() {
 		const glm::vec4 button(bar.x, bar.y + (i - 1) * size, bar.z, size);
 
 		buf->draw_text({ button.x + button.z / 2.0f, button.y + button.w / 2.0f }, child->get_label(),
-		               segoe_font, COLOR_WHITE, renderer::text_align_center, renderer::text_align_center);
+		               fa_regular, COLOR_WHITE.alpha(child->animation_time_ * 255.0f),
+					   renderer::text_align_center, renderer::text_align_center);
 	}
 }
 
@@ -35,17 +37,28 @@ void carbon::tab_sheet::handle_input() {
 	auto children = get_children();
 	for (size_t i = 1; i < children.size(); i++) {
 		const auto child = reinterpret_cast<page*>(children[i].get());
+
 		const glm::vec4 button(bar.x, bar.y + (i - 1) * size, bar.z, size);
-		bool hovered = is_mouse_over(button);
+		const bool hovered = is_mouse_over(button);
+
+		if (hovered)
+			child->animation_time_ = child->animation_time_ + timer.get_dt() / 0.25f;
+		else
+			child->animation_time_ = child->animation_time_ - timer.get_dt() / 0.25f;
+		child->animation_time_ = std::clamp(child->animation_time_, 0.3f, 1.0f);
 
 		if (hovered && is_key_pressed(VK_LBUTTON)) {
 			selected_ = i;
 			child->set_visible(true);
 
-			get_top_parent()->calculate_layout(carbon::application->get_size());
+			// Shouldn't be needed since we update layout after processing input
+			//get_top_parent()->calculate_layout(carbon::application->get_size());
 		}
 		else {
 			child->set_visible(i == selected_);
 		}
+
+		if (child->is_visible())
+			child->animation_time_ = 1.0f;
 	}
 }

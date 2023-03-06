@@ -21,7 +21,7 @@ namespace carbon {
 			max_(max) {
 			set_flex_direction(YGFlexDirectionRow);
 
-			const auto text_size = dx11->get_text_size(label, segoe_font);
+			const auto text_size = dx11->get_text_size(label, segoe_ui);
 			set_min_width(text_size.x);
 			set_height(text_size.y + theme.label_padding.y + theme.slider_size.y);
 		}
@@ -34,7 +34,7 @@ namespace carbon {
 			const auto layout = get_relative_layout();
 
 			// Label
-			buf->draw_text<std::wstring>({ layout.x, layout.y }, label_, segoe_font, COLOR_WHITE,
+			buf->draw_text<std::wstring>({ layout.x, layout.y }, label_, segoe_ui, COLOR_WHITE,
 										 renderer::text_align_left, renderer::text_align_top);
 
 			std::wstring value;
@@ -47,7 +47,7 @@ namespace carbon {
 				value = fmt::format(*format_, value);
 
 			// Value
-			buf->draw_text<std::wstring>({ layout.x + layout.z, layout.y }, value, segoe_font, COLOR_WHITE,
+			buf->draw_text<std::wstring>({ layout.x + layout.z, layout.y }, value, segoe_ui, COLOR_WHITE,
 										 renderer::text_align_right, renderer::text_align_top);
 
 			// Bar

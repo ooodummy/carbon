@@ -14,9 +14,10 @@ namespace carbon {
 		void handle_input() override;
 
 	private:
+		std::wstring label_;
 		bool* value_;
 
-		std::wstring label_;
+		float animation_time_;
 	};
 }// namespace carbon
 

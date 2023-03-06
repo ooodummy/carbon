@@ -38,7 +38,7 @@ void carbon::window::handle_draw() {
 	// TODO: Draw gradient for title bar shadow
 	buf->draw_rect_rounded_filled(title_layout, theme.window_rounding, theme.title_bar, renderer::edge_top);
 
-	buf->draw_text({ title_layout.x + 10.0f, title_layout.y + title_layout.w / 2.0f }, title_, segoe_font,
+	buf->draw_text({ title_layout.x + 10.0f, title_layout.y + title_layout.w / 2.0f }, title_, segoe_ui,
 	               COLOR_WHITE, renderer::text_align_left, renderer::text_align_center);
 
 	const auto exit_button_layout = exit_button_->get_relative_layout();
@@ -81,6 +81,6 @@ void carbon::window::handle_input() {
 	}
 }
 
-std::shared_ptr<carbon::page> carbon::window::add_page(const std::wstring& name) {
+std::shared_ptr<carbon::page> carbon::window::add_page(const std::u32string& name) {
 	return tab_sheet_->add_child<page>(name);
 }

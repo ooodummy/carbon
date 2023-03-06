@@ -16,7 +16,7 @@ namespace carbon {
 		void set_text(const T& text) {
 			text_ = text;
 
-			const auto text_size = dx11->get_text_size(text_, segoe_font);
+			const auto text_size = dx11->get_text_size(text_, segoe_ui);
 			set_width(text_size.x);
 			set_height(text_size.y);
 		}
@@ -24,9 +24,9 @@ namespace carbon {
 		void handle_draw() override {
 			const auto layout = get_relative_layout();
 
-			const auto text_size = dx11->get_text_size(text_, segoe_font);
+			const auto text_size = dx11->get_text_size(text_, segoe_ui);
 
-			buf->draw_text({ layout.x, layout.y }, text_, segoe_font, COLOR_WHITE,
+			buf->draw_text({ layout.x, layout.y }, text_, segoe_ui, COLOR_WHITE,
 						   renderer::text_align_left, renderer::text_align_top);
 		}
 

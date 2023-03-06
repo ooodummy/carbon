@@ -3,6 +3,7 @@
 
 #include "carbon/widgets/containers/window.hpp"
 #include "carbon/widgets/controls/checkbox.hpp"
+#include "carbon/widgets/controls/dropdown.hpp"
 #include "carbon/widgets/controls/label.hpp"
 #include "carbon/widgets/controls/slider.hpp"
 #include "globals.hpp"

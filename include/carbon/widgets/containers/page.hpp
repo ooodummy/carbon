@@ -5,15 +5,20 @@
 
 namespace carbon {
 	class page : public widget {
+		friend class tab_sheet;
+
 	public:
-		page(const std::wstring& name);
+		page(const std::u32string& name);
 
 		void handle_draw() override;
 
-		std::wstring get_label();
+		std::u32string get_label();
 
 	private:
-		std::wstring label_;
+		std::u32string label_;
+
+	protected:
+		float animation_time_;
 	};
 }// namespace carbon
 

@@ -34,6 +34,8 @@ namespace carbon {
 		glm::vec2 slider_size;
 
 		glm::vec2 textbox_padding;
+
+		glm::vec2 dropdown_padding;
 	};
 
 	void init_default_theme();

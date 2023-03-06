@@ -77,7 +77,7 @@ void draw_test_ui(renderer::buffer* buf) {
 	if (!init) {
 		window = std::make_shared<carbon::window>(L"KiwiCheats.net - Escape from Tarkov");
 
-		auto aim_page = window->add_page(L"Aim");
+		auto aim_page = window->add_page(U"\uf05b");
 		{
 			auto aimbot_group = aim_page->add_child<carbon::groupbox>(L"Aimbot");
 			{
@@ -111,26 +111,28 @@ void draw_test_ui(renderer::buffer* buf) {
 			}
 		}
 
-		auto visuals_page = window->add_page(L"Visuals");
+		auto visuals_page = window->add_page(U"\uf21d");
 		{
 			auto player_group = visuals_page->add_child<carbon::groupbox>(L"Player");
 			{
 				player_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.player_visuals));
 				// TODO: Dropdown
+				static std::vector<std::wstring> box_types = { L"None", L"2D", L"3D", L"Italic" };
+				player_group->add_child<carbon::dropdown>(L"Box", box_types, &config::get<int>(cfg.player_visuals_box));
 				player_group->add_child<carbon::checkbox>(L"Name", &config::get<bool>(cfg.player_visuals_name));
 				player_group->add_child<carbon::checkbox>(L"Health", &config::get<bool>(cfg.player_visuals_health));
 				player_group->add_child<carbon::checkbox>(L"Ammo", &config::get<bool>(cfg.player_visuals_ammo));
 
-				// static std::string text = "Alejandro";
+				// static std::string text = "Test";
 				// esp_group->add_child<carbon::textbox>(L"Username", L"...", 40, &text);
 			}
 			auto item_group = visuals_page->add_child<carbon::groupbox>(L"Item");
 			auto world_group = visuals_page->add_child<carbon::groupbox>(L"World");
 		}
 
-		auto misc_page = window->add_page(L"Misc");
+		auto misc_page = window->add_page(U"\uf022");
 		{ auto exploits_group = misc_page->add_child<carbon::groupbox>(L"Exploits"); }
-		auto config_page = window->add_page(L"Config");
+		auto config_page = window->add_page(U"\uf013");
 
 		init = true;
 	}
@@ -141,9 +143,9 @@ void draw_test_ui(renderer::buffer* buf) {
 }
 
 void draw_input_data(renderer::buffer* buf) {
-	buf->push_font(carbon::segoe_font);
+	buf->push_font(carbon::segoe_ui);
 	const auto mouse = carbon::get_mouse_pos();
-	buf->draw_text<std::string>({ 25.0f, 25.0f }, fmt::format("FPS: {}", carbon::performance.get_fps()));
+	buf->draw_text<std::string>({ 25.0f, 25.0f }, fmt::format("FPS: {}", carbon::timer.get_fps()));
 	buf->draw_text<std::string>({ 25.0f, 40.0f }, fmt::format("Mouse position: ({}, {})", mouse.x, mouse.y));
 	buf->draw_text<std::string>({ 25.0f, 55.0f }, fmt::format("Mouse state: {} {}", carbon::is_key_pressed(VK_LBUTTON),
 															  carbon::is_key_down(VK_LBUTTON)));
@@ -238,7 +240,7 @@ int main() {
 		}
 
 		carbon::dx11->render();
-		carbon::performance.tick();
+		carbon::timer.tick();
 
 		updated_draw.notify();
 		updated_buf.wait();
