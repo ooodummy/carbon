@@ -53,6 +53,7 @@ namespace carbon {
 			// Bar
 			glm::vec4 bar(layout.x, layout.y + layout.w - theme.slider_size.y, layout.z, theme.slider_size.y);
 			buf->draw_rect_filled(bar, theme.border);
+			buf->draw_rect_filled(bar, theme.primary.alpha(animation_time_ * 255.0f));
 
 			const auto percentage = (static_cast<float>(*value_) - static_cast<float>(min_)) /
 									(static_cast<float>(max_) - static_cast<float>(min_));
@@ -64,7 +65,15 @@ namespace carbon {
 			if (!active_)
 				return;
 
-			if (is_hovered()) {
+			const auto hovered = is_hovered();
+
+			if (hovered)
+				animation_time_ = animation_time_ + timer.get_dt() / 0.5f;
+			else
+				animation_time_ = animation_time_ - timer.get_dt() / 0.5f;
+			animation_time_ = std::clamp(animation_time_, 0.0f, 0.2f);
+
+			if (hovered) {
 				if (is_key_pressed(VK_LEFT))
 					*value_ = std::clamp<T>(*value_ - (max_ - min_) / 100.0f, min_, max_);
 				if (is_key_pressed(VK_RIGHT))
@@ -93,15 +102,13 @@ namespace carbon {
 
 	private:
 		std::wstring label_;
-
 		T* value_;
-
 		T min_;
 		T max_;
-
 		std::optional<std::wstring> format_;
 
 		bool dragging_ = false;
+		float animation_time_;
 	};
 }// namespace carbon
 

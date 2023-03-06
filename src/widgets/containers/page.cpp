@@ -19,7 +19,3 @@ void carbon::page::handle_draw() {
 	// TODO: Scissor page bounds
 	//  add scrolling for pages if the groupboxes break out vertically
 }
-
-std::u32string carbon::page::get_label() {
-	return label_;
-}

@@ -21,8 +21,8 @@ void carbon::tab_sheet::handle_draw() {
 		const auto child = reinterpret_cast<page*>(children[i].get());
 		const glm::vec4 button(bar.x, bar.y + (i - 1) * size, bar.z, size);
 
-		buf->draw_text({ button.x + button.z / 2.0f, button.y + button.w / 2.0f }, child->get_label(),
-		               fa_regular, COLOR_WHITE.alpha(child->animation_time_ * 255.0f),
+		buf->draw_text({ button.x + button.z / 2.0f, button.y + button.w / 2.0f }, child->label_, fa_regular,
+					   COLOR_WHITE.alpha(child->animation_time_ * 255.0f),
 					   renderer::text_align_center, renderer::text_align_center);
 	}
 }

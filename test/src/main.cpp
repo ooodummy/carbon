@@ -89,14 +89,13 @@ void draw_test_ui(renderer::buffer* buf) {
 				aimbot_group->add_child<carbon::slider<int>>(
 				L"Max Distance", &config::get<int>(cfg.aimbot_max_distance), 0, 1000, L"{}m");
 				aimbot_group->add_child<carbon::checkbox>(L"Silent", &config::get<bool>(cfg.aimbot_silent));
-				aimbot_group->add_child<carbon::checkbox>(L"Show aim point",
-														  &config::get<bool>(cfg.aimbot_show_aim_point));
+				aimbot_group->add_child<carbon::checkbox>(L"Magic bullet", &config::get<bool>(cfg.aimbot_modify_origin));
+				aimbot_group->add_child<carbon::checkbox>(L"Show aim point", &config::get<bool>(cfg.aimbot_show_aim_point));
 				// TODO: Color picker
 				// TODO: Widget conditions
 				aimbot_group->add_child<carbon::checkbox>(L"Only visible", &config::get<bool>(cfg.aimbot_only_visible));
 				aimbot_group->add_child<carbon::checkbox>(L"Ignore team", &config::get<bool>(cfg.aimbot_ignore_team));
-				aimbot_group->add_child<carbon::checkbox>(L"Show target information",
-														  &config::get<bool>(cfg.aimbot_show_target_info));
+				aimbot_group->add_child<carbon::checkbox>(L"Show target information", &config::get<bool>(cfg.aimbot_show_target_info));
 			}
 			auto recoil_group = aim_page->add_child<carbon::groupbox>(L"Recoil control");
 			{
@@ -116,23 +115,50 @@ void draw_test_ui(renderer::buffer* buf) {
 			auto player_group = visuals_page->add_child<carbon::groupbox>(L"Player");
 			{
 				player_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.player_visuals));
-				// TODO: Dropdown
 				static std::vector<std::wstring> box_types = { L"None", L"2D", L"3D", L"Italic" };
 				player_group->add_child<carbon::dropdown>(L"Box", box_types, &config::get<int>(cfg.player_visuals_box));
 				player_group->add_child<carbon::checkbox>(L"Name", &config::get<bool>(cfg.player_visuals_name));
 				player_group->add_child<carbon::checkbox>(L"Health", &config::get<bool>(cfg.player_visuals_health));
 				player_group->add_child<carbon::checkbox>(L"Ammo", &config::get<bool>(cfg.player_visuals_ammo));
-
-				// static std::string text = "Test";
-				// esp_group->add_child<carbon::textbox>(L"Username", L"...", 40, &text);
 			}
 			auto item_group = visuals_page->add_child<carbon::groupbox>(L"Item");
 			auto world_group = visuals_page->add_child<carbon::groupbox>(L"World");
 		}
 
 		auto misc_page = window->add_page(U"\uf022");
-		{ auto exploits_group = misc_page->add_child<carbon::groupbox>(L"Exploits"); }
+		{
+			auto weapon_group = misc_page->add_child<carbon::groupbox>(L"Weapon");
+			{
+				weapon_group->add_child<carbon::checkbox>(L"No dispersion", &config::get<bool>(cfg.weapon_no_dispersion));
+				weapon_group->add_child<carbon::checkbox>(L"No malfunctions", &config::get<bool>(cfg.weapon_no_malfunctions));
+				weapon_group->add_child<carbon::checkbox>(L"Fast load/unload", &config::get<bool>(cfg.weapon_fast_mags));
+				weapon_group->add_child<carbon::checkbox>(L"Instant swap", &config::get<bool>(cfg.weapon_instant_swap));
+			}
+			auto movement_group = misc_page->add_child<carbon::groupbox>(L"Movement");
+			{
+				movement_group->add_child<carbon::checkbox>(L"No fracture", &config::get<bool>(cfg.movement_no_fracture));
+				movement_group->add_child<carbon::checkbox>(L"Always sprint", &config::get<bool>(cfg.movement_allow_sprint));
+				movement_group->add_child<carbon::checkbox>(L"Always jump", &config::get<bool>(cfg.movement_allow_jump));
+				movement_group->add_child<carbon::checkbox>(L"Always prone", &config::get<bool>(cfg.movement_allow_prone));
+			}
+			auto exploits_group = misc_page->add_child<carbon::groupbox>(L"Exploits");
+			{
+				exploits_group->add_child<carbon::checkbox>(L"God mode", &config::get<bool>(cfg.exploits_god));
+				exploits_group->add_child<carbon::checkbox>(L"Ignore power", &config::get<bool>(cfg.exploits_ignore_power));
+			}
+		}
 		auto config_page = window->add_page(U"\uf013");
+		{
+			auto config_group = config_page->add_child<carbon::groupbox>(L"Config");
+			{
+				config_group->add_child<carbon::button>(L"Save", [] {
+					config::save(L"default");
+				});
+				config_group->add_child<carbon::button>(L"Load", [] {
+					config::load(L"default");
+				});
+			}
+		}
 
 		init = true;
 	}

@@ -18,10 +18,10 @@ namespace carbon {
 		std::shared_ptr<page> add_page(const std::u32string& name);
 
 	private:
+		std::wstring title_;
+
 		std::shared_ptr<widget> title_bar_;
 		std::shared_ptr<widget> exit_button_;
-
-		std::wstring title_;
 
 		std::shared_ptr<tab_sheet> tab_sheet_;
 		std::shared_ptr<widget> area_;

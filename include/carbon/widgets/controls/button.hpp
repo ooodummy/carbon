@@ -13,12 +13,12 @@ namespace carbon {
 		void handle_draw() override;
 		void handle_input() override;
 
-		void set_callback(const std::function<void()>& callback);
-
 	private:
 		std::wstring label_;
-
 		std::function<void()> callback_;
+
+		bool held_ = false;
+		float animation_time_;
 	};
 }// namespace carbon
 

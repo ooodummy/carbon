@@ -94,6 +94,7 @@ struct cfg_t {
 	ADD_CFG_ITEM(bool, aimbot_show_fov, false)
 	ADD_CFG_ITEM(int, aimbot_max_distance, 0)
 	ADD_CFG_ITEM(bool, aimbot_silent, true)
+	ADD_CFG_ITEM(bool, aimbot_modify_origin, false)
 	ADD_CFG_ITEM(bool, aimbot_show_aim_point, false)
 	ADD_CFG_ITEM(ImVec4, aimbot_aim_point_color, ImVec4(1.f, 1.f, 1.f, 1.f))
 	ADD_CFG_ITEM(int, aimbot_target_selection, target_selection_fov)
@@ -141,8 +142,25 @@ struct cfg_t {
 	ADD_CFG_ITEM(ImVec4, player_visuals_chams_hidden_color, ImVec4(0.0f, 1.0f, 0.0f, 0.3f))
 
 	// Item visuals
+	ADD_CFG_ITEM(bool, item_visuals, false)
 
 	// World visuals
+
+	// Misc weapon
+	ADD_CFG_ITEM(bool, weapon_no_dispersion, false)
+	ADD_CFG_ITEM(bool, weapon_no_malfunctions, false)
+	ADD_CFG_ITEM(bool, weapon_fast_mags, false)
+	ADD_CFG_ITEM(bool, weapon_instant_swap, false)
+
+	// Misc movement
+	ADD_CFG_ITEM(bool, movement_no_fracture, false)
+	ADD_CFG_ITEM(bool, movement_allow_sprint, false)
+	ADD_CFG_ITEM(bool, movement_allow_jump, false)
+	ADD_CFG_ITEM(bool, movement_allow_prone, false)
+
+	// Misc exploits
+	ADD_CFG_ITEM(bool, exploits_god, false)
+	ADD_CFG_ITEM(bool, exploits_ignore_power, false)
 };
 
 extern cfg_t cfg;

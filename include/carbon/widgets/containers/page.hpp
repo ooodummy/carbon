@@ -12,12 +12,8 @@ namespace carbon {
 
 		void handle_draw() override;
 
-		std::u32string get_label();
-
-	private:
-		std::u32string label_;
-
 	protected:
+		std::u32string label_;
 		float animation_time_;
 	};
 }// namespace carbon
