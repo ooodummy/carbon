@@ -68,6 +68,10 @@ void carbon::widget::remove_child(const std::shared_ptr<widget>& child) {
 	children_.erase(std::remove(children_.begin(), children_.end(), child), children_.end());
 }
 
+YGNodeRef carbon::widget::get_node() {
+	return layout_;
+}
+
 void carbon::widget::set_visible(bool visible) {
 	visible_ = visible;
 	YGNodeStyleSetDisplay(layout_, visible_ ? YGDisplayFlex : YGDisplayNone);

@@ -175,6 +175,8 @@ void draw_input_data(renderer::buffer* buf) {
 	buf->draw_text<std::string>({ 25.0f, 40.0f }, fmt::format("Mouse position: ({}, {})", mouse.x, mouse.y));
 	buf->draw_text<std::string>({ 25.0f, 55.0f }, fmt::format("Mouse state: {} {}", carbon::is_key_pressed(VK_LBUTTON),
 															  carbon::is_key_down(VK_LBUTTON)));
+
+	buf->draw_text<std::string>({ 25.0f, 70.0f }, fmt::format("Vertices: {}", buf->get_vertices().size()));
 	buf->pop_font();
 }
 

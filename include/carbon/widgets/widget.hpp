@@ -51,6 +51,8 @@ namespace carbon {
 
 		void remove_child(const std::shared_ptr<widget>& child);
 
+		YGNodeRef get_node();
+
 		void calculate_layout(float available_width, float available_height, YGDirection direction = YGDirectionLTR);
 		void calculate_layout(glm::vec2 available_size, YGDirection direction = YGDirectionLTR);
 

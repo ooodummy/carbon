@@ -17,6 +17,7 @@ namespace carbon {
 		std::wstring label_;
 		bool* value_;
 
+		bool held_ = false;
 		float animation_time_;
 	};
 }// namespace carbon

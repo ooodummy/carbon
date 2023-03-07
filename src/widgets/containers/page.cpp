@@ -18,4 +18,11 @@ carbon::page::page(const std::u32string& name) : widget(), label_(name) {
 void carbon::page::handle_draw() {
 	// TODO: Scissor page bounds
 	//  add scrolling for pages if the groupboxes break out vertically
+	/*buf->draw_rect_filled(get_relative_layout(), COLOR_RED);
+
+	bool broken = false;
+
+	for (auto& child : get_children()) {
+
+	}*/
 }

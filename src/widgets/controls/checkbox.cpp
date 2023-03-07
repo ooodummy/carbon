@@ -16,9 +16,9 @@ void carbon::checkbox::handle_draw() {
 	const auto layout = get_relative_layout();
 	const glm::vec4 button = { layout.x, layout.y, theme.checkbox_size, theme.checkbox_size };
 
-	buf->draw_rect_rounded_filled(button, theme.checkbox_rounding, theme.body);
-	buf->draw_rect_rounded_filled(button, theme.checkbox_rounding, theme.primary.alpha(animation_time_ * 255.0f));
-	buf->draw_rect_rounded(button, theme.checkbox_rounding, theme.border);
+	buf->draw_rect_filled(button, theme.body);
+	buf->draw_rect_filled(button, theme.primary.alpha(animation_time_ * 255.0f));
+	buf->draw_rect(button, theme.border);
 
 	if (*value_) {
 		// Checkmark
@@ -41,12 +41,17 @@ void carbon::checkbox::handle_input() {
 
 	const auto hovered = is_hovered();
 
-	if (hovered)
-		animation_time_ = animation_time_ + timer.get_dt() / 0.5f;
-	else
-		animation_time_ = animation_time_ - timer.get_dt() / 0.5f;
-	animation_time_ = std::clamp(animation_time_, 0.0f, 0.2f);
+	const auto animation_speed = timer.get_dt() / 0.5f;
+	hovered || held_ ? animation_time_ += animation_speed : animation_time_ -= animation_speed;
+	animation_time_ = std::clamp(animation_time_, 0.0f, held_ ? 0.3f : 0.1f);
 
-	if (hovered && is_key_pressed(VK_LBUTTON))
-		*value_ = !*value_;
+	if (!held_ && hovered && is_key_pressed(VK_LBUTTON)) {
+		held_ = true;
+	}
+	else if (held_ && is_key_released(VK_LBUTTON)) {
+		if (hovered) {
+			*value_ = !*value_;
+		}
+		held_ = false;
+	}
 }

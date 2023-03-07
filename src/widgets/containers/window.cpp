@@ -26,9 +26,8 @@ carbon::window::window(const std::wstring& name) : widget(YGConfigNew()), title_
 void carbon::window::handle_draw() {
 	const auto layout = get_relative_layout();
 
-	buf->draw_rect_rounded(layout + glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f), theme.window_rounding, theme.primary,
-	                       1.0f);
-	buf->draw_rect_rounded_filled(layout, theme.window_rounding, theme.body);
+	buf->draw_rect(layout + glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f), theme.primary);
+	buf->draw_rect_filled(layout, theme.body);
 
 	// buf->draw_rect(layout + glm::vec4(- 1.0f, -1.0f, 2.0f, 2.0f), theme.primary);
 	// buf->draw_rect_filled(layout, theme.body);
@@ -36,14 +35,13 @@ void carbon::window::handle_draw() {
 	const auto title_layout = title_bar_->get_relative_layout();
 
 	// TODO: Draw gradient for title bar shadow
-	buf->draw_rect_rounded_filled(title_layout, theme.window_rounding, theme.title_bar, renderer::edge_top);
+	buf->draw_rect_filled(title_layout, theme.title_bar);
 
 	buf->draw_text({ title_layout.x + 10.0f, title_layout.y + title_layout.w / 2.0f }, title_, segoe_ui,
 	               COLOR_WHITE, renderer::text_align_left, renderer::text_align_center);
 
 	const auto exit_button_layout = exit_button_->get_relative_layout();
-	buf->draw_rect_rounded_filled(exit_button_layout, theme.window_rounding, theme.border.alpha(45),
-	                              renderer::edge_top_right);
+	buf->draw_rect_filled(exit_button_layout, theme.border.alpha(45));
 }
 
 void carbon::window::handle_input() {

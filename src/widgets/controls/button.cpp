@@ -18,9 +18,9 @@ bool carbon::button::is_hovered() const {
 void carbon::button::handle_draw() {
 	const auto layout = get_relative_layout();
 
-	buf->draw_rect_rounded_filled(layout, theme.button_rounding, theme.body);
-	buf->draw_rect_rounded_filled(layout, theme.button_rounding, theme.primary.alpha(animation_time_ * 255.0f));
-	buf->draw_rect_rounded(layout, theme.button_rounding, theme.primary);
+	buf->draw_rect_filled(layout, theme.body);
+	buf->draw_rect_filled(layout, theme.primary.alpha(animation_time_ * 255.0f));
+	buf->draw_rect(layout, theme.primary);
 
 	buf->draw_text({ layout.x + layout.z / 2.0f, layout.y + layout.w / 2.0f }, label_, segoe_ui, COLOR_WHITE,
 	               renderer::text_align_center, renderer::text_align_center);
@@ -32,11 +32,9 @@ void carbon::button::handle_input() {
 
 	bool hovered = is_hovered();
 
-	if (hovered)
-		animation_time_ = animation_time_ + timer.get_dt() / 0.5f;
-	else
-		animation_time_ = animation_time_ - timer.get_dt() / 0.5f;
-	animation_time_ = std::clamp(animation_time_, 0.0f, 0.2f);
+	const auto animation_speed = timer.get_dt() / 0.5f;
+	hovered || held_ ? animation_time_ += animation_speed : animation_time_ -= animation_speed;
+	animation_time_ = std::clamp(animation_time_, 0.0f, held_ ? 0.4f : 0.2f);
 
 	if (!held_ && hovered && is_key_pressed(VK_LBUTTON)) {
 		held_ = true;
@@ -47,7 +45,4 @@ void carbon::button::handle_input() {
 		}
 		held_ = false;
 	}
-
-	if (held_)
-		animation_time_ = 0.4f;
 }

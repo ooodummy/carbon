@@ -30,9 +30,7 @@ void carbon::dropdown::handle_input() {
 		return;
 
 	const auto hovered = is_hovered();
-	if (hovered)
-		animation_time_ = animation_time_ + timer.get_dt();
-	else
-		animation_time_ = animation_time_ - timer.get_dt();
+	const auto animation_speed = timer.get_dt();
+	hovered ? animation_time_ += animation_speed : animation_time_ -= animation_speed;
 	animation_time_ = std::clamp(animation_time_, 0.0f, 1.0f);
 }
