@@ -83,7 +83,7 @@ namespace config {
 		stream >> json;
 
 		for (auto& item : json) {
-			auto index = does_item_exist(item["name"].get<uint32_t>());
+			const auto index = does_item_exist(item["name"].get<uint32_t>());
 			if (index < 0)
 				continue;
 
@@ -135,11 +135,10 @@ namespace config {
 						}
 						break;
 					}
-				case util::cx_hash("ImVec4"):
+				case util::cx_hash("renderer::color_rgba"):
 					{
 						auto vec = nlohmann::json::parse(item["value"].get<std::string>());
-						current.set<ImVec4>(
-						ImVec4(vec[0].get<float>(), vec[1].get<float>(), vec[2].get<float>(), vec[3].get<float>()));
+						current.set<renderer::color_rgba>(renderer::color_rgba((vec[0].get<int>(), vec[1].get<int>(), vec[2].get<int>(), vec[3].get<int>())));
 						break;
 					}
 			}
@@ -179,39 +178,39 @@ namespace config {
 					}
 				case util::cx_hash("std::vector<bool>"):
 					{
-						auto vec = item.get<std::vector<bool>>();
+						const auto vec = item.get<std::vector<bool>>();
 						nlohmann::json sub;
-						for (auto v : vec)
+						for (const auto& v : vec)
 							sub.push_back(v);
 						current["value"] = sub.dump();
 						break;
 					}
 				case util::cx_hash("std::vector<int>"):
 					{
-						auto vec = item.get<std::vector<int>>();
+						const auto vec = item.get<std::vector<int>>();
 						nlohmann::json sub;
-						for (auto v : vec)
+						for (const auto& v : vec)
 							sub.push_back(v);
 						current["value"] = sub.dump();
 						break;
 					}
 				case util::cx_hash("std::vector<float>"):
 					{
-						auto vec = item.get<std::vector<float>>();
+						const auto vec = item.get<std::vector<float>>();
 						nlohmann::json sub;
-						for (auto v : vec)
+						for (const auto& v : vec)
 							sub.push_back(v);
 						current["value"] = sub.dump();
 						break;
 					}
-				case util::cx_hash("ImVec4"):
+				case util::cx_hash("renderer::color_rgba"):
 					{
-						auto vec = item.get<ImVec4>();
+						const auto vec = item.get<renderer::color_rgba>();
 						nlohmann::json sub;
-						sub.push_back(vec.x);
-						sub.push_back(vec.y);
-						sub.push_back(vec.z);
-						sub.push_back(vec.w);
+						sub.push_back(vec.r);
+						sub.push_back(vec.g);
+						sub.push_back(vec.b);
+						sub.push_back(vec.a);
 						current["value"] = sub.dump();
 						break;
 					}

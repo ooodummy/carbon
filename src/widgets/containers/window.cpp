@@ -19,29 +19,27 @@ carbon::window::window(const std::wstring& name) : widget(YGConfigNew()), title_
 	exit_button_->set_height(38);
 
 	// sub_tab_sheet_ = add_child<carbon::sub_tab_sheet>();
-
-	tab_sheet_ = add_child<tab_sheet>();
 }
 
 void carbon::window::handle_draw() {
 	const auto layout = get_relative_layout();
+	const auto title_layout = title_bar_->get_relative_layout();
+	const auto exit_button_layout = exit_button_->get_relative_layout();
+
+	//buf->draw_rect_rounded(layout + glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f), theme.window_rounding, theme.primary);
+	//buf->draw_rect_rounded_filled(layout, theme.window_rounding, theme.body);
+	//buf->draw_rect_rounded_filled(title_layout, theme.window_rounding, theme.title_bar, renderer::edge_top);
+	//buf->draw_rect_rounded_filled(exit_button_layout, theme.window_rounding, theme.border.alpha(45), renderer::edge_top_right);
 
 	buf->draw_rect(layout + glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f), theme.primary);
 	buf->draw_rect_filled(layout, theme.body);
 
-	// buf->draw_rect(layout + glm::vec4(- 1.0f, -1.0f, 2.0f, 2.0f), theme.primary);
-	// buf->draw_rect_filled(layout, theme.body);
-
-	const auto title_layout = title_bar_->get_relative_layout();
-
-	// TODO: Draw gradient for title bar shadow
+	// TODO: Shadow
 	buf->draw_rect_filled(title_layout, theme.title_bar);
+	buf->draw_rect_filled(exit_button_layout, theme.border.alpha(45));
 
 	buf->draw_text({ title_layout.x + 10.0f, title_layout.y + title_layout.w / 2.0f }, title_, segoe_ui,
 	               COLOR_WHITE, renderer::text_align_left, renderer::text_align_center);
-
-	const auto exit_button_layout = exit_button_->get_relative_layout();
-	buf->draw_rect_filled(exit_button_layout, theme.border.alpha(45));
 }
 
 void carbon::window::handle_input() {
@@ -65,7 +63,7 @@ void carbon::window::handle_input() {
 	// Resizing
 	const bool hovered_corner =
 	is_mouse_over({ layout.x + layout.z - theme.page_padding.x, layout.y + layout.w - theme.page_padding.y,
-	                layout.x + layout.z, layout.y + layout.w });
+					theme.page_padding.x * 2.0f, theme.page_padding.y * 2.0f });
 
 	if (!resizing_ && hovered_corner && is_key_pressed(VK_LBUTTON))
 		resizing_ = true;
@@ -77,8 +75,4 @@ void carbon::window::handle_input() {
 		set_width(std::max(mouse_pos.x - get_layout().x, get_min_width().value));
 		set_height(std::max(mouse_pos.y - get_layout().y, get_min_height().value));
 	}
-}
-
-std::shared_ptr<carbon::page> carbon::window::add_page(const std::u32string& name) {
-	return tab_sheet_->add_child<page>(name);
 }

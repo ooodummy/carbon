@@ -11,12 +11,12 @@ carbon::button::button(const std::wstring& name, const std::function<void()>& ca
 	set_height(text_size.y + theme.button_padding.y * 2.0f);
 }
 
-bool carbon::button::is_hovered() const {
-	return is_mouse_over(get_relative_layout());
-}
-
 void carbon::button::handle_draw() {
 	const auto layout = get_relative_layout();
+
+	//buf->draw_rect_rounded_filled(layout, theme.button_rounding, theme.body);
+	//buf->draw_rect_rounded_filled(layout, theme.button_rounding, theme.primary.alpha(static_cast<uint8_t>(animation_time_ * 255.0f)));
+	//buf->draw_rect_rounded(layout, theme.button_rounding, theme.primary);
 
 	buf->draw_rect_filled(layout, theme.body);
 	buf->draw_rect_filled(layout, theme.primary.alpha(animation_time_ * 255.0f));

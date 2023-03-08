@@ -7,10 +7,6 @@ carbon::dropdown::dropdown(const std::wstring& name, std::vector<std::wstring> i
 	set_height(text_size.y * 2.0f + theme.label_padding.y + theme.dropdown_padding.y * 2.0f);
 }
 
-bool carbon::dropdown::is_hovered() const {
-	return is_mouse_over(get_relative_layout());
-}
-
 void carbon::dropdown::handle_draw() {
 	const auto layout = get_relative_layout();
 	buf->draw_text({layout.x, layout.y}, name_, segoe_ui, COLOR_WHITE, renderer::text_align_left,

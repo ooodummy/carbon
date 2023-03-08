@@ -75,9 +75,11 @@ void draw_test_ui(renderer::buffer* buf) {
 	static_cast<float>(elapsed_ms) / 5000.0f); carbon::theme.primary = rainbow;*/
 
 	if (!init) {
-		window = std::make_shared<carbon::window>(L"KiwiCheats.net - Escape from Tarkov");
+		window = std::make_shared<carbon::window>(L"Carbon UI Framework");
 
-		auto aim_page = window->add_page(U"\uf05b");
+		auto tab_sheet = window->add_child<carbon::tab_sheet>();
+
+		auto aim_page = tab_sheet->add_child<carbon::page>(U"\uf05b");
 		{
 			auto aimbot_group = aim_page->add_child<carbon::groupbox>(L"Aimbot");
 			{
@@ -110,7 +112,7 @@ void draw_test_ui(renderer::buffer* buf) {
 			}
 		}
 
-		auto visuals_page = window->add_page(U"\uf21d");
+		auto visuals_page = tab_sheet->add_child<carbon::page>(U"\uf21d");
 		{
 			auto player_group = visuals_page->add_child<carbon::groupbox>(L"Player");
 			{
@@ -125,7 +127,7 @@ void draw_test_ui(renderer::buffer* buf) {
 			auto world_group = visuals_page->add_child<carbon::groupbox>(L"World");
 		}
 
-		auto misc_page = window->add_page(U"\uf022");
+		auto misc_page = tab_sheet->add_child<carbon::page>(U"\uf022");
 		{
 			auto weapon_group = misc_page->add_child<carbon::groupbox>(L"Weapon");
 			{
@@ -147,10 +149,12 @@ void draw_test_ui(renderer::buffer* buf) {
 				exploits_group->add_child<carbon::checkbox>(L"Ignore power", &config::get<bool>(cfg.exploits_ignore_power));
 			}
 		}
-		auto config_page = window->add_page(U"\uf013");
+		auto config_page = tab_sheet->add_child<carbon::page>(U"\uf013");
 		{
 			auto config_group = config_page->add_child<carbon::groupbox>(L"Config");
 			{
+				static std::string config_name = "";
+				config_group->add_child<carbon::textbox>(L"Name", L"default", 32, &config_name, false);
 				config_group->add_child<carbon::button>(L"Save", [] {
 					config::save(L"default");
 				});
@@ -194,6 +198,12 @@ void draw_thread() {
 		carbon::buf->draw_rect_filled({200.0f, 260.0f, 100.0f, 50.0f}, COLOR_GREEN);
 		carbon::buf->draw_rect_rounded({200.0f, 320.0f, 100.0f, 50.0f}, 15.0f, COLOR_GREEN, 1.0f);
 		carbon::buf->draw_rect_rounded_filled({200.0f, 380.0f, 100.0f, 50.0f}, 15.0f, COLOR_BLUE);*/
+
+		//carbon::buf->draw_rect_rounded_filled({300.0f, 300.0f, 300.0f, 200.0f}, 30.0f, COLOR_BLACK);
+		carbon::buf->draw_rect_rounded({300.0f, 300.0f, 50.0f, 50.0f}, 20.0f, COLOR_RED, 5.0f, renderer::edge_top_left);
+		carbon::buf->draw_rect_rounded({370.0f, 300.0f, 50.0f, 50.0f}, 20.0f, COLOR_YELLOW, 5.0f, renderer::edge_top_right);
+		carbon::buf->draw_rect_rounded({300.0f, 370.0f, 50.0f, 50.0f}, 20.0f, COLOR_GREEN, 5.0f, renderer::edge_bottom_left);
+		carbon::buf->draw_rect_rounded({370.0f, 370.0f, 50.0f, 50.0f}, 20.0f, COLOR_BLUE, 5.0f, renderer::edge_bottom_right);
 
 		draw_test_ui(carbon::buf);
 		draw_input_data(carbon::buf);

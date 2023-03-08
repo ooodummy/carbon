@@ -8,13 +8,13 @@ carbon::checkbox::checkbox(const std::wstring& name, bool* value) : widget(), va
 	set_height(std::max(text_size.y, theme.checkbox_size));
 }
 
-bool carbon::checkbox::is_hovered() const {
-	return is_mouse_over(get_relative_layout());
-}
-
 void carbon::checkbox::handle_draw() {
 	const auto layout = get_relative_layout();
 	const glm::vec4 button = { layout.x, layout.y, theme.checkbox_size, theme.checkbox_size };
+
+	//buf->draw_rect_rounded_filled(button, theme.checkbox_rounding, theme.body);
+	//buf->draw_rect_rounded_filled(button, theme.checkbox_rounding,  theme.primary.alpha(static_cast<uint8_t>(animation_time_ * 255.0f)));
+	//buf->draw_rect_rounded(button, theme.checkbox_rounding, theme.border);
 
 	buf->draw_rect_filled(button, theme.body);
 	buf->draw_rect_filled(button, theme.primary.alpha(animation_time_ * 255.0f));

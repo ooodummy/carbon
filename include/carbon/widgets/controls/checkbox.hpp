@@ -8,8 +8,6 @@ namespace carbon {
 	public:
 		checkbox(const std::wstring& name, bool* value);
 
-		bool is_hovered() const override;
-
 		void handle_draw() override;
 		void handle_input() override;
 

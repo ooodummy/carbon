@@ -26,10 +26,6 @@ namespace carbon {
 			set_height(text_size.y + theme.label_padding.y + theme.slider_size.y);
 		}
 
-		bool is_hovered() const override {
-			return is_mouse_over(get_relative_layout());
-		}
-
 		void handle_draw() override {
 			const auto layout = get_relative_layout();
 

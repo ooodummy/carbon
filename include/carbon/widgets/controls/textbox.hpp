@@ -17,6 +17,7 @@ namespace carbon {
 				bool hidden = false);
 
 		void handle_draw() override;
+		void handle_input() override;
 
 	private:
 		std::wstring name_;
@@ -25,6 +26,10 @@ namespace carbon {
 		bool hidden_;
 
 		std::string* value_;
+
+		bool held_;
+		bool selected_;
+		float animation_time_;
 	};
 }// namespace carbon
 

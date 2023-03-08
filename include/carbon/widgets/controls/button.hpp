@@ -8,8 +8,6 @@ namespace carbon {
 	public:
 		button(const std::wstring& name, const std::function<void()>& callback);
 
-		bool is_hovered() const override;
-
 		void handle_draw() override;
 		void handle_input() override;
 

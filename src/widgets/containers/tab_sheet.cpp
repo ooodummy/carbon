@@ -19,6 +19,7 @@ void carbon::tab_sheet::handle_draw() {
 	const auto bar = bar_->get_relative_layout();
 	const auto size = bar.w / (static_cast<float>(children.size()) - 1.0f);
 
+	//buf->draw_rect_rounded_filled(bar, theme.window_rounding, theme.border, renderer::edge_bottom_left);
 	buf->draw_rect_filled(bar, theme.border);
 
 	for (size_t i = 1; i < children.size(); i++) {

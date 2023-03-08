@@ -34,7 +34,7 @@ void carbon::widget::input() {
 }
 
 bool carbon::widget::is_hovered() const {
-	return false;
+	return is_mouse_over(get_relative_layout());
 }
 
 void carbon::widget::handle_draw() {}

@@ -1,11 +1,12 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
+#include "renderer/color.hpp"
 #include "util.hpp"
 
-#include <imgui.h>
 #include <iostream>
 #include <map>
+#include <any>
 #include <nlohmann/json.hpp>
 
 #define ADD_CFG_ITEM(type, name, def) \
@@ -96,7 +97,7 @@ struct cfg_t {
 	ADD_CFG_ITEM(bool, aimbot_silent, true)
 	ADD_CFG_ITEM(bool, aimbot_modify_origin, false)
 	ADD_CFG_ITEM(bool, aimbot_show_aim_point, false)
-	ADD_CFG_ITEM(ImVec4, aimbot_aim_point_color, ImVec4(1.f, 1.f, 1.f, 1.f))
+	//ADD_CFG_ITEM(renderer::color_rgba, aimbot_aim_point_color, renderer::color_rgba(255, 255, 255, 255))
 	ADD_CFG_ITEM(int, aimbot_target_selection, target_selection_fov)
 	ADD_CFG_ITEM(int, aimbot_smoothing, 0)
 	ADD_CFG_ITEM(bool, aimbot_only_visible, false)
@@ -115,16 +116,16 @@ struct cfg_t {
 
 	// Player visuals
 	ADD_CFG_ITEM(bool, player_visuals, false)
-	ADD_CFG_ITEM(ImVec4, player_visuals_color, ImVec4(0.87f, 0.15f, 0.15f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, player_hidden_visuals_color, ImVec4(0.72f, 0.12f, 0.12f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, player_scav_visuals_color, ImVec4(0.91f, 0.46f, 0.30f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, player_scav_hidden_visuals_color, ImVec4(0.74f, 0.37f, 0.23f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, scav_visuals_color, ImVec4(0.90f, 0.47f, 0.33f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, scav_hidden_visuals_color, ImVec4(0.75f, 0.38f, 0.27f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, boss_visuals_color, ImVec4(0.85f, 0.47f, 1.0f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, boss_hidden_visuals_color, ImVec4(0.65f, 0.36f, 0.76f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, friendly_visuals_color, ImVec4(0.25f, 0.92f, 0.15f, 1.0f))
-	ADD_CFG_ITEM(ImVec4, friendly_hidden_visuals_color, ImVec4(0.2f, 0.75f, 0.12f, 1.0f))
+	/*ADD_CFG_ITEM(renderer::color_rgba, player_visuals_color, renderer::color_rgba(0.87f, 0.15f, 0.15f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, player_hidden_visuals_color, renderer::color_rgba(0.72f, 0.12f, 0.12f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, player_scav_visuals_color, renderer::color_rgba(0.91f, 0.46f, 0.30f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, player_scav_hidden_visuals_color, renderer::color_rgba(0.74f, 0.37f, 0.23f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, scav_visuals_color, renderer::color_rgba(0.90f, 0.47f, 0.33f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, scav_hidden_visuals_color, renderer::color_rgba(0.75f, 0.38f, 0.27f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, boss_visuals_color, renderer::color_rgba(0.85f, 0.47f, 1.0f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, boss_hidden_visuals_color, renderer::color_rgba(0.65f, 0.36f, 0.76f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, friendly_visuals_color, renderer::color_rgba(0.25f, 0.92f, 0.15f, 1.0f))
+	ADD_CFG_ITEM(renderer::color_rgba, friendly_hidden_visuals_color, renderer::color_rgba(0.2f, 0.75f, 0.12f, 1.0f))*/
 	ADD_CFG_ITEM(int, player_visuals_box, box_italic)
 	ADD_CFG_ITEM(bool, player_visuals_box_corner, false)
 	ADD_CFG_ITEM(bool, player_visuals_name, false)
@@ -138,8 +139,8 @@ struct cfg_t {
 	ADD_CFG_ITEM(bool, player_visuals_state, false)
 	ADD_CFG_ITEM(bool, player_streamer, false)
 	ADD_CFG_ITEM(int, player_visuals_chams, material_default)
-	ADD_CFG_ITEM(ImVec4, player_visuals_chams_color, ImVec4(1.0f, 0.0f, 1.0f, 0.3f))
-	ADD_CFG_ITEM(ImVec4, player_visuals_chams_hidden_color, ImVec4(0.0f, 1.0f, 0.0f, 0.3f))
+	//ADD_CFG_ITEM(renderer::color_rgba, player_visuals_chams_color, ImVec4(1.0f, 0.0f, 1.0f, 0.3f))
+	//ADD_CFG_ITEM(renderer::color_rgba, player_visuals_chams_hidden_color, ImVec4(0.0f, 1.0f, 0.0f, 0.3f))
 
 	// Item visuals
 	ADD_CFG_ITEM(bool, item_visuals, false)

@@ -9,11 +9,14 @@ namespace carbon {
 
 	std::mutex _key_mutex;
 	std::map<uint32_t, bool> _key_map, _key_map_prev;
+
+	uint32_t last_key_;
 }
 
 void carbon::input_end() {
 	_key_map_prev = _key_map;
 	_mouse_wheel = 0.0f;
+	last_key_ = 0;
 }
 
 glm::vec2 carbon::get_mouse_pos() {
@@ -53,6 +56,10 @@ bool carbon::is_key_released(uint32_t key) {
 	return true;
 }
 
+uint32_t carbon::get_last_key_down() {
+	return last_key_;
+}
+
 LRESULT carbon::impl_win32_winproc_handler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	if (msg == 255)
 		return false;
@@ -65,6 +72,7 @@ LRESULT carbon::impl_win32_winproc_handler(HWND hwnd, UINT msg, WPARAM wParam, L
 			break;
 		case WM_KEYDOWN:
 			if (wParam >= 0 && wParam < 256)
+				last_key_ = wParam;
 				_key_map[wParam] = true;
 			return true;
 		case WM_KEYUP:

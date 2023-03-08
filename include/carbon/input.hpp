@@ -14,6 +14,7 @@ namespace carbon {
 	[[nodiscard]] bool is_key_down(uint32_t key);
 	[[nodiscard]] bool is_key_pressed(uint32_t key);
 	[[nodiscard]] bool is_key_released(uint32_t key);
+	[[nodiscard]] uint32_t get_last_key_down();
 
 	LRESULT impl_win32_winproc_handler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 }// namespace carbon

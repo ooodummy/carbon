@@ -4,6 +4,7 @@
 #include "carbon/widgets/widget.hpp"
 
 namespace carbon {
+	// https://github.com/facebook/yoga/issues/623
 	class page : public widget {
 		friend class tab_sheet;
 
