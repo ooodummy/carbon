@@ -191,6 +191,7 @@ void draw_thread() {
 		updated_draw.wait();
 
 		carbon::buf = carbon::dx11->get_working_buffer(id);
+		carbon::buf->push_projection({});
 
 		carbon::begin();
 
@@ -210,6 +211,7 @@ void draw_thread() {
 
 		carbon::end();
 
+		carbon::buf->pop_projection();
 		carbon::dx11->swap_buffers(id);
 		updated_buf.notify();
 	}

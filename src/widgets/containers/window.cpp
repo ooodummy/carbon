@@ -39,7 +39,7 @@ void carbon::window::handle_draw() {
 	buf->draw_rect_filled(exit_button_layout, theme.border.alpha(45));
 
 	buf->draw_text({ title_layout.x + 10.0f, title_layout.y + title_layout.w / 2.0f }, title_, segoe_ui, COLOR_WHITE,
-				   renderer::align_left | renderer::align_horizontal);
+				   renderer::align_center_left);
 }
 
 void carbon::window::handle_input() {

@@ -31,7 +31,7 @@ namespace carbon {
 
 			// Label
 			buf->draw_text<std::wstring>({ layout.x, layout.y }, label_, segoe_ui, COLOR_WHITE,
-										 renderer::align_left, renderer::align_top);
+										 renderer::align_top_left);
 
 			std::wstring value;
 			if constexpr (std::is_same_v<T, float>)
@@ -44,7 +44,7 @@ namespace carbon {
 
 			// Value
 			buf->draw_text<std::wstring>({ layout.x + layout.z, layout.y }, value, segoe_ui, COLOR_WHITE,
-										 renderer::align_right, renderer::align_top);
+										 renderer::align_top_right);
 
 			// Bar
 			glm::vec4 bar(layout.x, layout.y + layout.w - theme.slider_size.y, layout.z, theme.slider_size.y);
