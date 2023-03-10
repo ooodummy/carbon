@@ -9,16 +9,14 @@ carbon::dropdown::dropdown(const std::wstring& name, std::vector<std::wstring> i
 
 void carbon::dropdown::handle_draw() {
 	const auto layout = get_relative_layout();
-	buf->draw_text({layout.x, layout.y}, name_, segoe_ui, COLOR_WHITE, renderer::text_align_left,
-	               renderer::text_align_top);
+	buf->draw_text({layout.x, layout.y}, name_, segoe_ui, COLOR_WHITE, renderer::align_top_left);
 
 	const auto text_size = dx11->get_text_size(name_, segoe_ui);
 	const glm::vec4 button(layout.x, layout.y + text_size.y + theme.label_padding.y, layout.z,
 	                       text_size.y + theme.dropdown_padding.y * 2.0f);
 	buf->draw_rect(button, theme.primary);
 	buf->draw_text({button.x + theme.dropdown_padding.x, button.y + theme.dropdown_padding.y},
-	               fmt::format("{}", animation_time_), segoe_ui, COLOR_WHITE, renderer::text_align_left,
-	               renderer::text_align_top);
+	               fmt::format("{}", animation_time_), segoe_ui, COLOR_WHITE, renderer::align_top_left);
 }
 
 void carbon::dropdown::handle_input() {

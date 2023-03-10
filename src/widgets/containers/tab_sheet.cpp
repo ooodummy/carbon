@@ -30,7 +30,7 @@ void carbon::tab_sheet::handle_draw() {
 
 		buf->draw_text({ button.x + button.z / 2.0f, button.y + button.w / 2.0f }, child->label_, fa_regular,
 					   COLOR_WHITE.alpha(child->animation_time_ * 255.0f),
-					   renderer::text_align_center, renderer::text_align_center);
+					   renderer::align_center);
 	}
 }
 

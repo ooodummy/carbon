@@ -32,7 +32,7 @@ void carbon::checkbox::handle_draw() {
 	}
 
 	buf->draw_text({ layout.x + theme.checkbox_size + theme.label_padding.x, layout.y }, label_, segoe_ui,
-	               COLOR_WHITE, renderer::text_align_left, renderer::text_align_top);
+	               COLOR_WHITE, renderer::align_top_left);
 }
 
 void carbon::checkbox::handle_input() {

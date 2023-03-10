@@ -23,7 +23,7 @@ void carbon::button::handle_draw() {
 	buf->draw_rect(layout, theme.primary);
 
 	buf->draw_text({ layout.x + layout.z / 2.0f, layout.y + layout.w / 2.0f }, label_, segoe_ui, COLOR_WHITE,
-	               renderer::text_align_center, renderer::text_align_center);
+	               renderer::align_center);
 }
 
 void carbon::button::handle_input() {

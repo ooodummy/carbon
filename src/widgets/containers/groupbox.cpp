@@ -33,7 +33,8 @@ void carbon::groupbox::handle_draw() {
 
 	buf->draw_line({ title.x, title.y + title.w }, { title.x + title.z, title.y + title.w }, theme.border, 1.0f);
 
-	buf->draw_text({ title.x + theme.groupbox_padding.x, title.y + theme.groupbox_padding.y }, label_, segoe_ui, COLOR_WHITE, renderer::text_align_left, renderer::text_align_top);
+	buf->draw_text({ title.x + theme.groupbox_padding.x, title.y + theme.groupbox_padding.y }, label_, segoe_ui,
+				   COLOR_WHITE, renderer::align_left | renderer::align_top);
 
 	// TODO: Resize grip, minimize, scrolling, clipping, dragging
 }

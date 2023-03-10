@@ -10,8 +10,7 @@ carbon::textbox::textbox(const std::wstring& name, const std::wstring& placehold
 
 void carbon::textbox::handle_draw() {
 	const auto layout = get_relative_layout();
-	buf->draw_text({ layout.x, layout.y }, name_, segoe_ui, COLOR_WHITE, renderer::text_align_left,
-	               renderer::text_align_top);
+	buf->draw_text({ layout.x, layout.y }, name_, segoe_ui, COLOR_WHITE, renderer::align_top_left);
 
 	const auto text_size = dx11->get_text_size(name_, segoe_ui);
 	const glm::vec4 textbox(layout.x, layout.y + text_size.y + theme.label_padding.y, layout.z,
@@ -38,7 +37,7 @@ void carbon::textbox::handle_draw() {
 	}
 
 	buf->draw_text({ textbox.x + theme.textbox_padding.x, textbox.y + theme.textbox_padding.y }, text, segoe_ui,
-				   use_placeholder ? renderer::color_rgba(210, 210, 210, 255) : COLOR_WHITE, renderer::text_align_left, renderer::text_align_top);
+				   use_placeholder ? renderer::color_rgba(210, 210, 210, 255) : COLOR_WHITE);
 }
 
 void carbon::textbox::handle_input() {
