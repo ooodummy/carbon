@@ -1,7 +1,10 @@
 #ifndef CARBON_GLOBAL_HPP
 #define CARBON_GLOBAL_HPP
 
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
+
 #include "renderer/buffer.hpp"
 #include "renderer/renderer.hpp"
 #include "theme.hpp"
