@@ -19,15 +19,15 @@ namespace carbon {
 			value_(value),
 			min_(min),
 			max_(max) {
-			set_flex_direction(YGFlexDirectionRow);
+			YGNodeStyleSetFlexDirection(node_, YGFlexDirectionRow);
 
 			const auto text_size = dx11->get_text_size(label, segoe_ui);
-			set_min_width(text_size.x);
-			set_height(text_size.y + theme.label_padding.y + theme.slider_size.y);
+			YGNodeStyleSetMinWidth(node_, text_size.x);
+			YGNodeStyleSetHeight(node_, text_size.y + theme.label_padding.y + theme.slider_size.y);
 		}
 
 		void handle_draw() override {
-			const auto layout = get_relative_layout();
+			const auto layout = get_absolute_layout();
 
 			// Label
 			buf->draw_text<std::wstring>({ layout.x, layout.y }, label_, segoe_ui, COLOR_WHITE,
@@ -87,7 +87,7 @@ namespace carbon {
 				dragging_ = false;
 
 			if (dragging_) {
-				const auto layout = get_relative_layout();
+				const auto layout = get_absolute_layout();
 				const auto mouse = get_mouse_pos();
 
 				const float x = std::clamp((mouse.x - layout.x) / layout.z, 0.0f, 1.0f);

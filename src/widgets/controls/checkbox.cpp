@@ -1,15 +1,15 @@
 #include "carbon/widgets/controls/checkbox.hpp"
 
 carbon::checkbox::checkbox(const std::wstring& name, bool* value) : widget(), value_(value), label_(name) {
-	set_flex_direction(YGFlexDirectionRow);
+	YGNodeStyleSetFlexDirection(node_, YGFlexDirectionRow);
 
 	const auto text_size = dx11->get_text_size(name, segoe_ui);
-	set_width(text_size.x + theme.checkbox_size + theme.label_padding.x);
-	set_height(std::max(text_size.y, theme.checkbox_size));
+	YGNodeStyleSetWidth(node_, text_size.x + theme.checkbox_size + theme.label_padding.x);
+	YGNodeStyleSetHeight(node_, std::max(text_size.y, theme.checkbox_size));
 }
 
 void carbon::checkbox::handle_draw() {
-	const auto layout = get_relative_layout();
+	const auto layout = get_absolute_layout();
 	const glm::vec4 button = { layout.x, layout.y, theme.checkbox_size, theme.checkbox_size };
 
 	//buf->draw_rect_rounded_filled(button, theme.checkbox_rounding, theme.body);

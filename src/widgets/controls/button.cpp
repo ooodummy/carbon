@@ -2,17 +2,19 @@
 
 carbon::button::button(const std::wstring& name, const std::function<void()>& callback) : widget(), label_(name),
 	callback_(callback) {
-	set_flex_direction(YGFlexDirectionRow);
-	set_padding(YGEdgeHorizontal, theme.button_padding.x);
-	set_padding(YGEdgeVertical, theme.button_padding.y);
+	YGNodeStyleSetFlexDirection(node_, YGFlexDirectionRow);
+
+	YGNodeStyleSetPadding(node_, YGEdgeHorizontal, theme.button_padding.x);
+	YGNodeStyleSetPadding(node_, YGEdgeVertical, theme.button_padding.y);
 
 	const auto text_size = dx11->get_text_size(name, segoe_ui);
-	set_width(text_size.x + theme.button_padding.x * 2.0f);
-	set_height(text_size.y + theme.button_padding.y * 2.0f);
+	YGNodeStyleSetWidth(node_, text_size.x + theme.button_padding.x * 2.0f);
+	YGNodeStyleSetHeight(node_, text_size.y + theme.button_padding.y * 2.0f);
+
 }
 
 void carbon::button::handle_draw() {
-	const auto layout = get_relative_layout();
+	const auto layout = get_absolute_layout();
 
 	//buf->draw_rect_rounded_filled(layout, theme.button_rounding, theme.body);
 	//buf->draw_rect_rounded_filled(layout, theme.button_rounding, theme.primary.alpha(static_cast<uint8_t>(animation_time_ * 255.0f)));

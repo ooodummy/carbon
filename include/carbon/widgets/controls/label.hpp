@@ -17,12 +17,12 @@ namespace carbon {
 			text_ = text;
 
 			const auto text_size = dx11->get_text_size(text_, segoe_ui);
-			set_width(text_size.x);
-			set_height(text_size.y);
+			YGNodeStyleSetWidth(node_, text_size.x);
+			YGNodeStyleSetHeight(node_, text_size.y);
 		}
 
 		void handle_draw() override {
-			const auto layout = get_relative_layout();
+			const auto layout = get_absolute_layout();
 
 			const auto text_size = dx11->get_text_size(text_, segoe_ui);
 

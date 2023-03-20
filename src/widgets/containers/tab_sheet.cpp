@@ -1,13 +1,14 @@
 #include "carbon/widgets/containers/tab_sheet.hpp"
 
+// TODO: Redo tab sheets
 carbon::tab_sheet::tab_sheet() : widget() {
-	set_flex_direction(YGFlexDirectionRow);
-	//set_justify_content(YGJustifySpaceEvenly);
-	set_flex_grow(1.0f);
+	YGNodeStyleSetFlexDirection(node_, YGFlexDirectionRow);
+	//YGNodeStyleSetJustifyContent(node_, YGJustifySpaceEvenly);
+	YGNodeStyleSetFlexGrow(node_, 1.0f);
 
 	bar_ = add_child<widget>();
-	bar_->set_flex_direction(YGFlexDirectionColumn);
-	bar_->set_width(112.0f);
+	YGNodeStyleSetFlexDirection(bar_->get_node(), YGFlexDirectionColumn);
+	YGNodeStyleSetWidth(bar_->get_node(), 112.0f);
 }
 
 void carbon::tab_sheet::handle_draw() {
@@ -16,7 +17,7 @@ void carbon::tab_sheet::handle_draw() {
 	if (children.size() <= 1)
 		return;
 
-	const auto bar = bar_->get_relative_layout();
+	const auto bar = bar_->get_absolute_layout();
 	const auto size = bar.w / (static_cast<float>(children.size()) - 1.0f);
 
 	//buf->draw_rect_rounded_filled(bar, theme.window_rounding, theme.border, renderer::edge_bottom_left);
@@ -38,7 +39,7 @@ void carbon::tab_sheet::handle_input() {
 	if (!active_)
 		return;
 
-	const auto bar = bar_->get_relative_layout();
+	const auto bar = bar_->get_absolute_layout();
 	const auto size = bar.w / (static_cast<float>(get_children().size()) - 1.0f);
 
 	auto children = get_children();
@@ -62,9 +63,9 @@ void carbon::tab_sheet::handle_input() {
 		const auto child = dynamic_cast<page*>(children[i].get());
 		assert(child);
 
-		child->set_visible(i == selected_);
+		YGNodeStyleSetDisplay(child->get_node(), i == selected_ ? YGDisplayFlex : YGDisplayNone);
 
-		if (child->is_visible())
+		if (YGNodeStyleGetDisplay(child->get_node()) == YGDisplayFlex)
 			child->animation_time_ = 1.0f;
 	}
 }

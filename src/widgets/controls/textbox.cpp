@@ -4,12 +4,12 @@ carbon::textbox::textbox(const std::wstring& name, const std::wstring& placehold
 						 std::string* value, bool hidden) :
 	widget(), name_(name), placeholder_(placeholder), max_length_(max_length), value_(value), hidden_(hidden) {
 	const auto text_size = dx11->get_text_size(name, segoe_ui);
-	set_min_width(text_size.x);
-	set_height(text_size.y * 2.0f + theme.label_padding.y + theme.textbox_padding.y * 2.0f);
+	YGNodeStyleSetWidth(node_, text_size.x);
+	YGNodeStyleSetHeight(node_, text_size.y * 2.0f + theme.label_padding.y + theme.textbox_padding.y * 2.0f);
 }
 
 void carbon::textbox::handle_draw() {
-	const auto layout = get_relative_layout();
+	const auto layout = get_absolute_layout();
 	buf->draw_text({ layout.x, layout.y }, name_, segoe_ui, COLOR_WHITE, renderer::align_top_left);
 
 	const auto text_size = dx11->get_text_size(name_, segoe_ui);

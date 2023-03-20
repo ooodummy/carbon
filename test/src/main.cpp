@@ -168,7 +168,9 @@ void draw_test_ui(renderer::buffer* buf) {
 	}
 
 	window->input();
-	window->calculate_layout(carbon::application->get_size());
+	YGNodeCalculateLayout(window->get_node(), carbon::application->get_size().x, carbon::application->get_size().y,
+						  YGDirectionLTR);
+	window->update_absolute_position({0.0f, 0.0f});
 	window->draw();
 }
 

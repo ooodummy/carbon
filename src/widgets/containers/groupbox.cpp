@@ -1,26 +1,23 @@
 #include "carbon/widgets/containers/groupbox.hpp"
 
 carbon::groupbox::groupbox(const std::wstring& name) : widget(), label_(name) {
-	set_flex_direction(YGFlexDirectionColumn);
-	set_flex_grow(1.0f);
+	YGNodeStyleSetFlexDirection(node_, YGFlexDirectionColumn);
+	YGNodeStyleSetFlexGrow(node_, 1.0f);
+
+	YGNodeStyleSetPadding(node_, YGEdgeHorizontal, theme.groupbox_padding.x);
+	YGNodeStyleSetPadding(node_, YGEdgeVertical, theme.groupbox_padding.y);
+	YGNodeStyleSetPadding(node_, YGEdgeTop, theme.groupbox_title_size + theme.groupbox_padding.y * 2.0f);
 
 	const auto text_size = dx11->get_text_size(label_, segoe_ui);
-	set_padding(YGEdgeHorizontal, theme.groupbox_padding.x);
-	set_padding(YGEdgeVertical, theme.groupbox_padding.y);
-	set_padding(YGEdgeTop, theme.groupbox_title_size + theme.groupbox_padding.y * 2.0f);
+	YGNodeStyleSetMinWidth(node_, text_size.x + theme.groupbox_padding.x * 2.0f);
+	//YGNodeStyleSetMaxWidth(node_, 300.0f);
 
-	set_min_width(text_size.x + theme.groupbox_padding.x * 2.0f);
-
-	// Causes issues with positioning
-	//set_min_width(150.0f);
-	//set_max_width(250.0f);
-
-	set_gap(YGGutterRow, theme.groupbox_item_gap.x);
-	set_gap(YGGutterColumn, theme.groupbox_item_gap.y);
+	YGNodeStyleSetGap(node_, YGGutterRow, theme.groupbox_item_gap.x);
+	YGNodeStyleSetGap(node_, YGGutterColumn, theme.groupbox_item_gap.y);
 }
 
 void carbon::groupbox::handle_draw() {
-	const auto layout = get_relative_layout();
+	const auto layout = get_absolute_layout();
 	const glm::vec4 title(layout.x, layout.y, layout.z, theme.groupbox_title_size + theme.groupbox_padding.y);
 
 	//buf->draw_rect_rounded_filled(layout, theme.groupbox_rounding, theme.body);
