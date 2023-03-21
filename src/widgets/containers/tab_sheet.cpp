@@ -11,13 +11,14 @@ carbon::tab_sheet::tab_sheet() : widget() {
 	YGNodeStyleSetWidth(bar_->get_node(), 112.0f);
 
 	content_ = add_child<widget>();
-	YGNodeStyleSetFlexDirection(content_->get_node(), YGFlexDirectionRow);
+	YGNodeStyleSetFlexDirection(content_->get_node(), YGFlexDirectionColumn);
 	YGNodeStyleSetFlexGrow(content_->get_node(), 1.0f);
+	YGNodeStyleSetFlexShrink(content_->get_node(), 1.0f);
 }
 
 void carbon::tab_sheet::handle_draw() {
 	const auto layout = get_absolute_layout();
-	buf->draw_rect_filled(layout, COLOR_BLUE.alpha(150));
+	//buf->draw_rect_filled(layout, COLOR_BLUE.alpha(150));
 
 	const auto bar = bar_->get_absolute_layout();
 	const auto content_children = content_->get_children();

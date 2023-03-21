@@ -75,13 +75,30 @@ void draw_test_ui(renderer::buffer* buf) {
 	static_cast<float>(elapsed_ms) / 5000.0f); carbon::theme.primary = rainbow;*/
 
 	if (!init) {
-		window = std::make_shared<carbon::window>(L"Carbon UI Framework");
+		window = std::make_shared<carbon::window>(L"Carbon UI | Demo Window");
 
 		auto tab_sheet = window->add_child<carbon::tab_sheet>();
 
 		auto aim_page = tab_sheet->add_page(U"\uf05b");
 		{
-			auto aimbot_group = aim_page->add_groupbox(L"Aimbot");
+			auto example_group = aim_page->add_groupbox(L"Some settings");
+			{
+				example_group->add_child<carbon::checkbox>(L"Checkbox", &config::get<bool>(cfg.aimbot));
+				example_group->add_child<carbon::slider<int>>(L"Slider", &config::get<int>(cfg.aimbot_fov), 0, 500,
+															  L"{}px");
+				example_group->add_child<carbon::checkbox>(L"Another checkbox!", &config::get<bool>(cfg.aimbot_show_fov));
+				example_group->add_child<carbon::button>(
+				L"Click me", [] { MessageBoxA(nullptr, "Hello world!", "Example callback", MB_OK); });
+			}
+
+			auto another_group = aim_page->add_groupbox(L"Another group");
+			{
+				another_group->add_child<carbon::checkbox>(L"A", &config::get<bool>(cfg.aimbot_silent));
+				another_group->add_child<carbon::checkbox>(L"B", &config::get<bool>(cfg.aimbot_modify_origin));
+				another_group->add_child<carbon::checkbox>(L"C", &config::get<bool>(cfg.aimbot_show_aim_point));
+			}
+
+			/*auto aimbot_group = aim_page->add_groupbox(L"Aimbot");
 			{
 				aimbot_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.aimbot));
 				// TODO: Hotkey
@@ -109,7 +126,7 @@ void draw_test_ui(renderer::buffer* buf) {
 
 				recoil_group->add_child<carbon::button>(
 				L"Click me", [] { MessageBoxA(nullptr, "Hello world!", "KiwiCheats.net", MB_OK); });
-			}
+			}*/
 		}
 
 		auto visuals_page = tab_sheet->add_page(U"\uf21d");
@@ -257,6 +274,7 @@ int main() {
 
 	carbon::dx11 = std::make_unique<renderer::d3d11_renderer>(carbon::application);
 	carbon::dx11->set_clear_color({ 88, 88, 88 });
+	//carbon::dx11->set_clear_color({88, 122, 202});
 
 	if (!carbon::dx11->initialize()) {
 		MessageBoxA(nullptr, "Failed to initialize D3D11 renderer.", "Error", MB_ICONERROR | MB_OK);
