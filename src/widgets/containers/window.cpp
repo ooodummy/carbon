@@ -3,8 +3,8 @@
 carbon::window::window(const std::wstring& name) : widget(YGConfigNew()), title_(name) {
 	YGNodeStyleSetFlexDirection(node_, YGFlexDirectionColumn);
 
-	YGNodeStyleSetWidth(node_, 500.0f);
-	YGNodeStyleSetHeight(node_, 300.0f);
+	YGNodeStyleSetMaxWidth(node_, 1500.0f);
+	YGNodeStyleSetMaxHeight(node_, 1000.0f);
 
 	YGNodeStyleSetMinWidth(node_, 200.0f);
 	YGNodeStyleSetMinHeight(node_, 100.0f);

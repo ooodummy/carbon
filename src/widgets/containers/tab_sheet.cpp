@@ -9,25 +9,28 @@ carbon::tab_sheet::tab_sheet() : widget() {
 	bar_ = add_child<widget>();
 	YGNodeStyleSetFlexDirection(bar_->get_node(), YGFlexDirectionColumn);
 	YGNodeStyleSetWidth(bar_->get_node(), 112.0f);
+
+	content_ = add_child<widget>();
+	YGNodeStyleSetFlexDirection(content_->get_node(), YGFlexDirectionRow);
+	YGNodeStyleSetFlexGrow(content_->get_node(), 1.0f);
 }
 
 void carbon::tab_sheet::handle_draw() {
-	const auto children = get_children();
-
-	if (children.size() <= 1)
-		return;
+	const auto layout = get_absolute_layout();
+	buf->draw_rect_filled(layout, COLOR_BLUE.alpha(150));
 
 	const auto bar = bar_->get_absolute_layout();
-	const auto size = bar.w / (static_cast<float>(children.size()) - 1.0f);
+	const auto content_children = content_->get_children();
+	const auto size = bar.w / (static_cast<float>(content_children.size()));
 
 	//buf->draw_rect_rounded_filled(bar, theme.window_rounding, theme.border, renderer::edge_bottom_left);
 	buf->draw_rect_filled(bar, theme.border);
 
-	for (size_t i = 1; i < children.size(); i++) {
-		const auto child = dynamic_cast<page*>(children[i].get());
+	for (size_t i = 0; i < content_children.size(); i++) {
+		const auto child = dynamic_cast<page*>(content_children[i].get());
 		assert(child);
 
-		const glm::vec4 button(bar.x, bar.y + (i - 1) * size, bar.z, size);
+		const glm::vec4 button(bar.x, bar.y + i * size, bar.z, size);
 
 		buf->draw_text({ button.x + button.z / 2.0f, button.y + button.w / 2.0f }, child->label_, fa_regular,
 					   COLOR_WHITE.alpha(child->animation_time_ * 255.0f),
@@ -40,14 +43,14 @@ void carbon::tab_sheet::handle_input() {
 		return;
 
 	const auto bar = bar_->get_absolute_layout();
-	const auto size = bar.w / (static_cast<float>(get_children().size()) - 1.0f);
+	const auto content_children = content_->get_children();
+	const auto size = bar.w / (static_cast<float>(content_children.size()));
 
-	auto children = get_children();
-	for (size_t i = 1; i < children.size(); i++) {
-		const auto child = dynamic_cast<page*>(children[i].get());
+	for (size_t i = 0; i < content_children.size(); i++) {
+		const auto child = dynamic_cast<page*>(content_children[i].get());
 		assert(child);
 
-		const glm::vec4 button(bar.x, bar.y + (i - 1) * size, bar.z, size);
+		const glm::vec4 button(bar.x, bar.y + i * size, bar.z, size);
 		const bool hovered = is_mouse_over(button);
 
 		const auto animation_speed = timer.get_dt() / 0.25f;
@@ -59,8 +62,8 @@ void carbon::tab_sheet::handle_input() {
 		}
 	}
 
-	for (size_t i = 1; i < children.size(); i++) {
-		const auto child = dynamic_cast<page*>(children[i].get());
+	for (size_t i = 0; i < content_children.size(); i++) {
+		const auto child = dynamic_cast<page*>(content_children[i].get());
 		assert(child);
 
 		YGNodeStyleSetDisplay(child->get_node(), i == selected_ ? YGDisplayFlex : YGDisplayNone);
@@ -68,4 +71,8 @@ void carbon::tab_sheet::handle_input() {
 		if (YGNodeStyleGetDisplay(child->get_node()) == YGDisplayFlex)
 			child->animation_time_ = 1.0f;
 	}
+}
+
+std::shared_ptr<carbon::page> carbon::tab_sheet::add_page(const std::u32string& name) {
+	return content_->add_child<page>(name);
 }

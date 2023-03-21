@@ -1,6 +1,7 @@
 #include "carbon/widgets/containers/groupbox.hpp"
 
 carbon::groupbox::groupbox(const std::wstring& name) : widget(), label_(name) {
+	YGNodeStyleSetAlignSelf(node_, YGAlignFlexStart);
 	YGNodeStyleSetFlexDirection(node_, YGFlexDirectionColumn);
 	YGNodeStyleSetFlexGrow(node_, 1.0f);
 

@@ -79,9 +79,9 @@ void draw_test_ui(renderer::buffer* buf) {
 
 		auto tab_sheet = window->add_child<carbon::tab_sheet>();
 
-		auto aim_page = tab_sheet->add_child<carbon::page>(U"\uf05b");
+		auto aim_page = tab_sheet->add_page(U"\uf05b");
 		{
-			auto aimbot_group = aim_page->add_child<carbon::groupbox>(L"Aimbot");
+			auto aimbot_group = aim_page->add_groupbox(L"Aimbot");
 			{
 				aimbot_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.aimbot));
 				// TODO: Hotkey
@@ -99,7 +99,7 @@ void draw_test_ui(renderer::buffer* buf) {
 				aimbot_group->add_child<carbon::checkbox>(L"Ignore team", &config::get<bool>(cfg.aimbot_ignore_team));
 				aimbot_group->add_child<carbon::checkbox>(L"Show target information", &config::get<bool>(cfg.aimbot_show_target_info));
 			}
-			auto recoil_group = aim_page->add_child<carbon::groupbox>(L"Recoil control");
+			auto recoil_group = aim_page->add_groupbox(L"Recoil control");
 			{
 				recoil_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.aim_no_recoil));
 				recoil_group->add_child<carbon::slider<int>>(L"Strength", &config::get<int>(cfg.aim_recoil_control), 0,
@@ -112,9 +112,9 @@ void draw_test_ui(renderer::buffer* buf) {
 			}
 		}
 
-		auto visuals_page = tab_sheet->add_child<carbon::page>(U"\uf21d");
+		auto visuals_page = tab_sheet->add_page(U"\uf21d");
 		{
-			auto player_group = visuals_page->add_child<carbon::groupbox>(L"Player");
+			auto player_group = visuals_page->add_groupbox(L"Player");
 			{
 				player_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.player_visuals));
 				static std::vector<std::wstring> box_types = { L"None", L"2D", L"3D", L"Italic" };
@@ -123,35 +123,35 @@ void draw_test_ui(renderer::buffer* buf) {
 				player_group->add_child<carbon::checkbox>(L"Health", &config::get<bool>(cfg.player_visuals_health));
 				player_group->add_child<carbon::checkbox>(L"Ammo", &config::get<bool>(cfg.player_visuals_ammo));
 			}
-			auto item_group = visuals_page->add_child<carbon::groupbox>(L"Item");
-			auto world_group = visuals_page->add_child<carbon::groupbox>(L"World");
+			auto item_group = visuals_page->add_groupbox(L"Item");
+			auto world_group = visuals_page->add_groupbox(L"World");
 		}
 
-		auto misc_page = tab_sheet->add_child<carbon::page>(U"\uf022");
+		auto misc_page = tab_sheet->add_page(U"\uf022");
 		{
-			auto weapon_group = misc_page->add_child<carbon::groupbox>(L"Weapon");
+			auto weapon_group = misc_page->add_groupbox(L"Weapon");
 			{
 				weapon_group->add_child<carbon::checkbox>(L"No dispersion", &config::get<bool>(cfg.weapon_no_dispersion));
 				weapon_group->add_child<carbon::checkbox>(L"No malfunctions", &config::get<bool>(cfg.weapon_no_malfunctions));
 				weapon_group->add_child<carbon::checkbox>(L"Fast load/unload", &config::get<bool>(cfg.weapon_fast_mags));
 				weapon_group->add_child<carbon::checkbox>(L"Instant swap", &config::get<bool>(cfg.weapon_instant_swap));
 			}
-			auto movement_group = misc_page->add_child<carbon::groupbox>(L"Movement");
+			auto movement_group = misc_page->add_groupbox(L"Movement");
 			{
 				movement_group->add_child<carbon::checkbox>(L"No fracture", &config::get<bool>(cfg.movement_no_fracture));
 				movement_group->add_child<carbon::checkbox>(L"Always sprint", &config::get<bool>(cfg.movement_allow_sprint));
 				movement_group->add_child<carbon::checkbox>(L"Always jump", &config::get<bool>(cfg.movement_allow_jump));
 				movement_group->add_child<carbon::checkbox>(L"Always prone", &config::get<bool>(cfg.movement_allow_prone));
 			}
-			auto exploits_group = misc_page->add_child<carbon::groupbox>(L"Exploits");
+			auto exploits_group = misc_page->add_groupbox(L"Exploits");
 			{
 				exploits_group->add_child<carbon::checkbox>(L"God mode", &config::get<bool>(cfg.exploits_god));
 				exploits_group->add_child<carbon::checkbox>(L"Ignore power", &config::get<bool>(cfg.exploits_ignore_power));
 			}
 		}
-		auto config_page = tab_sheet->add_child<carbon::page>(U"\uf013");
+		auto config_page = tab_sheet->add_page(U"\uf013");
 		{
-			auto config_group = config_page->add_child<carbon::groupbox>(L"Config");
+			auto config_group = config_page->add_groupbox(L"Config");
 			{
 				static std::string config_name = "";
 				config_group->add_child<carbon::textbox>(L"Name", L"default", 32, &config_name, false);
