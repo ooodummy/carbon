@@ -23,9 +23,26 @@ glm::vec2 carbon::get_mouse_pos() {
 	return _mouse_pos;
 }
 
+bool carbon::is_point_in_bounds(const glm::vec2& point, const glm::vec4& bounds) {
+	return point.x >= bounds.x && point.x <= bounds.x + bounds.z &&
+		   point.y >= bounds.y && point.y <= bounds.y + bounds.w;
+}
+
+bool carbon::is_bounds_in_bounds(const glm::vec4& inner, const glm::vec4& outer) {
+	return inner.x >= outer.x && inner.x + inner.z <= outer.x + outer.z &&
+		   inner.y >= outer.y && inner.y + inner.w <= outer.y + outer.w;
+}
+
+bool carbon::is_bounds_intersecting(const glm::vec4& a, const glm::vec4& b) {
+	return !(a.x + a.z < b.x || a.x > b.x + b.z || a.y + a.w < b.y || a.y > b.y + b.w);
+}
+
+size_t carbon::get_nearest_side(const glm::vec4& bounds, const glm::vec2& point, carbon::side sides) {
+	return 0;
+}
+
 bool carbon::is_mouse_over(const glm::vec4& bounds) {
-	return _mouse_pos.x >= bounds.x && _mouse_pos.x <= bounds.x + bounds.z &&
-		_mouse_pos.y >= bounds.y && _mouse_pos.y <= bounds.y + bounds.w;
+	return is_point_in_bounds(_mouse_pos, bounds);
 }
 
 bool carbon::is_key_down(uint32_t key) {
