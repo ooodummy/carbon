@@ -5,6 +5,7 @@
 #include "carbon/input.hpp"
 
 #include <glm/glm.hpp>
+#include <functional>
 #include <memory>
 #include <yoga/Yoga.h>
 

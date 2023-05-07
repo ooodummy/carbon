@@ -81,7 +81,7 @@ void draw_test_ui(renderer::buffer* buf) {
 
 		auto aim_page = tab_sheet->add_page(U"\uf05b");
 		{
-			auto example_group = aim_page->add_groupbox(L"Some settings");
+			/*auto example_group = aim_page->add_groupbox(L"Some settings");
 			{
 				example_group->add_child<carbon::checkbox>(L"Checkbox", &config::get<bool>(cfg.aimbot));
 				example_group->add_child<carbon::slider<int>>(L"Slider", &config::get<int>(cfg.aimbot_fov), 0, 500,
@@ -96,9 +96,9 @@ void draw_test_ui(renderer::buffer* buf) {
 				another_group->add_child<carbon::checkbox>(L"A", &config::get<bool>(cfg.aimbot_silent));
 				another_group->add_child<carbon::checkbox>(L"B", &config::get<bool>(cfg.aimbot_modify_origin));
 				another_group->add_child<carbon::checkbox>(L"C", &config::get<bool>(cfg.aimbot_show_aim_point));
-			}
+			}*/
 
-			/*auto aimbot_group = aim_page->add_groupbox(L"Aimbot");
+			auto aimbot_group = aim_page->add_groupbox(L"Aimbot");
 			{
 				aimbot_group->add_child<carbon::checkbox>(L"Enabled", &config::get<bool>(cfg.aimbot));
 				// TODO: Hotkey
@@ -126,7 +126,7 @@ void draw_test_ui(renderer::buffer* buf) {
 
 				recoil_group->add_child<carbon::button>(
 				L"Click me", [] { MessageBoxA(nullptr, "Hello world!", "KiwiCheats.net", MB_OK); });
-			}*/
+			}
 		}
 
 		auto visuals_page = tab_sheet->add_page(U"\uf21d");
@@ -224,7 +224,7 @@ void draw_thread() {
 		carbon::buf->draw_rect_rounded({370.0f, 300.0f, 50.0f, 50.0f}, 20.0f, COLOR_YELLOW, 5.0f, renderer::edge_top_right);
 		carbon::buf->draw_rect_rounded({300.0f, 370.0f, 50.0f, 50.0f}, 20.0f, COLOR_GREEN, 5.0f, renderer::edge_bottom_left);
 		carbon::buf->draw_rect_rounded({370.0f, 370.0f, 50.0f, 50.0f}, 20.0f, COLOR_BLUE, 5.0f, renderer::edge_bottom_right);
-
+		
 		draw_test_ui(carbon::buf);
 		draw_input_data(carbon::buf);
 
