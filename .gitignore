@@ -1,0 +1,8 @@
+.idea/**
+cmake-build-release/**
+cmake-build-debug/**
+cmake-build-relwithdebinfo/**
+out/**
+.vs/**
+enc_temp_folder/**
+*.bak
