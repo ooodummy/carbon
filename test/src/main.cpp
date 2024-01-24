@@ -79,11 +79,23 @@ void draw_test_interface(renderer::buffer* buf) {
     carbon::buf = buf;
     carbon::main_font = seguiemj;
 
+    static auto root = std::make_shared<carbon::view>(carbon::layout_properties{
+                                                          .align_items = carbon::align_items_center,
+                                                          .height = carbon::value_type{300.0f, false},
+                                                          .justify_content = carbon::justify_content_center,
+                                                          .margin = 10.0f,
+                                                          .overflow = carbon::overflow_hidden,
+                                                          .width = carbon::value_type{300.0f, false}
+                                                      }, "formUI root");
+
     static bool init = false;
     if (!init) {
-
+        // TODO: Generate UI layout
         init = true;
     }
+
+    carbon::layout(root, {1024.0f, 768.0f});
+    carbon::paint(root);
 
     carbon::debug_info();
     carbon::end();

@@ -1,41 +1,33 @@
 #include "carbon/layout/styling.hpp"
 
 namespace carbon {
-    layout_properties normalize_layout_properties(const carbon::layout_properties& input) {
-        layout_properties result = default_layout_properties;
+    void layout_properties::normalize() {
+        padding_top = coalesce(padding_top, padding_vertical, padding, 0.0f);
+        padding_bottom = coalesce(padding_bottom, padding_vertical, padding, 0.0f);
+        padding_left = coalesce(padding_left, padding_horizontal, padding, 0.0f);
+        padding_right = coalesce(padding_right, padding_horizontal, padding, 0.0f);
 
-        result.padding_top = coalesce(input.padding_top, input.padding_vertical, input.padding, 0.0f);
-        result.padding_bottom = coalesce(input.padding_bottom, input.padding_vertical, input.padding, 0.0f);
-        result.padding_left = coalesce(input.padding_left, input.padding_horizontal, input.padding, 0.0f);
-        result.padding_right = coalesce(input.padding_right, input.padding_horizontal, input.padding, 0.0f);
+        margin_top = coalesce(margin_top, margin_vertical, margin);
+        margin_bottom = coalesce(margin_bottom, margin_vertical, margin);
+        margin_left = coalesce(margin_left, margin_horizontal, margin);
+        margin_right = coalesce(margin_right, margin_horizontal, margin);
 
-        result.margin_top = coalesce(input.margin_top, input.margin_vertical, input.margin, 0.0f);
-        result.margin_bottom = coalesce(input.margin_bottom, input.margin_vertical, input.margin, 0.0f);
-        result.margin_left = coalesce(input.margin_left, input.margin_horizontal, input.margin, 0.0f);
-        result.margin_right = coalesce(input.margin_right, input.margin_horizontal, input.margin, 0.0f);
+        border_bottom_width = coalesce(border_bottom_width, border_width, 0.0f);
+        border_top_width = coalesce(border_top_width, border_width, 0.0f);
+        border_left_width = coalesce(border_left_width, border_width, 0.0f);
+        border_right_width = coalesce(border_right_width, border_width, 0.0f);
 
-        result.border_bottom_width = coalesce(input.border_bottom_width, input.border_width, 0.0f);
-        result.border_top_width = coalesce(input.border_top_width, input.border_width, 0.0f);
-        result.border_left_width = coalesce(input.border_left_width, input.border_width, 0.0f);
-        result.border_right_width = coalesce(input.border_right_width, input.border_width, 0.0f);
+        column_gap = coalesce(column_gap, gap);
+        row_gap = coalesce(row_gap, gap);
 
-        result.column_gap = coalesce(input.column_gap, input.gap, 0.0f);
-        result.row_gap = coalesce(input.row_gap, input.gap, 0.0f);
-
-        result.overflow_x = coalesce(input.overflow_x, input.overflow, overflow_visible);
-        result.overflow_y = coalesce(input.overflow_y, input.overflow, overflow_visible);
-
-        return result;
+        overflow_x = coalesce(overflow_x, overflow, overflow_visible);
+        overflow_y = coalesce(overflow_y, overflow, overflow_visible);
     }
 
-    decorative_properties normalize_decorative_properties(const decorative_properties& input) {
-        decorative_properties result = default_decorative_properties;
-
-        result.border_top_left_radius = coalesce(input.border_top_left_radius, input.border_radius, 0.0f);
-        result.border_top_right_radius = coalesce(input.border_top_right_radius, input.border_radius, 0.0f);
-        result.border_bottom_left_radius = coalesce(input.border_bottom_left_radius, input.border_radius, 0.0f);
-        result.border_bottom_right_radius = coalesce(input.border_bottom_right_radius, input.border_radius, 0.0f);
-
-        return result;
+    void decorative_properties::normalize() {
+        border_top_left_radius = coalesce(border_top_left_radius, border_radius, 0.0f);
+        border_top_right_radius = coalesce(border_top_right_radius, border_radius, 0.0f);
+        border_bottom_left_radius = coalesce(border_bottom_left_radius, border_radius, 0.0f);
+        border_bottom_right_radius = coalesce(border_bottom_right_radius, border_radius, 0.0f);
     }
 }

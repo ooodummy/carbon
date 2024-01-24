@@ -6,12 +6,12 @@
 namespace carbon {
     class base_view : public node {
     public:
-        base_view(const layout_properties& layout, const std::string& test_id = "") {
+        explicit base_view(const layout_properties& layout, const std::string& test_id = "") {
             this->test_id = test_id;
-            this->layout = normalize_layout_properties(layout);
+            this->layout.normalize();
         }
 
-        std::shared_ptr<node> add(std::shared_ptr<node> child) {
+        const std::shared_ptr<node>& add(const std::shared_ptr<node>& child) {
             if (first_child == nullptr) {
                 first_child = child;
                 last_child = child;
@@ -28,7 +28,7 @@ namespace carbon {
             return child;
         }
 
-        void remove(std::shared_ptr<node> child) {
+        void remove(const std::shared_ptr<node>& child) {
             if (child->parent != shared_from_this()) {
                 // TODO: Warning
                 return;

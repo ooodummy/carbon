@@ -9,44 +9,25 @@
 #include <vector>
 
 namespace carbon {
-    class layout_node;
+    class node;
 
     struct layout_node_state {
-        std::vector<std::vector<std::shared_ptr<layout_node>>> children;
-        float client_height;
-        float client_width;
-        glm::vec2 clip_size;
-        glm::vec2 clip_start;
-        bool has_horizontal_scrollbar;
-        bool has_vertical_scrollbar;
-        float scroll_height;
-        float scroll_width;
-        float scroll_x;
-        float scroll_y;
-        std::optional<float> text_width_limit;
-        float total_scroll_x;
-        float total_scroll_y;
-        float x;
-        float y;
-    };
-
-    static const layout_node_state default_layout_node_state {
-        .children = {},
-        .client_height = 0.0f,
-        .client_width = 0.0f,
-        .clip_size = { 0.0f, 0.0f },
-        .clip_start = { 0.0f, 0.0f },
-        .has_horizontal_scrollbar = false,
-        .has_vertical_scrollbar = false,
-        .scroll_height = 0.0f,
-        .scroll_width = 0.0f,
-        .scroll_x = 0.0f,
-        .scroll_y = 0.0f,
-        .text_width_limit = std::nullopt,
-        .total_scroll_x = 0.0f,
-        .total_scroll_y = 0.0f,
-        .x = 0.0f,
-        .y = 0.0f
+        std::vector<std::vector<std::shared_ptr<node>>> children = {};
+        float client_height = 0.0f;
+        float client_width = 0.0f;
+        glm::vec2 clip_size = {0.0f, 0.0f};
+        glm::vec2 clip_start = {0.0f, 0.0f};
+        bool has_horizontal_scrollbar = false;
+        bool has_vertical_scrollbar = false;
+        float scroll_height = 0.0f;
+        float scroll_width = 0.0f;
+        float scroll_x = 0.0f;
+        float scroll_y = 0.0f;
+        std::optional<float> text_width_limit = std::nullopt;
+        float total_scroll_x = 0.0f;
+        float total_scroll_y = 0.0f;
+        float x = 0.0f;
+        float y = 0.0f;
     };
 
     // Controls positioning of children on the cross-axis
@@ -125,129 +106,74 @@ namespace carbon {
     };
 
     struct layout_properties {
-        e_align_content align_content;
-        e_align_items align_items;
-        e_align_self align_self;
-        std::optional<float> aspect_ratio;
-        std::optional<float> border_bottom_width;
-        std::optional<float> border_left_width;
-        std::optional<float> border_right_width;
-        std::optional<float> border_top_width;
-        std::optional<float> border_width;
-        std::optional<float> bottom;
-        std::optional<float> column_gap;
-        e_display display;
-        float flex;
-        std::optional<value_type> flex_basis;
-        e_flex_direction flex_direction;
-        float flex_grow;
-        float flex_shrink;
-        float flex_wrap;
-        std::optional<float> gap;
-        std::optional<value_type> height;
-        e_justify_content justify_content;
-        std::optional<float> left;
-        std::optional<float> margin;
-        std::optional<float> margin_bottom;
-        std::optional<float> margin_horizontal;
-        std::optional<float> margin_left;
-        std::optional<float> margin_right;
-        std::optional<float> margin_top;
-        std::optional<float> margin_vertical;
-        std::optional<float> max_height;
-        std::optional<float> max_width;
-        std::optional<float> min_height;
-        std::optional<float> min_width;
-        std::optional<e_overflow> overflow;
-        std::optional<e_overflow> overflow_x;
-        std::optional<e_overflow> overflow_y;
-        std::optional<float> padding;
-        std::optional<float> padding_bottom;
-        std::optional<float> padding_horizontal;
-        std::optional<float> padding_left;
-        std::optional<float> padding_right;
-        std::optional<float> padding_top;
-        std::optional<float> padding_vertical;
-        e_position position;
-        std::optional<float> right;
-        std::optional<float> row_gap;
-        std::optional<float> top;
-        std::optional<value_type> width;
-        std::optional<float> zindex;
-    };
+        e_align_content align_content = align_content_start;
+        e_align_items align_items = align_items_start;
+        e_align_self align_self = align_self_auto;
+        std::optional<float> aspect_ratio = std::nullopt;
+        std::optional<float> border_bottom_width = std::nullopt;
+        std::optional<float> border_left_width = std::nullopt;
+        std::optional<float> border_right_width = std::nullopt;
+        std::optional<float> border_top_width = std::nullopt;
+        std::optional<float> border_width = std::nullopt;
+        std::optional<float> bottom = std::nullopt;
+        std::optional<float> column_gap = std::nullopt;
+        e_display display = display_flex;
+        float flex = 0.0f;
+        std::optional<value_type> flex_basis = std::nullopt;
+        e_flex_direction flex_direction = flex_direction_column;
+        float flex_grow = 0.0f;
+        float flex_shrink = 0.0f;
+        e_flex_wrap flex_wrap = flex_wrap_no_wrap;
+        float gap = 0.0f;
+        std::optional<value_type> height = std::nullopt;
+        e_justify_content justify_content = justify_content_start;
+        std::optional<float> left = std::nullopt;
+        float margin = 0.0f;
+        std::optional<float> margin_bottom = std::nullopt;
+        std::optional<float> margin_horizontal = std::nullopt;
+        std::optional<float> margin_left = std::nullopt;
+        std::optional<float> margin_right = std::nullopt;
+        std::optional<float> margin_top = std::nullopt;
+        std::optional<float> margin_vertical = std::nullopt;
+        std::optional<value_type> max_height = std::nullopt;
+        std::optional<value_type> max_width = std::nullopt;
+        std::optional<value_type> min_height = std::nullopt;
+        std::optional<value_type> min_width = std::nullopt;
+        std::optional<e_overflow> overflow = overflow_visible;
+        std::optional<e_overflow> overflow_x = overflow_visible;
+        std::optional<e_overflow> overflow_y = overflow_visible;
+        std::optional<float> padding = 0.0f;
+        std::optional<float> padding_bottom = std::nullopt;
+        std::optional<float> padding_horizontal = std::nullopt;
+        std::optional<float> padding_left = std::nullopt;
+        std::optional<float> padding_right = std::nullopt;
+        std::optional<float> padding_top = std::nullopt;
+        std::optional<float> padding_vertical = std::nullopt;
+        e_position position = position_relative;
+        std::optional<float> right = std::nullopt;
+        std::optional<float> row_gap = std::nullopt;
+        std::optional<float> top = std::nullopt;;
+        std::optional<value_type> width = std::nullopt;
+        std::optional<float> zindex = std::nullopt;
 
-    static const layout_properties default_layout_properties {
-        .align_content = align_content_start,
-        .align_items = align_items_start,
-        .align_self = align_self_auto,
-        .aspect_ratio = std::nullopt,
-        .border_bottom_width = 0.0f,
-        .border_left_width = 0.0f,
-        .border_right_width = 0.0f,
-        .border_top_width = 0.0f,
-        .border_width = 0.0f,
-        .bottom = std::nullopt,
-        .column_gap = 0.0f,
-        .display = display_flex,
-        .flex = 0.0f,
-        .flex_basis = std::nullopt,
-        .flex_direction = flex_direction_column,
-        .flex_grow = 0.0f,
-        .flex_shrink = 0.0f,
-        .flex_wrap = flex_wrap_no_wrap,
-        .gap = 0.0f,
-        .height = std::nullopt,
-        .justify_content = justify_content_start,
-        .left = std::nullopt,
-        .margin_bottom = 0.0f,
-        .margin_left = 0.0f,
-        .margin_right = 0.0f,
-        .margin_top = 0.0f,
-        .max_height = std::nullopt,
-        .max_width = std::nullopt,
-        .min_height = std::nullopt,
-        .min_width = std::nullopt,
-        .overflow_x = overflow_visible,
-        .overflow_y = overflow_visible,
-        .padding_bottom = 0.0f,
-        .padding_left = 0.0f,
-        .padding_right = 0.0f,
-        .padding_top = 0.0f,
-        .position = position_relative,
-        .right = std::nullopt,
-        .row_gap = 0.0f,
-        .top = std::nullopt,
-        .width = std::nullopt,
-        .zindex = std::nullopt
+        void normalize();
     };
 
     struct decorative_properties {
-        renderer::color_rgba background_color;
-        std::optional<float> border_bottom_left_radius;
-        std::optional<float> border_bottom_right_radius;
-        renderer::color_rgba border_color;
-        std::optional<float> border_radius;
-        std::optional<float> border_top_left_radius;
-        std::optional<float> border_top_right_radius;
-        renderer::color_rgba box_shadow_color;
-        float box_shadow_offset_x;
-        float box_shadow_offset_y;
-        float box_shadow_radius;
-        uint8_t opacity;
-    };
+        renderer::color_rgba background_color = {0, 0, 0, 0};
+        std::optional<float> border_bottom_left_radius = std::nullopt;
+        std::optional<float> border_bottom_right_radius = std::nullopt;
+        renderer::color_rgba border_color = {0, 0, 0, 0};
+        std::optional<float> border_radius = std::nullopt;
+        std::optional<float> border_top_left_radius = std::nullopt;
+        std::optional<float> border_top_right_radius = std::nullopt;
+        renderer::color_rgba box_shadow_color = {0, 0, 0, 255};
+        float box_shadow_offset_x = 0.0f;
+        float box_shadow_offset_y = 0.0f;
+        float box_shadow_radius = 0.0f;
+        uint8_t opacity = 255;
 
-    constexpr decorative_properties default_decorative_properties {
-        .background_color = {0, 0, 0, 0},
-        .border_bottom_left_radius = 0.0f,
-        .border_bottom_right_radius = 0.0f,
-        .border_color = {0, 0, 0, 0},
-        .border_top_left_radius = 0.0f,
-        .border_top_right_radius = 0.0f,
-        .box_shadow_color = {0, 0, 0, 255},
-        .box_shadow_offset_x = 0.0f,
-        .box_shadow_offset_y = 0.0f,
-        .box_shadow_radius = 0.0f,
-        .opacity = 255
+        void normalize();
     };
 
     enum e_text_transform {
@@ -279,12 +205,6 @@ namespace carbon {
     T coalesce(const std::optional<T>& first, Args... args) {
         return first.has_value() ? first.value() : coalesce(args...);
     }
-
-    // TODO: Probably need to normalize more properties we can also probably remove some conditions by having the last
-    //  case situation default to zero by default and jut set it up in the struct initializer
-    layout_properties normalize_layout_properties(const layout_properties& input);
-
-    decorative_properties normalize_decorative_properties(const decorative_properties& input);
 }
 
 #endif

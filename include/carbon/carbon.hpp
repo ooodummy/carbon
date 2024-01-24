@@ -1,7 +1,9 @@
 #ifndef CARBON_CARBON_HPP
 #define CARBON_CARBON_HPP
 
+#include "carbon/layout/view.hpp"
 #include "carbon/layout/layout.hpp"
+#include "carbon/layout/paint.hpp"
 
 #include "carbon/globals.hpp"
 #include "carbon/input.hpp"

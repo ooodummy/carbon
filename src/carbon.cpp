@@ -20,7 +20,7 @@ void carbon::debug_info() {
         buf->draw_text(text, {10.0f, 10.0f + offset}, COLOR_WHITE, main_font, renderer::dropshadow_text);
         offset += main_font->size + 4.0f;
     };
-    
+
     print(std::format("FPS: {}", benchmark.performance_counter.get_fps()));
     print(std::format("FT: {}", benchmark.performance_counter.get_dt()));
     print(std::format("Flex compute: {}", benchmark.flex_compute_calls));
