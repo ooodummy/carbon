@@ -7,16 +7,16 @@
 #include <glm/glm.hpp>
 
 namespace carbon {
-	void input_end();
+    void input_end();
 
-	[[nodiscard]] glm::vec2 get_mouse_pos();
-	[[nodiscard]] bool is_mouse_over(const glm::vec4& bounds);
+    [[nodiscard]] glm::vec2 get_mouse_pos();
+    [[nodiscard]] bool is_mouse_over(const glm::vec4& bounds);
 
-	[[nodiscard]] bool is_key_down(uint32_t key);
-	[[nodiscard]] bool is_key_pressed(uint32_t key);
-	[[nodiscard]] bool is_key_released(uint32_t key);
+    [[nodiscard]] bool is_key_down(uint32_t key);
+    [[nodiscard]] bool is_key_pressed(uint32_t key);
+    [[nodiscard]] bool is_key_released(uint32_t key);
 
-	LRESULT impl_win32_winproc_handler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+    LRESULT impl_win32_winproc_handler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 }// namespace carbon
 
 #endif

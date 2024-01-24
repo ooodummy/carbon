@@ -4,9 +4,9 @@ namespace carbon {
     renderer::buffer* buf;
     renderer::text_font* main_font;
 
-	renderer::performance_counter performance;
+    renderer::performance_counter performance;
 
-	style_sheet theme;
+    style_sheet theme;
 
-	benchmark_data benchmark;
+    benchmark_data benchmark;
 }// namespace carbon

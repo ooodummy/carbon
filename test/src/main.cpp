@@ -74,120 +74,19 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 void draw_test_interface(renderer::buffer* buf) {
+    carbon::begin();
+
     carbon::buf = buf;
     carbon::main_font = seguiemj;
 
     static bool init = false;
-    static auto flex_container = std::make_unique<carbon::flex_container>();
-
-    // Compare to https://github.com/layoutBox/FlexLayout
     if (!init) {
-        flex_container->set_pos({50.0f, 50.0f});
-        flex_container->set_flow(carbon::column);
-
-        flex_container->set_justify_content(carbon::justify_center);
-        flex_container->set_padding(30.0f);
-
-        // This does not produce the desired output
-        //auto test1 = flex_container->add_child<carbon::flex_item>();
-        //test1->set_basis(75.0f, carbon::unit_pixel);
-        //auto test2 = flex_container->add_child<carbon::flex_item>();
-        //test2->set_basis(75.0f, carbon::unit_pixel);
-        //test2->set_margin({30.0f, 0.0f, 0.0f, 0.0f});
-        //auto test3 = flex_container->add_child<carbon::flex_item>();
-        //test3->set_basis(75.0f, carbon::unit_pixel);
-        //test3->set_margin({30.0f, 0.0f, 0.0f, 0.0f});
-
-        // Justify content
-        const auto justify_start = flex_container->add_child<carbon::flex_container>();
-		justify_start->set_flex(1.0f);
-		justify_start->set_justify_content(carbon::justify_start);
-		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_start->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-
-		const auto justify_end = flex_container->add_child<carbon::flex_container>();
-		justify_end->set_flex(1.0f);
-		justify_end->set_justify_content(carbon::justify_end);
-		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_end->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-
-		const auto justify_center = flex_container->add_child<carbon::flex_container>();
-		justify_center->set_flex(1.0f);
-		justify_center->set_justify_content(carbon::justify_center);
-		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_center->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-
-		const auto justify_space_between = flex_container->add_child<carbon::flex_container>();
-		justify_space_between->set_flex(1.0f);
-		justify_space_between->set_justify_content(carbon::justify_space_between);
-		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_between->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-
-		const auto justify_space_around = flex_container->add_child<carbon::flex_container>();
-		justify_space_around->set_flex(1.0f);
-		justify_space_around->set_justify_content(carbon::justify_space_around);
-		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_around->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-
-		const auto justify_space_evenly = flex_container->add_child<carbon::flex_container>();
-		justify_space_evenly->set_flex(1.0f);
-		justify_space_evenly->set_justify_content(carbon::justify_space_evenly);
-		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-		justify_space_evenly->add_child<carbon::flex_item>()->set_basis(75.0f, carbon::unit_pixel);
-
-        // Test
-        /*const auto container1 = flex_container->add_child<carbon::flex_container>();
-		container1->set_flex(1.0f);
-		container1->set_flow(carbon::column);
-		container1->set_max_width(300.0f);
-		const auto item3 = flex_container->add_child<carbon::flex_item>();
-		item3->set_flex(1.0f);
-		const auto container11 = container1->add_child<carbon::flex_container>();
-		container11->set_flex(1.0);
-		container11->set_min_width(50.0f);
-		container11->set_max_width(100.0f);
-		const auto item111 = container11->add_child<carbon::flex_item>();
-		item111->set_flex(1.0f);
-		const auto item112 = container11->add_child<carbon::flex_item>();
-		item112->set_flex(1.0f);
-		const auto item113 = container11->add_child<carbon::flex_item>();
-		item113->set_flex(1.0f);
-		const auto container12 = container1->add_child<carbon::flex_container>();
-		container12->set_flex(1.0f);
-		container12->set_flow(carbon::column);
-		const auto item121 = container12->add_child<carbon::flex_item>();
-		item121->set_flex(1.0f);
-		const auto item122 = container12->add_child<carbon::flex_item>();
-		item122->set_flex(1.0f);
-		container12->set_max_width(100.0f);
-		auto container2 = container1->add_child<carbon::flex_container>();
-		container2->set_flex(1.0f);
-		container2->set_min_width(150.0f);*/
 
         init = true;
     }
 
-    flex_container->set_size(carbon::get_mouse_pos() - flex_container->get_pos());
-    flex_container->compute();
-    flex_container->draw();
+    carbon::debug_info();
+    carbon::end();
 }
 
 void draw_thread() {
@@ -232,7 +131,7 @@ int main() {
     // }
 #endif
 
-    application = std::make_shared<renderer::win32_window>("D3D11 Renderer", glm::i32vec2{ 960, 500 }, WndProc);
+    application = std::make_shared<renderer::win32_window>("D3D11 Renderer", glm::i32vec2{ 1920, 1080 }, WndProc);
 
     if (!application->create()) {
         MessageBoxA(nullptr, "Failed to create application window.", "Error", MB_ICONERROR | MB_OK);
@@ -252,15 +151,14 @@ int main() {
     memset(csidl_fonts, 0, MAX_PATH);
     SHGetFolderPathA(nullptr, CSIDL_FONTS, nullptr, 0, csidl_fonts);
 
-    renderer::text_font::font_config config{ .glyph_config{ .ranges{ renderer::text_font::glyph::ranges_default() } },
-                                             .size_pixels = 32.f };
+    renderer::text_font::font_config config{.glyph_config{.ranges= renderer::text_font::glyph::ranges_default()}, .size_pixels = 32.f};
     tahoma = renderer::atlas.add_font_default(&config);
 
-    seguiemj = renderer::atlas.add_font_from_file_ttf(std::string(csidl_fonts) + '\\' + "seguiemj.ttf", 32.f, &config);
-    renderer::atlas.add_font_from_file_ttf(std::string(csidl_fonts) + '\\' + "seguiemj.ttf", 64.f, &config);
+    seguiemj = renderer::atlas.add_font_from_file_ttf(std::string(csidl_fonts) + '\\' + "seguiemj.ttf", 16.f, &config);
     dx11->create_atlases();
 
     application->set_visibility(true);
+    carbon::initialize();
 
     std::thread draw(draw_thread);
 

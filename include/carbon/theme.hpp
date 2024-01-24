@@ -4,16 +4,16 @@
 #include "renderer/color.hpp"
 
 namespace carbon {
-	struct style_sheet {
-		renderer::color_rgba body;
-		renderer::color_rgba primary;
-		renderer::color_rgba title_bar;
-		renderer::color_rgba border;
+    struct style_sheet {
+        renderer::color_rgba body;
+        renderer::color_rgba primary;
+        renderer::color_rgba title_bar;
+        renderer::color_rgba border;
 
-		glm::vec2 label_padding;
-	};
+        glm::vec2 label_padding;
+    };
 
-	void init_default_theme();
+    void init_default_theme();
 }// namespace carbon
 
 #endif
