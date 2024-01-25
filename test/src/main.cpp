@@ -83,18 +83,35 @@ void draw_test_interface(renderer::buffer* buf) {
                                                           .align_items = carbon::align_items_center,
                                                           .height = carbon::value_type{300.0f, false},
                                                           .justify_content = carbon::justify_content_center,
-                                                          .margin = 10.0f,
+                                                          //.margin = 10.0f,
                                                           .overflow = carbon::overflow_hidden,
                                                           .width = carbon::value_type{300.0f, false}
+                                                      }, carbon::decorative_properties{
+                                                          .background_color = {68, 68, 68, 255},
+                                                          .border_color = {102, 102, 102, 255},
+                                                          .border_radius = 6.0f
                                                       }, "formUI root");
+
+    const auto test = root->layout.height;
 
     static bool init = false;
     if (!init) {
         // TODO: Generate UI layout
+        carbon::layout_properties layout{
+            .flex_grow = 1.0f
+        };
+
+        carbon::decorative_properties style{
+          .background_color = {255, 0, 0, 255}
+        };
+
+        root->add<carbon::base_view>(layout, style, "test1");
+        root->add<carbon::base_view>(layout, style, "test2");
         init = true;
     }
 
     carbon::layout(root, {1024.0f, 768.0f});
+    carbon::compose(root);
     carbon::paint(root);
 
     carbon::debug_info();

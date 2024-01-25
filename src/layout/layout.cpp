@@ -1,14 +1,12 @@
 #include "carbon/layout/layout.hpp"
 
-constexpr float CROSS_AXIS_SIZE = 10.0f;
-
 namespace carbon {
     void apply_min_max_and_aspect_ratio(const std::shared_ptr<node>& node);
 
     void layout(const std::shared_ptr<node>& tree, glm::vec2 root_size) {
         std::deque<std::shared_ptr<node>> traversal_queue;
 
-        const auto root = std::make_shared<base_view>(layout_properties {.height = value_type {root_size.y, false}, .width = value_type {root_size.x, false}}, "layout##root");
+        const auto root = std::make_shared<base_view>(layout_properties {.height = value_type {root_size.y, false}, .width = value_type {root_size.x, false}}, decorative_properties{}, "layout##root");
         root->add(tree);
 
         std::vector<std::shared_ptr<node>> nodes_in_level_order = {root};
@@ -114,10 +112,10 @@ namespace carbon {
             const auto e = nodes_in_level_order[i];
 
             const auto is_wrap = e->layout.flex_wrap == flex_wrap_wrap || e->layout.flex_wrap == flex_wrap_wrap_reverse;
-            const auto is_horizontal = e->parent != nullptr && (e->parent->layout.flex_direction == flex_direction_row ||
-                                                                e->parent->layout.flex_direction == flex_direction_row_reverse);
-            const auto is_vertical = e->parent != nullptr && (e->parent->layout.flex_direction == flex_direction_column ||
-                                     e->parent->layout.flex_direction == flex_direction_column_reverse);
+            const auto is_horizontal = e->layout.flex_direction == flex_direction_row ||
+                                       e->layout.flex_direction == flex_direction_row_reverse;
+            const auto is_vertical = e->layout.flex_direction == flex_direction_column ||
+                                     e->layout.flex_direction == flex_direction_column_reverse;
             const auto is_justify_space = e->layout.justify_content == justify_content_space_between ||
                                           e->layout.justify_content == justify_content_space_around ||
                                           e->layout.justify_content == justify_content_space_evenly;
@@ -162,11 +160,9 @@ namespace carbon {
                 while (c != nullptr) {
                     if (c->state.client_height > 0.0f) {
                         if (is_horizontal && c->layout.position == position_relative) {
-                            // Padding is inside the width
                             e->state.client_height += c->state.client_height + c->layout.margin_top.value() + c->layout.margin_bottom.value();
                         }
                         if (is_vertical && c->layout.position == position_relative) {
-                            // Column layout only warps the widest child
                             e->state.client_height = std::max(e->state.client_height, c->state.client_height + c->layout.margin_top.value() + c->layout.margin_bottom.value());
                         }
                     }
@@ -219,15 +215,15 @@ namespace carbon {
 
                 const float delta_main = is_horizontal ? (c->state.client_width + c->layout.margin_left.value() + c->layout.margin_right.value()) + (is_justify_space ? e->layout.row_gap.value() : 0.0f) :
                              (c->state.client_height + c->layout.margin_top.value() + c->layout.margin_bottom.value()) + (is_justify_space ? e->layout.column_gap.value() : 0.0f);
-                const float parent_min = is_horizontal ? (e->state.client_width - e->layout.padding_left.value() - e->layout.padding_right.value() - e->layout.border_left_width.value() - e->layout.border_right_width.value()) :
+                const float parent_main = is_horizontal ? (e->state.client_width - e->layout.padding_left.value() - e->layout.padding_right.value() - e->layout.border_left_width.value() - e->layout.border_right_width.value()) :
                                (e->state.client_height - e->layout.padding_top.value() - e->layout.padding_bottom.value() - e->layout.border_top_width.value() - e->layout.border_bottom_width.value());
 
-                if (is_wrap && main + delta_main > parent_min) {
+                if (is_wrap && main + delta_main > parent_main) {
                     float length = longest_child_size;
                     length += is_horizontal ? e->layout.column_gap.value() : e->layout.row_gap.value();
                     longest_child_size = 0.0f;
 
-                    rows.push_back({});
+                    rows.emplace_back();
 
                     if (is_wrap) {
                         if (is_horizontal && !e->layout.height.has_value()) {
@@ -251,6 +247,8 @@ namespace carbon {
                 c = c->next;
             }
 
+            e->state.children = rows;
+
             // The last row
             if (is_wrap) {
                 if (is_horizontal && !e->layout.height.has_value()) {
@@ -263,7 +261,7 @@ namespace carbon {
         }
 
         // Third tree pass resolve flex, going top-down level order
-        for (auto e : nodes_in_level_order) {
+        for (const auto& e : nodes_in_level_order) {
             const auto p = e->parent;
 
             if (e->layout.flex < 0.0f) {
@@ -286,10 +284,10 @@ namespace carbon {
 
             // If a parent had undefined width or height, and it's size was only calculated once children sizes were
             // added, then percentage sizing should happen now
-            if (p != nullptr && !p->layout.width.has_value() && e->layout.width.has_value() && e->layout.width.value().percentage) {
+            if (((p == nullptr) || (p != nullptr && !p->layout.width.has_value())) && e->layout.width.has_value() && e->layout.width.value().percentage) {
                 e->state.client_width = e->layout.width.value().value * parent_width;
             }
-            if (p != nullptr && !p->layout.height.has_value() && e->layout.height.has_value() && e->layout.height.value().percentage) {
+            if (((p == nullptr) || (p != nullptr && !p->layout.height.has_value())) && e->layout.height.has_value() && e->layout.height.value().percentage) {
                 e->state.client_height = e->layout.height.value().value * parent_height;
             }
 
@@ -312,14 +310,14 @@ namespace carbon {
                     e->state.x = e->state.x + e->layout.left.value();
                 }
                 else if (e->layout.right.has_value()) {
-                    e->state.x = p->state.x + p->state.client_width - e->state.client_width - e->layout.right.value();
+                    e->state.x = (p != nullptr ? (p->state.x + p->state.client_width) : 0.0f) - e->state.client_width - e->layout.right.value();
                 }
 
                 if (e->layout.top.has_value()) {
                     e->state.y = e->state.y + e->layout.top.value();
                 }
                 else if (e->layout.bottom.has_value()) {
-                    e->state.y = p->state.y + p->state.client_height - e->state.client_height - e->layout.bottom.value();
+                    e->state.y = (p != nullptr ? (p->state.y + p->state.client_height) : 0.0f) - e->state.client_height - e->layout.bottom.value();
                 }
             }
 
@@ -328,7 +326,7 @@ namespace carbon {
                 e->state.client_height -= CROSS_AXIS_SIZE;
             }
             if (e->state.has_vertical_scrollbar) {
-                e->state.client_height -= CROSS_AXIS_SIZE;
+                e->state.client_width -= CROSS_AXIS_SIZE;
             }
 
             if (e->layout.flex_wrap == flex_wrap_wrap_reverse) {
@@ -336,8 +334,8 @@ namespace carbon {
             }
 
             if (is_reversed) {
-                for (auto& child : e->state.children) {
-                    std::reverse(child.begin(), child.end());
+                for (auto& row : e->state.children) {
+                    std::reverse(row.begin(), row.end());
                 }
             }
 
@@ -373,10 +371,10 @@ namespace carbon {
             }
 
             // Iterate over lines
-            for (size_t j = 0; j < e->state.children.size(); j++) {
-                const auto line = e->state.children[j];
-                const auto max_cross_child = max_cross_children[j];
-                const auto children_count = children_in_line[j];
+            for (size_t i = 0; i < e->state.children.size(); i++) {
+                const auto line = e->state.children[i];
+                const auto max_cross_child = max_cross_children[i];
+                const auto children_count = children_in_line[i];
 
                 float total_flex_grow = 0.0f;
                 float total_flex_shrink = 0.0f;
@@ -456,38 +454,38 @@ namespace carbon {
 
                 // Align content
                 if (e->layout.align_content == align_content_center) {
-                    if (j == 0) {
+                    if (i == 0) {
                         cross += available_cross / 2.0f;
                     }
                 }
                 if (e->layout.align_content == align_content_end) {
-                    if (j == 0) {
+                    if (i == 0) {
                         cross += available_cross;
                     }
                 }
                 if (e->layout.align_content == align_content_space_between) {
-                    if (j > 0) {
+                    if (i > 0) {
                         cross += available_cross / ((float)max_cross_children.size() - 1.0f);
                     }
                 }
                 if (e->layout.align_content == align_content_space_around) {
                     const auto gap = available_cross / (float)max_cross_children.size();
-                    cross += j == 0 ? gap / 2.0f : gap;
+                    cross += i == 0 ? gap / 2.0f : gap;
                 }
                 if (e->layout.align_content == align_content_space_evenly) {
                     const auto gap = available_cross / ((float)max_cross_children.size() + 1.0f);
                     cross += gap;
                 }
                 if (e->layout.align_content == align_content_stretch) {
-                    if (j > 0) {
+                    if (i > 0) {
                         cross += available_cross / (float)max_cross_children.size();
                     }
                 }
 
                 // Iterate over children and apply positions and flex sizes
                 float used_main = 0.0f;
-                for (size_t k = 0; k < line.size(); j++) {
-                    const auto& c = line[k];
+                for (size_t j = 0; j < line.size(); j++) {
+                    const auto& c = line[j];
 
                     if (c->layout.position != position_relative || c->layout.display == display_none) {
                         continue;
@@ -496,12 +494,12 @@ namespace carbon {
                     if (!is_justify_space) {
                         if (available_main > 0.0f && (c->layout.flex > 0.0f || c->layout.flex_grow > 0.0f)) {
                             // TODO: This is probably some type script bullshit
-                            const bool flex_value = (c->layout.flex == 0.0f || c->layout.flex_grow == 0.0f);
+                            const bool flex_value = c->layout.flex != 0.0f ? c->layout.flex : c->layout.flex_grow;
 
                             // When splitting the available space, the last child gets the remainder
                             float size = std::round((flex_value / total_flex_grow) * available_main);
                             used_main += size;
-                            if (k == line.size() - 1 && used_main < available_main) {
+                            if (j == line.size() - 1 && used_main < available_main) {
                                 size += available_main - used_main;
                             }
 

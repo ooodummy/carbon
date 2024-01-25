@@ -10,6 +10,6 @@ file(GLOB_RECURSE SOURCES src/*.*)
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
-target_link_libraries(${PROJECT_NAME} PUBLIC glm::glm renderer yogacore)
+target_link_libraries(${PROJECT_NAME} PUBLIC glm::glm renderer)
 
 add_subdirectory(test carbon_test)

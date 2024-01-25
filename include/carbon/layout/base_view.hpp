@@ -6,50 +6,22 @@
 namespace carbon {
     class base_view : public node {
     public:
-        explicit base_view(const layout_properties& layout, const std::string& test_id = "") {
-            this->test_id = test_id;
-            this->layout.normalize();
+        explicit base_view(const layout_properties& layout, const decorative_properties& style, const std::string& test_id = "");
+
+        void paint() const override;
+
+        std::shared_ptr<node> add(const std::shared_ptr<node>& child);
+
+        template<typename T, typename... Args>
+        std::shared_ptr<T> add(Args&&... args) {
+            auto child = std::make_shared<T>(std::forward<Args>(args)...);
+            return std::static_pointer_cast<T>(add(child));
         }
 
-        const std::shared_ptr<node>& add(const std::shared_ptr<node>& child) {
-            if (first_child == nullptr) {
-                first_child = child;
-                last_child = child;
-            } else {
-                assert(last_child != nullptr);
+        void remove(const std::shared_ptr<node>& child);
 
-                child->prev = last_child;
-                last_child->next = child;
-                last_child = child;
-            }
-
-            child->parent = shared_from_this();
-
-            return child;
-        }
-
-        void remove(const std::shared_ptr<node>& child) {
-            if (child->parent != shared_from_this()) {
-                // TODO: Warning
-                return;
-            }
-
-            if (child->prev != nullptr)
-                child->prev->next = child->next;
-
-            if (child->next != nullptr)
-                child->next->prev = child->prev;
-
-            if (first_child == child)
-                first_child = child->next;
-
-            if (last_child == child)
-                last_child = child->prev;
-
-            child->prev = nullptr;
-            child->next = nullptr;
-            child->parent = nullptr;
-        }
+    protected:
+        decorative_properties style;
     };
 }
 

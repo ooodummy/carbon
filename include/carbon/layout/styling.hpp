@@ -2,7 +2,6 @@
 #define CARBON_LAYOUT_STYLING_HPP
 
 #include <renderer/color.hpp>
-#include <glm/glm.hpp>
 
 #include <memory>
 #include <optional>

@@ -3,6 +3,7 @@
 
 #include "carbon/layout/view.hpp"
 #include "carbon/layout/layout.hpp"
+#include "carbon/layout/compose.hpp"
 #include "carbon/layout/paint.hpp"
 
 #include "carbon/globals.hpp"
