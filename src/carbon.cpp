@@ -22,6 +22,6 @@ void carbon::debug_info() {
     };
 
     print(std::format("FPS: {}", benchmark.performance_counter.get_fps()));
-    print(std::format("FT: {}", benchmark.performance_counter.get_dt()));
+    print(std::format("DT: {}", benchmark.performance_counter.get_dt()));
     print(std::format("Flex compute: {}", benchmark.flex_compute_calls));
 }

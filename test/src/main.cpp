@@ -81,10 +81,12 @@ void draw_test_interface(renderer::buffer* buf) {
 
     static auto root = std::make_shared<carbon::view>(carbon::layout_properties{
                                                           .align_items = carbon::align_items_center,
+                                                          .flex_direction = carbon::flex_direction_row,
                                                           .height = carbon::value_type{300.0f, false},
                                                           .justify_content = carbon::justify_content_center,
                                                           //.margin = 10.0f,
                                                           .overflow = carbon::overflow_hidden,
+                                                          .padding = 10.0f,
                                                           .width = carbon::value_type{300.0f, false}
                                                       }, carbon::decorative_properties{
                                                           .background_color = {68, 68, 68, 255},
@@ -98,11 +100,15 @@ void draw_test_interface(renderer::buffer* buf) {
     if (!init) {
         // TODO: Generate UI layout
         carbon::layout_properties layout{
-            .flex_grow = 1.0f
+            .align_self = carbon::align_self_stretch,
+            .flex_grow = 1.0f,
+            //.margin = 10.0f,
         };
 
         carbon::decorative_properties style{
-          .background_color = {255, 0, 0, 255}
+            .background_color = {255, 0, 0, 255},
+            .border_color = {0, 0, 0, 255},
+            .border_radius = 10.0f
         };
 
         root->add<carbon::base_view>(layout, style, "test1");

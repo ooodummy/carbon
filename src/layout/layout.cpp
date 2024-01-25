@@ -420,8 +420,8 @@ namespace carbon {
                         continue;
                     }
 
-                    available_main -= is_horizontal ? c->state.client_width + (is_justify_space ? c->layout.margin_left.value() + c->layout.margin_right.value() : 0.0f) :
-                                      c->state.client_height + (is_justify_space ? c->layout.margin_top.value() + c->layout.margin_bottom.value() : 0.0f);
+                    available_main -= is_horizontal ? c->state.client_width + (!is_justify_space ? c->layout.margin_left.value() + c->layout.margin_right.value() : 0.0f) :
+                                      c->state.client_height + (!is_justify_space ? c->layout.margin_top.value() + c->layout.margin_bottom.value() : 0.0f);
 
                     if (c->layout.flex > 0.0f || c->layout.flex_grow > 0.0f) {
                         if (c->layout.flex > 0.0f) {
@@ -442,7 +442,7 @@ namespace carbon {
                     //  or padding and we don't
                     main += available_main / 2.0f;
                 }
-                if ((is_reversed && e->layout.justify_content == justify_content_start) || !is_reversed && e->layout.justify_content == justify_content_end) {
+                if ((is_reversed && e->layout.justify_content == justify_content_start) || (!is_reversed && e->layout.justify_content == justify_content_end)) {
                     main += available_main;
                 }
                 if (e->layout.justify_content == justify_content_space_around) {
@@ -493,8 +493,7 @@ namespace carbon {
 
                     if (!is_justify_space) {
                         if (available_main > 0.0f && (c->layout.flex > 0.0f || c->layout.flex_grow > 0.0f)) {
-                            // TODO: This is probably some type script bullshit
-                            const bool flex_value = c->layout.flex != 0.0f ? c->layout.flex : c->layout.flex_grow;
+                            const auto flex_value = c->layout.flex != 0.0f ? c->layout.flex : c->layout.flex_grow;
 
                             // When splitting the available space, the last child gets the remainder
                             float size = std::round((flex_value / total_flex_grow) * available_main);
@@ -504,10 +503,10 @@ namespace carbon {
                             }
 
                             if (is_horizontal) {
-                                c->state.client_width = size;
+                                c->state.client_width += size;
                             }
                             else {
-                                c->state.client_height = size;
+                                c->state.client_height += size;
                             }
                         }
 
@@ -530,13 +529,13 @@ namespace carbon {
                         main += is_horizontal ? c->state.client_width : c->state.client_height;
 
                         if (e->layout.justify_content == justify_content_space_between) {
-                            main += available_main / (children_count - 1.0f);
+                            main += available_main / ((float)children_count - 1.0f);
                         }
                         if (e->layout.justify_content == justify_content_space_around) {
-                            main += available_main / children_count;
+                            main += available_main / (float)children_count;
                         }
                         if (e->layout.justify_content == justify_content_space_evenly) {
-                            main += available_main / (children_count + 1.0f);
+                            main += available_main / ((float)children_count + 1.0f);
                         }
                     }
                     else {
@@ -556,14 +555,42 @@ namespace carbon {
                                           e->state.client_width - e->layout.padding_left.value() - e->layout.padding_right.value() - e->layout.border_left_width.value() - e->layout.border_right_width.value();
                     }
 
+                    // Apply align items
                     // Apply align self
-                    if (c->layout.align_self == align_self_start) {
+                    if (c->layout.align_self == align_self_auto) {
+                        if (e->layout.align_items == align_items_center) {
+                            if (is_horizontal) {
+                                c->state.y += (line_cross_size - c->state.client_height) / 2.0f;
+                            }
+                            else {
+                                c->state.x += (line_cross_size - c->state.client_width) / 2.0f;
+                            }
+                        }
+                        if (e->layout.align_items == align_items_end) {
+                            if (is_horizontal) {
+                                c->state.y += line_cross_size - c->state.client_height;
+                            }
+                            else {
+                                c->state.x += line_cross_size - c->state.client_width;
+                            }
+                        }
+                        if (e->layout.align_items == align_items_stretch && ((is_horizontal && !c->layout.height.has_value()) || (is_vertical && !c->layout.width.has_value()))) {
+                            if (is_horizontal) {
+                                c->state.client_height = line_cross_size;
+                            }
+                            else {
+                                c->state.client_width = line_cross_size;
+                            }
+                        }
+                    }
+
+                    // Apply align self
+                    if (c->layout.align_self == align_self_auto) {
                         if (is_horizontal) {
-                            c->state.y += reset_cross;
+                            c->state.y = reset_cross;
                         }
                         else {
-                            c->state.x += reset_cross;
-
+                            c->state.x = reset_cross;
                         }
                     }
                     if (c->layout.align_self == align_self_center) {

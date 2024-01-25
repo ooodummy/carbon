@@ -16,8 +16,8 @@ namespace carbon {
         glm::vec2 size = {state.client_width, state.client_height};
 
         // TODO: Handle unique border edge thicknesses and render a border too
-        buf->draw_rect_filled(position, position + size, style.background_color);
-        buf->draw_rect(position, position + size, style.border_color);
+        buf->draw_rect_filled(position, position + size, style.background_color, coalesce(style.border_radius, 0.0f), renderer::edge_all);
+        buf->draw_rect(position, position + size, style.border_color, coalesce(style.border_radius, 0.0f), renderer::edge_all, coalesce(layout.border_width, 1.0f));
     }
 
     std::shared_ptr<node> base_view::add(const std::shared_ptr<node>& child) {
