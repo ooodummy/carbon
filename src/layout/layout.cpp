@@ -11,6 +11,7 @@ namespace carbon {
 
         std::vector<std::shared_ptr<node>> nodes_in_level_order = {root};
 
+        // Note: This pass is correct
         // Traverse the tree in level order and generate the reverse queue
         traversal_queue.push_back(root);
         while (!traversal_queue.empty()) {
@@ -260,6 +261,7 @@ namespace carbon {
             }
         }
 
+        // Note: This one probably has the bug
         // Third tree pass resolve flex, going top-down level order
         for (const auto& e : nodes_in_level_order) {
             const auto p = e->parent;
@@ -344,6 +346,8 @@ namespace carbon {
             const float reset_cross = is_horizontal ? e->state.y + e->layout.padding_top.value() + e->layout.border_top_width.value() :
                                       e->state.x + e->layout.padding_left.value() + e->layout.border_left_width.value();
 
+            //--------------------------------------------------------------------------------------------------------\\
+
             float main = reset_main;
             float cross = reset_cross;
 
@@ -362,13 +366,15 @@ namespace carbon {
                         continue;
                     }
 
-                    children_count += 1;
+                    children_count++;
                     max_cross_child = std::max(max_cross_child, is_horizontal ? c->state.client_height : c->state.client_width);
                 }
 
                 max_cross_children.push_back(max_cross_child);
                 children_in_line.push_back(children_count);
             }
+
+            //--------------------------------------------------------------------------------------------------------\\
 
             // Iterate over lines
             for (size_t i = 0; i < e->state.children.size(); i++) {
@@ -452,6 +458,8 @@ namespace carbon {
                     main += available_main / ((float)children_count + 1.0f);
                 }
 
+                //----------------------------------------------------------------------------------------------------\\
+
                 // Align content
                 if (e->layout.align_content == align_content_center) {
                     if (i == 0) {
@@ -470,7 +478,7 @@ namespace carbon {
                 }
                 if (e->layout.align_content == align_content_space_around) {
                     const auto gap = available_cross / (float)max_cross_children.size();
-                    cross += i == 0 ? gap / 2.0f : gap;
+                    cross += (i == 0 ? gap / 2.0f : gap);
                 }
                 if (e->layout.align_content == align_content_space_evenly) {
                     const auto gap = available_cross / ((float)max_cross_children.size() + 1.0f);
@@ -481,6 +489,8 @@ namespace carbon {
                         cross += available_cross / (float)max_cross_children.size();
                     }
                 }
+
+                //----------------------------------------------------------------------------------------------------\\
 
                 // Iterate over children and apply positions and flex sizes
                 float used_main = 0.0f;
@@ -547,6 +557,8 @@ namespace carbon {
                         main += main_gap;
                     }
 
+                    //------------------------------------------------------------------------------------------------\\
+
                     float line_cross_size = max_cross_child;
 
                     // If there's only one line, the flex container has defined height, use it as the cross-size
@@ -584,7 +596,7 @@ namespace carbon {
                     }
 
                     // Apply align self
-                    if (c->layout.align_self == align_self_auto) {
+                    if (c->layout.align_self == align_self_start) {
                         if (is_horizontal) {
                             c->state.y = reset_cross;
                         }
