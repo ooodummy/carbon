@@ -80,7 +80,8 @@ void draw_test_interface(renderer::buffer* buf) {
     carbon::main_font = seguiemj;
 
     static auto root = std::make_shared<carbon::view>(carbon::layout_properties{
-                                                          .align_items = carbon::align_items_center,
+                                                          //.align_content = carbon::align_content_end,
+                                                          .align_items = carbon::align_items_start,
                                                           .flex_direction = carbon::flex_direction_row,
                                                           .height = carbon::value_type{300.0f, false},
                                                           .justify_content = carbon::justify_content_center,
@@ -100,8 +101,10 @@ void draw_test_interface(renderer::buffer* buf) {
     if (!init) {
         // TODO: Generate UI layout
         carbon::layout_properties layout{
-            .align_self = carbon::align_self_stretch,
+            .align_self = carbon::align_self_auto,
             .flex_grow = 1.0f,
+            .height = carbon::value_type{50.0f, false},
+            .width = carbon::value_type{25.0f, false},
             //.margin = 10.0f,
         };
 

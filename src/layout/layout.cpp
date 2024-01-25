@@ -383,7 +383,7 @@ namespace carbon {
                 float available_main = is_horizontal ? e->state.client_width - e->layout.padding_left.value() - e->layout.padding_right.value() - e->layout.border_left_width.value() - e->layout.border_right_width.value() :
                                        e->state.client_height - e->layout.padding_top.value() - e->layout.padding_bottom.value() - e->layout.border_top_width.value() - e->layout.border_bottom_width.value();
 
-                if (is_justify_space) {
+                if (!is_justify_space) {
                     available_main -= main_gap * ((float)line.size() - 1.0f);
                 }
 
@@ -556,7 +556,6 @@ namespace carbon {
                     }
 
                     // Apply align items
-                    // Apply align self
                     if (c->layout.align_self == align_self_auto) {
                         if (e->layout.align_items == align_items_center) {
                             if (is_horizontal) {
