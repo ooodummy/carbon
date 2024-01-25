@@ -156,7 +156,7 @@ namespace carbon {
 
             // Height is at least the sum of the children with defined heights
             if (!e->layout.height.has_value()) {
-                size_t children_count;
+                size_t children_count = 0;
                 auto c = e->first_child;
                 while (c != nullptr) {
                     if (c->state.client_height > 0.0f) {

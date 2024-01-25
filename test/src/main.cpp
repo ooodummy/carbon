@@ -81,46 +81,50 @@ void draw_test_interface(renderer::buffer* buf) {
 
     static auto root = std::make_shared<carbon::view>(carbon::layout_properties{
                                                           //.align_content = carbon::align_content_end,
-                                                          .align_items = carbon::align_items_end,
+                                                          .align_items = carbon::align_items_start,
                                                           .align_self = carbon::align_self_stretch,
-                                                          .flex_direction = carbon::flex_direction_row,
+                                                          .flex_direction = carbon::flex_direction_column,
                                                           //.flex_wrap = carbon::flex_wrap_wrap,
                                                           .flex_grow = 1.0f,
                                                           //.height = carbon::value_type{300.0f, false},
-                                                          .justify_content = carbon::justify_content_start,
+                                                          .justify_content = carbon::justify_content_space_evenly,
                                                           //.margin = 10.0f,
                                                           .overflow = carbon::overflow_hidden,
                                                           .padding = 10.0f,
                                                           //.width = carbon::value_type{300.0f, false}
                                                       }, carbon::decorative_properties{
-                                                          .background_color = {68, 68, 68, 255},
+                                                          .background_color = {18, 18, 18, 255},
                                                           .border_color = {102, 102, 102, 255},
                                                           .border_radius = 6.0f
                                                       }, "formUI root");
 
     static bool init = false;
     if (!init) {
-        carbon::layout_properties layout{
+        carbon::layout_properties column{
+            .align_self = carbon::align_self_stretch,
             //.flex_grow = 1.0f,
             .height = carbon::value_type{50.0f, false},
-            .width = carbon::value_type{25.0f, false},
-            //.margin = 10.0f,
+            //.width = carbon::value_type{30.0f, false},
+            //.margin = 10.0f
         };
 
         carbon::decorative_properties style{
-            .background_color = {255, 0, 0, 255},
+            .background_color = {29, 29, 29, 255},
             .border_color = {0, 0, 0, 255},
-            .border_radius = 10.0f
+            .border_radius = 6.0f
         };
 
-        root->add<carbon::base_view>(layout, style, "test1");
-        root->add<carbon::base_view>(layout, style, "test2");
-        root->add<carbon::base_view>(layout, style, "test2");
+        root->add<carbon::base_view>(column, style, "test1");
+        root->add<carbon::base_view>(column, style, "test2");
+        root->add<carbon::base_view>(column, style, "test2");
+
+        carbon::layout(root, {300.0f, 300.0f});
+        carbon::compose(root);
         init = true;
     }
 
-    carbon::layout(root, carbon::get_mouse_pos());
-    carbon::compose(root);
+    //carbon::layout(root, carbon::get_mouse_pos());
+    //carbon::compose(root);
     carbon::paint(root);
 
     carbon::debug_info();
