@@ -6,6 +6,10 @@
 #include "carbon/layout/compose.hpp"
 #include "carbon/layout/paint.hpp"
 
+#include "carbon/widgets/button.hpp"
+#include "carbon/widgets/input.hpp"
+#include "carbon/widgets/window.hpp"
+
 #include "carbon/globals.hpp"
 #include "carbon/input.hpp"
 #include "carbon/theme.hpp"

@@ -21,7 +21,7 @@ namespace carbon {
         std::shared_ptr<node> first_child;
         std::shared_ptr<node> last_child;
         std::shared_ptr<node> next;
-        std::shared_ptr<node> parent;
+        node* parent = nullptr;
         std::shared_ptr<node> prev;
 
         std::string test_id;

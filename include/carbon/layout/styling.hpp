@@ -1,6 +1,7 @@
 #ifndef CARBON_LAYOUT_STYLING_HPP
 #define CARBON_LAYOUT_STYLING_HPP
 
+#include <renderer/font.hpp>
 #include <renderer/color.hpp>
 
 #include <memory>
@@ -191,6 +192,14 @@ namespace carbon {
     enum e_whitespace {
         whitespace_normal, // Text will wrap to the next line if it exceeds the width of the parent if defined
         whitespace_no_wrap // Text will never wrap to the next line
+    };
+
+    struct text_style_properties {
+        renderer::color_rgba color;
+        renderer::text_font* font;
+        e_text_align align = text_align_left;
+        e_text_transform transform = text_transform_none;
+        e_whitespace whitespace = whitespace_normal;
     };
 
     // Base case for recursion: return non-optional value

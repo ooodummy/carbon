@@ -15,7 +15,8 @@ namespace carbon {
         template<typename T, typename... Args>
         std::shared_ptr<T> add(Args&&... args) {
             auto child = std::make_shared<T>(std::forward<Args>(args)...);
-            return std::static_pointer_cast<T>(add(child));
+            add(std::static_pointer_cast<node>(child));
+            return child;
         }
 
         void remove(const std::shared_ptr<node>& child);

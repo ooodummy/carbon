@@ -79,18 +79,18 @@ void draw_test_interface(renderer::buffer* buf) {
     carbon::buf = buf;
     carbon::main_font = seguiemj;
 
-    static auto root = std::make_shared<carbon::view>(carbon::layout_properties{
+    /*static auto root = std::make_shared<carbon::view>(carbon::layout_properties{
                                                           //.align_content = carbon::align_content_end,
                                                           .align_items = carbon::align_items_start,
                                                           .align_self = carbon::align_self_stretch,
-                                                          .flex_direction = carbon::flex_direction_column,
-                                                          //.flex_wrap = carbon::flex_wrap_wrap,
+                                                          .flex_direction = carbon::flex_direction_row,
                                                           .flex_grow = 1.0f,
+                                                          .flex_wrap = carbon::flex_wrap_no_wrap,
                                                           //.height = carbon::value_type{300.0f, false},
-                                                          .justify_content = carbon::justify_content_space_evenly,
+                                                          .justify_content = carbon::justify_content_start,
                                                           //.margin = 10.0f,
                                                           .overflow = carbon::overflow_hidden,
-                                                          .padding = 10.0f,
+                                                          .padding = 25.0f,
                                                           //.width = carbon::value_type{300.0f, false}
                                                       }, carbon::decorative_properties{
                                                           .background_color = {18, 18, 18, 255},
@@ -101,10 +101,13 @@ void draw_test_interface(renderer::buffer* buf) {
     static bool init = false;
     if (!init) {
         carbon::layout_properties column{
-            .align_self = carbon::align_self_stretch,
+            //.align_self = carbon::align_self_stretch,
             //.flex_grow = 1.0f,
+            //.flex_basis = carbon::value_type{100.0f, false},
+            //.min_height = carbon::value_type{50.0f, false},
+            //.flex_wrap = carbon::flex_wrap_wrap,
             .height = carbon::value_type{50.0f, false},
-            //.width = carbon::value_type{30.0f, false},
+            .width = carbon::value_type{100.0f, false},
             //.margin = 10.0f
         };
 
@@ -116,18 +119,54 @@ void draw_test_interface(renderer::buffer* buf) {
 
         root->add<carbon::base_view>(column, style, "test1");
         root->add<carbon::base_view>(column, style, "test2");
-        root->add<carbon::base_view>(column, style, "test2");
 
-        carbon::layout(root, {300.0f, 300.0f});
-        carbon::compose(root);
+        auto test = []() -> void {
+            MessageBoxA(nullptr, "Button clicked!", "Button", MB_ICONINFORMATION);
+        };
+
+        // std::string label, std::function<void()> on_click_callback, layout_properties layout, decorative_properties style, text_style_properties text_style
+        root->add<carbon::button>("Button", test, column, style, carbon::text_style_properties{.color = {255, 255, 255}, .font = renderer::get_default_font()});
+
+        //carbon::layout(root, {300.0f, 300.0f});
+        //carbon::compose(root);
+        init = true;
+    }*/
+
+    static auto window = std::make_shared<carbon::window>("formUI root");
+    static bool init = false;
+
+    if (!init) {
+        carbon::layout_properties column{
+            //.align_self = carbon::align_self_stretch,
+            //.flex_grow = 1.0f,
+            //.flex_basis = carbon::value_type{100.0f, false},
+            //.min_height = carbon::value_type{50.0f, false},
+            //.flex_wrap = carbon::flex_wrap_wrap,
+            .height = carbon::value_type{50.0f, false},
+            .width = carbon::value_type{100.0f, false},
+            //.margin = 10.0f
+        };
+
+        carbon::decorative_properties style{
+            .background_color = {29, 29, 29, 255},
+            .border_color = {0, 0, 0, 255},
+            .border_radius = 6.0f
+        };
+
+        auto test = []() -> void {
+            MessageBoxA(nullptr, "Button clicked!", "Button", MB_ICONINFORMATION);
+        };
+
+        window->add<carbon::button>("Button", test, column, style, carbon::text_style_properties{.color = {255, 255, 255}, .font = renderer::get_default_font()});
+
         init = true;
     }
 
-    //carbon::layout(root, carbon::get_mouse_pos());
-    //carbon::compose(root);
-    carbon::paint(root);
+    carbon::layout(window, carbon::get_mouse_pos());
+    carbon::compose(window);
+    carbon::paint(window);
 
-    carbon::debug_info();
+    //carbon::debug_info();
     carbon::end();
 }
 
@@ -193,7 +232,7 @@ int main() {
     memset(csidl_fonts, 0, MAX_PATH);
     SHGetFolderPathA(nullptr, CSIDL_FONTS, nullptr, 0, csidl_fonts);
 
-    renderer::text_font::font_config config{.glyph_config{.ranges= renderer::text_font::glyph::ranges_default()}, .size_pixels = 32.f};
+    renderer::text_font::font_config config{.glyph_config{.ranges= renderer::text_font::glyph::ranges_default()}, .size_pixels = 20.f};
     tahoma = renderer::atlas.add_font_default(&config);
 
     seguiemj = renderer::atlas.add_font_from_file_ttf(std::string(csidl_fonts) + '\\' + "seguiemj.ttf", 16.f, &config);

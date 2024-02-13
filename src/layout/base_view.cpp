@@ -21,7 +21,7 @@ namespace carbon {
     }
 
     std::shared_ptr<node> base_view::add(const std::shared_ptr<node>& child) {
-        child->parent = shared_from_this();
+        child->parent = this;
 
         if (first_child == nullptr) {
             first_child = child;
@@ -38,7 +38,7 @@ namespace carbon {
     }
 
     void base_view::remove(const std::shared_ptr<node>& child) {
-        if (child->parent != shared_from_this()) {
+        if (child->parent != this) {
             // TODO: Warning
             return;
         }
