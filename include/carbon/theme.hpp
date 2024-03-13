@@ -4,13 +4,51 @@
 #include "renderer/color.hpp"
 
 namespace carbon {
+    // Cursors
+    enum cursor_type {
+        cursor_arrow,
+        cursor_resize_horizontal,
+        cursor_resize_vertical,
+        cursor_hand,
+        cursor_text,
+        cursor_crosshair,
+        cursor_disabled,
+        cursor_count
+    };
+
+    // Styling
     struct style_sheet {
         renderer::color_rgba body;
         renderer::color_rgba primary;
         renderer::color_rgba title_bar;
         renderer::color_rgba border;
 
+        float window_rounding;
+
+        glm::vec2 page_padding;
+        glm::vec2 page_gap;
+
+        float groupbox_rounding;
+        float groupbox_title_size;
+        glm::vec2 groupbox_padding;
+        glm::vec2 groupbox_title_margin;
+        glm::vec2 groupbox_item_gap;
+
         glm::vec2 label_padding;
+
+        float button_rounding;
+        glm::vec2 button_padding;
+
+        float separator_spacing;
+
+        float checkbox_rounding;
+        float checkbox_size;
+
+        glm::vec2 slider_size;
+
+        glm::vec2 textbox_padding;
+
+        glm::vec2 dropdown_padding;
     };
 
     void init_default_theme();

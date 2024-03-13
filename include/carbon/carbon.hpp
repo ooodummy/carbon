@@ -1,14 +1,13 @@
 #ifndef CARBON_CARBON_HPP
 #define CARBON_CARBON_HPP
 
-#include "carbon/layout/view.hpp"
-#include "carbon/layout/layout.hpp"
-#include "carbon/layout/compose.hpp"
-#include "carbon/layout/paint.hpp"
-
-#include "carbon/widgets/button.hpp"
-#include "carbon/widgets/input.hpp"
-#include "carbon/widgets/window.hpp"
+#include "carbon/widgets/containers/window.hpp"
+#include "carbon/widgets/controls/checkbox.hpp"
+#include "carbon/widgets/controls/dropdown.hpp"
+#include "carbon/widgets/controls/label.hpp"
+#include "carbon/widgets/controls/slider.hpp"
+#include "widgets/controls/textbox.hpp"
+#include "widgets/widget.hpp"
 
 #include "carbon/globals.hpp"
 #include "carbon/input.hpp"

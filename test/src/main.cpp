@@ -1,5 +1,7 @@
 #include <carbon/carbon.hpp>
 
+#include "config.hpp"
+
 #include <renderer/buffer.hpp>
 #include <renderer/renderer.hpp>
 
@@ -73,12 +75,121 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProcA(hWnd, msg, wParam, lParam);
 }
 
+void draw_test_ui(renderer::buffer* buf) {
+    static bool init = false;
+    static std::shared_ptr<carbon::window> window;
+
+    /*static renderer::timer rainbow_timer;
+	auto elapsed_ms = rainbow_timer.get_elapsed_duration().count();
+	if (elapsed_ms > 5000)
+		rainbow_timer.reset();
+	renderer::color_rgba rainbow = renderer::color_hsva(0.0f).ease(renderer::color_hsva(359.99f),
+	static_cast<float>(elapsed_ms) / 5000.0f); carbon::theme.primary = rainbow;*/
+
+    if (!init) {
+        window = std::make_shared<carbon::window>(L"Carbon UI Framework");
+
+        auto tab_sheet = window->add_child<carbon::tab_sheet>();
+
+        auto aim_page = tab_sheet->add_child<carbon::page>(U"\uf05b");
+        {
+            auto aimbot_group = aim_page->add_child<carbon::groupbox>(L"Aimbot");
+            {
+                aimbot_group->add_child<carbon::checkbox>(L"Enabled", &settings::get<bool>(cfg.aimbot));
+                // TODO: Hotkey
+                //aimbot_group->add_child<carbon::slider<int>>(L"Field of view", &settings::get<int>(cfg.aimbot_fov), 0,
+                //                                             500, L"{}px");
+                aimbot_group->add_child<carbon::checkbox>(L"Show FOV", &settings::get<bool>(cfg.aimbot_show_fov));
+                //aimbot_group->add_child<carbon::slider<int>>(
+                //    L"Max Distance", &settings::get<int>(cfg.aimbot_max_distance), 0, 1000, L"{}m");
+                aimbot_group->add_child<carbon::checkbox>(L"Silent", &settings::get<bool>(cfg.aimbot_silent));
+                //aimbot_group->add_child<carbon::checkbox>(L"Magic bullet", &settings::get<bool>(cfg.aimbot_modify_origin));
+                //aimbot_group->add_child<carbon::checkbox>(L"Show aim point", &settings::get<bool>(cfg.aimbot_show_aim_point));
+                // TODO: Color picker
+                // TODO: Widget conditions
+                aimbot_group->add_child<carbon::checkbox>(L"Only visible", &settings::get<bool>(cfg.aimbot_only_visible));
+                aimbot_group->add_child<carbon::checkbox>(L"Ignore team", &settings::get<bool>(cfg.aimbot_ignore_team));
+                //aimbot_group->add_child<carbon::checkbox>(L"Show target information", &settings::get<bool>(cfg.aimbot_show_target_info));
+            }
+            auto recoil_group = aim_page->add_child<carbon::groupbox>(L"Recoil control");
+            {
+                //recoil_group->add_child<carbon::checkbox>(L"Enabled", &settings::get<bool>(cfg.aim_no_recoil));
+                //recoil_group->add_child<carbon::slider<int>>(L"Strength", &settings::get<int>(cfg.aim_recoil_control), 0,
+                //                                             100, L"{}%");
+                //recoil_group->add_child<carbon::checkbox>(L"No spread", &settings::get<bool>(cfg.aim_no_spread));
+                //recoil_group->add_child<carbon::checkbox>(L"No sway", &settings::get<bool>(cfg.aim_no_sway));
+
+                recoil_group->add_child<carbon::button>(
+                    L"Click me", [] { MessageBoxA(nullptr, "Hello world!", "KiwiCheats.net", MB_OK); });
+            }
+        }
+
+        auto visuals_page = tab_sheet->add_child<carbon::page>(U"\uf21d");
+        {
+            auto player_group = visuals_page->add_child<carbon::groupbox>(L"Player");
+            {
+                player_group->add_child<carbon::checkbox>(L"Enabled", &settings::get<bool>(cfg.player_visuals));
+                //static std::vector<std::wstring> box_types = { L"None", L"2D", L"3D", L"Italic" };
+                //player_group->add_child<carbon::dropdown>(L"Box", box_types, &settings::get<int>(cfg.player_visuals_box));
+                player_group->add_child<carbon::checkbox>(L"Name", &settings::get<bool>(cfg.player_visuals_name));
+                player_group->add_child<carbon::checkbox>(L"Health", &settings::get<bool>(cfg.player_visuals_health));
+                player_group->add_child<carbon::checkbox>(L"Ammo", &settings::get<bool>(cfg.player_visuals_ammo));
+            }
+            auto item_group = visuals_page->add_child<carbon::groupbox>(L"Item");
+            auto world_group = visuals_page->add_child<carbon::groupbox>(L"World");
+        }
+
+        auto misc_page = tab_sheet->add_child<carbon::page>(U"\uf022");
+        {
+            auto weapon_group = misc_page->add_child<carbon::groupbox>(L"Weapon");
+            {
+                //weapon_group->add_child<carbon::checkbox>(L"No dispersion", &settings::get<bool>(cfg.weapon_no_dispersion));
+                //weapon_group->add_child<carbon::checkbox>(L"No malfunctions", &settings::get<bool>(cfg.weapon_no_malfunctions));
+                //weapon_group->add_child<carbon::checkbox>(L"Fast load/unload", &settings::get<bool>(cfg.weapon_fast_mags));
+                //weapon_group->add_child<carbon::checkbox>(L"Instant swap", &settings::get<bool>(cfg.weapon_instant_swap));
+            }
+            auto movement_group = misc_page->add_child<carbon::groupbox>(L"Movement");
+            {
+                //movement_group->add_child<carbon::checkbox>(L"No fracture", &settings::get<bool>(cfg.movement_no_fracture));
+                //movement_group->add_child<carbon::checkbox>(L"Always sprint", &settings::get<bool>(cfg.movement_allow_sprint));
+                //movement_group->add_child<carbon::checkbox>(L"Always jump", &settings::get<bool>(cfg.movement_allow_jump));
+                //movement_group->add_child<carbon::checkbox>(L"Always prone", &settings::get<bool>(cfg.movement_allow_prone));
+            }
+            auto exploits_group = misc_page->add_child<carbon::groupbox>(L"Exploits");
+            {
+                //exploits_group->add_child<carbon::checkbox>(L"God mode", &settings::get<bool>(cfg.exploits_god));
+                //exploits_group->add_child<carbon::checkbox>(L"Ignore power", &settings::get<bool>(cfg.exploits_ignore_power));
+            }
+        }
+        auto config_page = tab_sheet->add_child<carbon::page>(U"\uf013");
+        {
+            auto config_group = config_page->add_child<carbon::groupbox>(L"Config");
+            {
+                static std::string config_name = "";
+                config_group->add_child<carbon::textbox>(L"Name", L"default", 32, &config_name, false);
+                config_group->add_child<carbon::button>(L"Save", [] {
+                    settings::save("default");
+                });
+                config_group->add_child<carbon::button>(L"Load", [] {
+                    settings::load("default");
+                });
+            }
+        }
+
+        init = true;
+    }
+
+    window->input();
+    window->calculate_layout(application->get_size());
+    window->draw();
+
+    std::string test = "Hello World!";
+    const auto size = tahoma->calc_text_size(test);
+    buf->draw_text(test, {100.0f, 100.0f}, COLOR_WHITE, tahoma, renderer::align_center_top);
+    buf->draw_rect({100.0f, 100.0f, size.x, size.y}, COLOR_RED);
+}
+
 void draw_test_interface(renderer::buffer* buf) {
-    carbon::begin();
-
-    carbon::buf = buf;
-    carbon::main_font = seguiemj;
-
     /*static auto root = std::make_shared<carbon::view>(carbon::layout_properties{
                                                           //.align_content = carbon::align_content_end,
                                                           .align_items = carbon::align_items_start,
@@ -132,7 +243,7 @@ void draw_test_interface(renderer::buffer* buf) {
         init = true;
     }*/
 
-    static auto window = std::make_shared<carbon::window>("formUI root");
+    /*static auto window = std::make_shared<carbon::window>("formUI root");
     static bool init = false;
 
     if (!init) {
@@ -164,10 +275,21 @@ void draw_test_interface(renderer::buffer* buf) {
 
     carbon::layout(window, carbon::get_mouse_pos());
     carbon::compose(window);
-    carbon::paint(window);
+    carbon::paint(window);*/
 
-    //carbon::debug_info();
-    carbon::end();
+    /*static renderer::timer anim_timer;
+    if (anim_timer.get_elapsed_duration() > std::chrono::milliseconds(640))
+        anim_timer.reset();
+
+    const auto anim = renderer::ease(0.0f, 6.28f, std::chrono::duration<float>(anim_timer.get_elapsed_duration()).count() / 0.64f, 1.0f, renderer::linear);
+
+    const auto off_x = cosf(anim);
+    const auto off_y = sinf(anim);
+
+    glm::vec2 text_pos = {100.0f, 100.0f};
+    buf->draw_text("FATALITY", text_pos + glm::vec2{off_x, off_y}, renderer::color_rgba{255, 0, 0, 255}, tahoma);
+    buf->draw_text("FATALITY", text_pos + glm::vec2{off_x * -1.0f, off_y * -1.0f}, renderer::color_rgba{0, 0, 255, 255}, tahoma);
+    buf->draw_text(std::format("FATALITY {}", anim), text_pos, renderer::color_rgba{245, 245, 245, 255}, tahoma);*/
 }
 
 void draw_thread() {
@@ -182,7 +304,16 @@ void draw_thread() {
         auto buf = dx11->get_working_buffer(id);
         buf->set_projection(dx11->get_ortho_projection());
 
+        carbon::begin();
+
+        carbon::buf = buf;
+        carbon::main_font = tahoma;
+
+        draw_test_ui(buf);
         draw_test_interface(buf);
+
+        carbon::debug_info();
+        carbon::end();
 
         dx11->swap_buffers(id);
 
@@ -226,13 +357,14 @@ int main() {
         return 1;
     }
 
+    //dx11->set_clear_color({ 25, 27, 28 });
     dx11->set_clear_color({ 88, 122, 202 });
 
     char csidl_fonts[MAX_PATH];
     memset(csidl_fonts, 0, MAX_PATH);
     SHGetFolderPathA(nullptr, CSIDL_FONTS, nullptr, 0, csidl_fonts);
 
-    renderer::text_font::font_config config{.glyph_config{.ranges= renderer::text_font::glyph::ranges_default()}, .size_pixels = 20.f};
+    renderer::text_font::font_config config{.glyph_config{.ranges= renderer::text_font::glyph::ranges_default()}, .size_pixels = 16.f};
     tahoma = renderer::atlas.add_font_default(&config);
 
     seguiemj = renderer::atlas.add_font_from_file_ttf(std::string(csidl_fonts) + '\\' + "seguiemj.ttf", 16.f, &config);

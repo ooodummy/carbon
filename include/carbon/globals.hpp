@@ -9,6 +9,7 @@
 namespace carbon {
     extern renderer::buffer* buf;
     extern renderer::text_font* main_font;
+    extern renderer::text_font* title_font;
 
     extern renderer::performance_counter performance;
 
@@ -20,6 +21,13 @@ namespace carbon {
     };
 
     extern benchmark_data benchmark;
+
+    class widget;
+    struct context_data {
+        std::shared_ptr<widget> active;
+    };
+
+    extern context_data context;
 }// namespace carbon
 
 #endif
